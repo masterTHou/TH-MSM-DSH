@@ -1,0 +1,17 @@
+# Files excluded from npm package but tracked in git
+# (package.json "files" field is the allowlist)
+
+# Development-only
+test/
+examples/
+
+# Git-specific
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# Docs (ADR is internal)
+ADR.md

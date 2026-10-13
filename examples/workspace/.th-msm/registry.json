@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "msms": [
+    {
+      "name": "echo",
+      "description": "Echo the JSON-stdin arguments back as one line. Used for testing and protocol verification.",
+      "usage": "th_msm({ name: \"echo\", args: [\"hello\"] })",
+      "command": "node ./tools/echo.mjs",
+      "timeoutMs": 5000
+    },
+    {
+      "name": "msm_featurize",
+      "description": "Extract features from MD trajectory using PyEMMA featurizer.",
+      "usage": "th_msm({ name: \"msm_featurize\", args: [\"--topology\", \"system.pdb\", \"--trajectory\", \"traj.xtc\"] })",
+      "command": "python ./tools/msm_featurize.py",
+      "timeoutMs": 60000
+    },
+    {
+      "name": "msm_tica",
+      "description": "Run tICA dimensionality reduction on featurized data.",
+      "usage": "th_msm({ name: \"msm_tica\", args: [\"--input\", \"features.h5\", \"--lag\", \"10\"] })",
+      "command": "python ./tools/msm_tica.py",
+      "timeoutMs": 60000
+    },
+    {
+      "name": "msm_cluster",
+      "description": "Cluster tICA-projected data using K-Means.",
+      "usage": "th_msm({ name: \"msm_cluster\", args: [\"--input\", \"tica_output.h5\", \"--n-clusters\", \"100\"] })",
+      "command": "python ./tools/msm_cluster.py",
+      "timeoutMs": 120000
+    },
+    {
+      "name": "msm_estimate",
+      "description": "Estimate a Markov State Model from discretized trajectories.",
+      "usage": "th_msm({ name: \"msm_estimate\", args: [\"--dtrajs\", \"dtrajs.npy\", \"--lag\", \"10\"] })",
+      "command": "python ./tools/msm_estimate.py",
+      "timeoutMs": 60000
+    },
+    {
+      "name": "msm_validate",
+      "description": "Run MSM validation tests (ITS, CK test, populations).",
+      "usage": "th_msm({ name: \"msm_validate\", args: [\"--model\", \"msm.pkl\"] })",
+      "command": "python ./tools/msm_validate.py",
+      "timeoutMs": 120000
+    }
+  ]
+}

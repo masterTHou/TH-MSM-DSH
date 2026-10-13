@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "id": "th-msm",
+  "name": "TH-MSM",
+  "version": "1.0.0",
+  "description": "Thermodynamic and Kinetic Markov State Model Intelligence Agent — DSH Plugin",
+  "host": {
+    "kind": "deepseek-harness",
+    "apiTrain": "0.2.x"
+  },
+  "entry": "./src/index.js",
+  "capabilities": {
+    "tools": [
+      "th_msm",
+      "th_msm_knowledge",
+      "th_msm_teach",
+      "th_msm_plan",
+      "th_msm_build",
+      "th_msm_validate",
+      "th_msm_report"
+    ],
+    "agentHooks": true,
+    "agentLoop": true,
+    "shellExecution": true,
+    "workspaceRegistry": true,
+    "knowledgeBase": true,
+    "requiresSandboxByDefault": true
+  },
+  "msm": {
+    "registryFile": ".th-msm/registry.json",
+    "requestProtocol": "json-stdin-v1",
+    "resultProtocol": "stdout-v1"
+  },
+  "knowledge": {
+    "basePath": "knowledge",
+    "catalogs": ["reviews/CATALOG.md", "papers/CATALOG.md", "benchmarks/CATALOG.md"],
+    "learningRoadmap": "knowledge/LEARNING_ROADMAP.md"
+  },
+  "agent": {
+    "modes": [
+      { "name": "teaching", "trigger": ["explain", "what is", "concept", "learn"], "tools": ["th_msm_knowledge", "th_msm_teach"] },
+      { "name": "planning", "trigger": ["plan", "design", "protocol", "trajectory"], "tools": ["th_msm_plan", "th_msm_knowledge"] },
+      { "name": "modeling", "trigger": ["build", "construct", "run", "execute"], "tools": ["th_msm_build", "th_msm"] },
+      { "name": "validation", "trigger": ["validate", "check", "verify", "its", "ck-test"], "tools": ["th_msm_validate"] },
+      { "name": "reporting", "trigger": ["report", "summary", "document"], "tools": ["th_msm_report"] }
+    ],
+    "principles": [
+      "Never blindly generate MSM models — every step requires rationale",
+      "Warn when MSM is unsuitable for the user's goal",
+      "Never hide model uncertainty — distinguish numerical correctness from scientific credibility",
+      "All analyses must be reproducible"
+    ]
+  }
+}
