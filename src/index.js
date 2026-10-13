@@ -1,16 +1,15 @@
 /**
- * TH-MSM DSH Plugin v1.1
+ * TH-MSM DSH Plugin v1.2
  *
  * Thermodynamic and Kinetic Markov State Model Intelligence Agent.
  *
- * v1.1: deeptime-first, 零配置 RAG, 启动自动构建向量索引
+ * v1.2: 交互式科研向导 · deeptime 真实执行 · 环境自动检测
  *
  * Registers:
- *  - 7 tools: th_msm (proxy), th_msm_knowledge, th_msm_teach,
+ *  - 8 tools: th_msm (proxy), th_msm_env, th_msm_knowledge, th_msm_teach,
  *             th_msm_plan, th_msm_build, th_msm_validate, th_msm_report
  *  - Agent hooks: per-turn accounting + policy guards
  *  - Agent loop: MSM-aware intent routing and knowledge enrichment
- *  - Auto-index: vector index built on first load (zero config)
  *
  * Security boundary:
  *  - Only registry-owned `command` strings reach ctx.shell.
@@ -21,6 +20,7 @@
 import z from '@deepseek-ai/schemastery'
 
 import { createMsmTool } from './tools/msm.js'
+import { createEnvTool } from './tools/env.js'
 import { createKnowledgeTool } from './tools/knowledge.js'
 import { createTeachTool } from './tools/teach.js'
 import { createPlanTool } from './tools/plan.js'
@@ -138,7 +138,7 @@ export function apply(ctx, rawConfig = {}) {
     )
   }
 
-  // ── Register all 7 tools ─────────────────────────────────────
+  // ── Register all 8 tools ─────────────────────────────────────
 
   // 1. Generic MSM execution proxy (the security boundary)
   ctx.tools.register(createMsmTool(ctx, config, config.toolName))
@@ -152,7 +152,10 @@ export function apply(ctx, rawConfig = {}) {
     toolNames.add('msm')
   }
 
-  // 2-7. Domain tools
+  // 2-8. Domain tools
+  ctx.tools.register(createEnvTool(ctx, config))
+  toolNames.add('th_msm_env')
+
   ctx.tools.register(createKnowledgeTool(ctx, config))
   toolNames.add('th_msm_knowledge')
 
