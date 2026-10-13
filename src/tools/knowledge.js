@@ -1,14 +1,15 @@
 /**
  * th_msm_knowledge — Query the TH-MSM knowledge base.
  *
- * Searches indexed papers, reviews, and benchmarks by keyword, topic,
- * or level. Returns structured paper metadata and relevance scores.
+ * v1.1: 混合检索。向量索引存在时自动走 RAG，否则降级为关键词匹配。
+ * 首次查询时若索引未构建，会在结果末尾提示用户一键升级。
  */
 
 import { defineTool } from '@deepseek-ai/dsh-tools'
 import { loadKnowledgeBase } from '../knowledge/loader.js'
 import { searchKnowledge } from '../knowledge/searcher.js'
 import { formatKnowledgeResult } from '../knowledge/context.js'
+import { getRetriever } from '../knowledge/vector/retriever.js'
 
 const resultSchema = {
   type: 'object',
@@ -31,60 +32,60 @@ const resultSchema = {
           level: { type: 'array', items: { type: 'string' } },
           topic: { type: 'string' },
           relevance: { type: 'number' },
+          score: { type: 'number' },
+          source: { type: 'string' },
         },
       },
     },
     suggestion: { type: 'string' },
+    indexHint: { type: 'string' },
   },
 }
 
 export function createKnowledgeTool(ctx, config) {
-  // Lazy-loaded cache
   let _kb = null
 
   async function ensureKB(workspace) {
     if (_kb) return _kb
-    const basePath = config.knowledgeBasePath
-    const catalogs = config.knowledgeCatalogs
-    _kb = await loadKnowledgeBase(workspace, basePath, catalogs)
+    _kb = await loadKnowledgeBase(workspace, config.knowledgeBasePath, config.knowledgeCatalogs)
     return _kb
   }
 
   return defineTool({
     name: 'th_msm_knowledge',
     description:
-      'Query the TH-MSM knowledge base for papers, reviews, and benchmark systems. ' +
-      'Supports search by keyword, topic (featurization/dim-reduction/clustering/msm-construction/validation/coarse-graining/enhanced-sampling/deep-msm/theory/applications), ' +
-      'and level (undergraduate/graduate/expert).',
+      '查询 TH-MSM 知识库，支持语义搜索和关键词搜索。' +
+      '可按主题 (theory/dim-reduction/clustering/msm-construction/validation/enhanced-sampling/deep-msm/applications) 和水平 (undergraduate/graduate/expert) 过滤。',
     parameters: {
       query: {
         type: 'string',
-        description: 'Search query. Can be keywords, topic name, or free text.',
+        description: '搜索关键词，支持自然语言（如 "tICA 降维方法的原理"）。',
       },
       topic: {
         type: 'string',
-        description: 'Filter by topic category (optional).',
+        description: '按主题过滤（可选）。',
       },
       level: {
         type: 'string',
         enum: ['undergraduate', 'graduate', 'expert'],
-        description: 'Filter by learning level (optional).',
+        description: '按学习水平过滤（可选）。',
       },
       maxResults: {
         type: 'integer',
-        description: `Maximum results to return (default: ${config.maxKnowledgeResults}).`,
+        description: `最大结果数（默认 ${config.maxKnowledgeResults}）。`,
       },
     },
     output: {
       schema: resultSchema,
       render: (_args, value) => {
-        if (!value.ok) return [{ type: 'text', text: `Knowledge query failed: ${value.suggestion}` }]
-        const lines = [`Found ${value.totalResults} results for "${value.query}":`]
+        if (!value.ok) return [{ type: 'text', text: `查询失败: ${value.suggestion}` }]
+        const lines = [`找到 ${value.totalResults} 条关于 "${value.query}" 的结果:`]
         for (const r of value.results) {
           lines.push(formatKnowledgeResult(r))
           lines.push('')
         }
         if (value.totalResults === 0) lines.push(value.suggestion)
+        if (value.indexHint) lines.push(value.indexHint)
         return [{ type: 'text', text: lines.join('\n') }]
       },
     },
@@ -96,61 +97,72 @@ export function createKnowledgeTool(ctx, config) {
       if (!workspace) {
         return {
           ok: false, query: args.query ?? '', totalResults: 0, results: [],
-          suggestion: 'No agent workspace is available.',
+          suggestion: '未找到工作区路径。', indexHint: '',
         }
       }
 
+      const query = args.query ?? ''
+      const maxResults = args.maxResults ?? config.maxKnowledgeResults
+
+      // ── 混合检索 ──────────────────────────────────────────
+      let results = []
+      let usedRag = false
+      let indexReady = false
+
       try {
+        const retriever = await getRetriever(workspace)
+        indexReady = await retriever.isReady()
+        if (indexReady) {
+          results = await retriever.retrieve(query, {
+            topK: maxResults,
+            vectorWeight: 0.7,
+            filterTopic: args.topic,
+            filterLevel: args.level,
+          })
+          usedRag = true
+        }
+      } catch { /* fallback */ }
+
+      if (!usedRag) {
         const kb = await ensureKB(workspace)
-        const results = searchKnowledge(kb, {
-          query: args.query ?? '',
-          topic: args.topic,
-          level: args.level,
-          maxResults: args.maxResults ?? config.maxKnowledgeResults,
+        results = searchKnowledge(kb, {
+          query, topic: args.topic, level: args.level, maxResults,
         })
+      }
 
-        if (results.length === 0) {
-          // Try similar queries
-          const suggestions = suggestQueries(kb, args.query ?? '')
-          return {
-            ok: true, query: args.query ?? '', totalResults: 0, results: [],
-            suggestion: suggestions.length
-              ? `No exact matches. Try: ${suggestions.join(', ')}. Or add papers to knowledge/${kb.catalogs[0].split('/')[0]}/.`
-              : 'No results found. Consider adding relevant papers to the knowledge base.',
-          }
-        }
+      // ── 降级提示 ──────────────────────────────────────────
+      const indexHint = !indexReady && results.length > 0
+        ? '\n💡 想获得更精准的语义搜索结果？说「构建索引」即可一键升级（首次约需 30 秒）。'
+        : ''
 
+      if (results.length === 0) {
+        const kb = await ensureKB(workspace)
+        const suggestions = suggestQueries(kb, query)
+        const upgradeNote = !indexReady
+          ? '\n\n💡 首次使用？说「构建索引」来启用 AI 语义搜索，查得更准。'
+          : ''
         return {
-          ok: true,
-          query: args.query ?? '',
-          totalResults: results.length,
-          results,
-          suggestion: '',
+          ok: true, query, totalResults: 0, results: [],
+          suggestion: (suggestions.length
+            ? `没有精确匹配。试试: ${suggestions.join(', ')}。`
+            : `没有找到 "${query}" 相关结果。`) + upgradeNote,
+          indexHint: '',
         }
-      } catch (error) {
-        return {
-          ok: false, query: args.query ?? '', totalResults: 0, results: [],
-          suggestion: `Knowledge base error: ${error.message}`,
-        }
+      }
+
+      return {
+        ok: true, query, totalResults: results.length, results,
+        suggestion: '', indexHint,
       }
     },
   })
 }
 
-/**
- * Suggest alternative queries based on partial matches in the index.
- */
 function suggestQueries(kb, query) {
   const q = query.toLowerCase()
   const allKeywords = new Set()
-  for (const paper of kb.papers) {
-    for (const kw of paper.keywords) {
-      allKeywords.add(kw.toLowerCase())
-    }
+  for (const paper of kb.papers ?? []) {
+    for (const kw of paper.keywords ?? []) allKeywords.add(kw.toLowerCase())
   }
-
-  const matches = [...allKeywords]
-    .filter(kw => kw.includes(q) || q.includes(kw))
-    .slice(0, 5)
-  return matches
+  return [...allKeywords].filter(kw => kw.includes(q) || q.includes(kw)).slice(0, 5)
 }

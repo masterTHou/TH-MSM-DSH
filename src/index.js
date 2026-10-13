@@ -1,13 +1,16 @@
 /**
- * TH-MSM DSH Plugin v1.0
+ * TH-MSM DSH Plugin v1.1
  *
  * Thermodynamic and Kinetic Markov State Model Intelligence Agent.
+ *
+ * v1.1: deeptime-first, 零配置 RAG, 启动自动构建向量索引
  *
  * Registers:
  *  - 7 tools: th_msm (proxy), th_msm_knowledge, th_msm_teach,
  *             th_msm_plan, th_msm_build, th_msm_validate, th_msm_report
  *  - Agent hooks: per-turn accounting + policy guards
  *  - Agent loop: MSM-aware intent routing and knowledge enrichment
+ *  - Auto-index: vector index built on first load (zero config)
  *
  * Security boundary:
  *  - Only registry-owned `command` strings reach ctx.shell.
@@ -27,6 +30,8 @@ import { createReportTool } from './tools/report.js'
 
 import { installAgentHooks } from './agent/hooks.js'
 import { installAgentLoop } from './agent/loop.js'
+
+import { buildIndex, checkIndex } from './knowledge/vector/indexer.js'
 
 export const name = 'th-msm'
 export const inject = ['tools', 'shell']

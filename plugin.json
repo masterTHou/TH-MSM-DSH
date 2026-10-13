@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "th-msm",
   "name": "TH-MSM",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Thermodynamic and Kinetic Markov State Model Intelligence Agent — DSH Plugin",
   "host": {
     "kind": "deepseek-harness",
@@ -24,31 +24,36 @@
     "shellExecution": true,
     "workspaceRegistry": true,
     "knowledgeBase": true,
+    "ragSearch": true,
     "requiresSandboxByDefault": true
   },
   "msm": {
     "registryFile": ".th-msm/registry.json",
     "requestProtocol": "json-stdin-v1",
-    "resultProtocol": "stdout-v1"
+    "resultProtocol": "stdout-v1",
+    "primaryLibrary": "deeptime",
+    "fallbackLibrary": "pyemma",
+    "deeptimeUrl": "https://deeptime-ml.github.io"
   },
   "knowledge": {
     "basePath": "knowledge",
     "catalogs": ["reviews/CATALOG.md", "papers/CATALOG.md", "benchmarks/CATALOG.md"],
-    "learningRoadmap": "knowledge/LEARNING_ROADMAP.md"
+    "learningRoadmap": "knowledge/LEARNING_ROADMAP.md",
+    "vectorStore": ".th-msm/vector"
   },
   "agent": {
     "modes": [
-      { "name": "teaching", "trigger": ["explain", "what is", "concept", "learn"], "tools": ["th_msm_knowledge", "th_msm_teach"] },
-      { "name": "planning", "trigger": ["plan", "design", "protocol", "trajectory"], "tools": ["th_msm_plan", "th_msm_knowledge"] },
-      { "name": "modeling", "trigger": ["build", "construct", "run", "execute"], "tools": ["th_msm_build", "th_msm"] },
-      { "name": "validation", "trigger": ["validate", "check", "verify", "its", "ck-test"], "tools": ["th_msm_validate"] },
-      { "name": "reporting", "trigger": ["report", "summary", "document"], "tools": ["th_msm_report"] }
+      { "name": "teaching", "trigger": ["解释", "什么是", "概念", "学习", "入门"], "tools": ["th_msm_knowledge", "th_msm_teach"] },
+      { "name": "planning", "trigger": ["设计", "方案", "protocol", "轨迹"], "tools": ["th_msm_plan", "th_msm_knowledge"] },
+      { "name": "modeling", "trigger": ["构建", "运行", "执行", "build"], "tools": ["th_msm_build", "th_msm"] },
+      { "name": "validation", "trigger": ["验证", "检查", "ITS", "CK"], "tools": ["th_msm_validate"] },
+      { "name": "reporting", "trigger": ["报告", "总结", "生成"], "tools": ["th_msm_report"] }
     ],
     "principles": [
-      "Never blindly generate MSM models — every step requires rationale",
-      "Warn when MSM is unsuitable for the user's goal",
-      "Never hide model uncertainty — distinguish numerical correctness from scientific credibility",
-      "All analyses must be reproducible"
+      "不盲目生成模型 — 每一步都需要理由",
+      "目标不适合 MSM 时明确告知",
+      "不隐藏模型不确定性",
+      "一切分析可复现"
     ]
   }
 }
