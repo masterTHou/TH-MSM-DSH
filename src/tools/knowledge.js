@@ -99,10 +99,10 @@ export function createKnowledgeTool(ctx, config) {
     async execute(args, exec) {
       const workspace = exec.agent?.session?.header?.cwd
       if (!workspace) {
-        return {
+        return sanitize({
           ok: false, query: args.query ?? '', totalResults: 0, results: [],
           suggestion: '未找到工作区路径。', indexHint: '',
-        }
+        })
       }
 
       const query = args.query ?? ''
@@ -145,35 +145,35 @@ export function createKnowledgeTool(ctx, config) {
         const upgradeNote = !indexReady
           ? '\n\n💡 首次使用？说「构建索引」来启用 AI 语义搜索，查得更准。'
           : ''
-        return {
+        return sanitize({
           ok: true, query, totalResults: 0, results: [],
           suggestion: (suggestions.length
             ? `没有精确匹配。试试: ${suggestions.join(', ')}。`
             : `没有找到 "${query}" 相关结果。`) + upgradeNote,
           indexHint: '',
-        }
+        })
       }
 
-      return {
+      return sanitize({
         ok: true, query, totalResults: results.length,
         results: results.map(r => ({
-          id: r.id ?? r.metadata?.id ?? '',
-          title: r.title ?? r.metadata?.title ?? '',
-          authors: r.metadata?.authors ?? '',
-          journal: r.metadata?.journal ?? '',
-          year: r.metadata?.year ?? null,
-          keywords: r.metadata?.keywords ?? [],
-          level: r.metadata?.level ?? [],
-          topic: r.metadata?.topic ?? '',
-          relevance: r.score ?? 0,
-          score: r.score ?? 0,
-          source: r.source ?? 'unknown',
-          text: r.text ?? '',
-          vectorScore: r.vectorScore ?? null,
-          keywordScore: r.keywordScore ?? null,
+          id: String(r.id ?? r.metadata?.id ?? ''),
+          title: String(r.title ?? r.metadata?.title ?? ''),
+          authors: String(r.metadata?.authors ?? ''),
+          journal: String(r.metadata?.journal ?? ''),
+          year: Number.isFinite(r.metadata?.year) ? r.metadata.year : null,
+          keywords: Array.isArray(r.metadata?.keywords) ? r.metadata.keywords : [],
+          level: Array.isArray(r.metadata?.level) ? r.metadata.level : [],
+          topic: String(r.metadata?.topic ?? ''),
+          relevance: Number.isFinite(r.score) ? r.score : 0,
+          score: Number.isFinite(r.score) ? r.score : 0,
+          source: String(r.source ?? 'unknown'),
+          text: String(r.text ?? ''),
+          vectorScore: Number.isFinite(r.vectorScore) ? r.vectorScore : null,
+          keywordScore: Number.isFinite(r.keywordScore) ? r.keywordScore : null,
         })),
-        suggestion: '', indexHint,
-      }
+        suggestion: '', indexHint: '',
+      })
     },
   })
 }
@@ -185,4 +185,12 @@ function suggestQueries(kb, query) {
     for (const kw of paper.keywords ?? []) allKeywords.add(kw.toLowerCase())
   }
   return [...allKeywords].filter(kw => kw.includes(q) || q.includes(kw)).slice(0, 5)
+}
+
+/**
+ * 强制 JSON 序列化 → 反序列化，消除所有 undefined / non-finite 值。
+ * DSH 要求返回值必须是 "lossless JSON"。
+ */
+function sanitize(obj) {
+  return JSON.parse(JSON.stringify(obj))
 }
