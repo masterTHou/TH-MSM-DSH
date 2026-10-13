@@ -155,7 +155,23 @@ export function createKnowledgeTool(ctx, config) {
       }
 
       return {
-        ok: true, query, totalResults: results.length, results,
+        ok: true, query, totalResults: results.length,
+        results: results.map(r => ({
+          id: r.id ?? r.metadata?.id ?? '',
+          title: r.title ?? r.metadata?.title ?? '',
+          authors: r.metadata?.authors ?? '',
+          journal: r.metadata?.journal ?? '',
+          year: r.metadata?.year ?? null,
+          keywords: r.metadata?.keywords ?? [],
+          level: r.metadata?.level ?? [],
+          topic: r.metadata?.topic ?? '',
+          relevance: r.score ?? 0,
+          score: r.score ?? 0,
+          source: r.source ?? 'unknown',
+          text: r.text ?? '',
+          vectorScore: r.vectorScore ?? null,
+          keywordScore: r.keywordScore ?? null,
+        })),
         suggestion: '', indexHint,
       }
     },
