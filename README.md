@@ -1,4 +1,4 @@
-# TH-MSM DSH 插件 v1.1
+# TH-MSM DSH 插件 v1.2
 
 > **热力学与动力学马尔可夫状态模型智能体**
 > Transition Handler for Markov State Model Intelligence Agent
@@ -11,7 +11,7 @@
 TH-MSM 是一个面向 DeepSeek Harness 的智能 Markov State Model (MSM) 科研助手插件。
 它能从分子动力学轨迹中自动提取长时尺度动力学信息，打通从"教学"到"出报告"的完整科研流程。
 
-### v1.1 亮点
+### v1.2 亮点
 
 | 特性 | 说明 |
 |------|------|
@@ -400,7 +400,7 @@ MIT
 v0.1.0 ✅ 安全沙箱 + 通用执行代理
 v1.0.0 ✅ 7 工具 + Agent Loop + 关键词搜索
 v1.1.0 ✅ deeptime 主力 + RAG 语义搜索 + 预构建向量
-v1.2.0 ⏳ 端到端 MSM 自动构建（deeptime 全流水线自动执行）
+v1.2.0 ✅ 交互式科研向导 + 中文语义搜索 + 即时反馈
 v2.0.0 ⏳ TH-MSM → AutoREST 闭环
             MD → MSM → 代表构象 → QM/GW-BSE → 全自动科研
 ```
