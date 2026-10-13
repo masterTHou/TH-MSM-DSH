@@ -177,14 +177,16 @@ function cosineSimilarity(a, b) {
 }
 
 /**
- * 分词：中英文混合。
- * 英文按空格/标点分词，中文提取连续中文字符序列。
+ * 分词：中英文混合 + 中→英自动翻译。
+ * 英文按空格/标点分词，中文提取连续中文字符序列并映射到英文关键词。
  */
 function tokenize(text) {
   if (!text) return []
   const tokens = []
   // 提取中文词（2-4字连续序列）
   const cnChars = text.match(/[\u4e00-\u9fff]+/g) || []
+  const hasChinese = cnChars.length > 0
+
   for (const cn of cnChars) {
     for (let i = 0; i < cn.length; i++) {
       tokens.push(cn.slice(i, i + 2))
@@ -192,6 +194,17 @@ function tokenize(text) {
     }
     tokens.push(cn)
   }
+
+  // 中→英映射：中文词组翻译为英文关键词
+  if (hasChinese) {
+    const textLower = text.toLowerCase()
+    for (const [cnPattern, enWord] of Object.entries(CN_EN_MAP)) {
+      if (textLower.includes(cnPattern)) {
+        tokens.push(enWord)
+      }
+    }
+  }
+
   // 提取英文词
   const enWords = text.match(/[a-zA-Z]{2,}/g) || []
   for (const w of enWords) {
@@ -199,6 +212,62 @@ function tokenize(text) {
   }
   // 去重
   return [...new Set(tokens.filter(t => t.length >= 2))]
+}
+
+/**
+ * 中→英关键词映射表。
+ * 当用户用中文搜索时，自动追加英文对应词以匹配英文论文。
+ */
+const CN_EN_MAP = {
+  'msm': 'msm',
+  '马尔可夫': 'markov',
+  '马尔科夫': 'markov',
+  '状态模型': 'state model',
+  '蛋白质': 'protein',
+  '动力学': 'dynamics kinetics',
+  '构象': 'conformation conformational',
+  '折叠': 'folding',
+  '降维': 'dimensionality reduction',
+  '聚类': 'clustering',
+  '理论': 'theory',
+  '验证': 'validation',
+  '转移': 'transition',
+  '矩阵': 'matrix',
+  '隐含时间': 'implied timescale its',
+  '时间尺度': 'timescale its',
+  'its': 'its implied timescale',
+  'koopman': 'koopman',
+  '变分': 'variational vamp',
+  'vamp': 'vamp variational',
+  'tica': 'tica',
+  'pca': 'pca',
+  'pcca': 'pcca',
+  '宏态': 'macrostate metastable',
+  '微态': 'microstate',
+  '采样': 'sampling',
+  '增强': 'enhanced',
+  '自适应': 'adaptive',
+  '神经网络': 'neural network deep',
+  '深度学习': 'deep learning',
+  '配体': 'ligand binding',
+  '结合': 'binding',
+  '自由能': 'free energy',
+  '通量': 'flux',
+  '路径': 'path pathway',
+  '分子模拟': 'molecular simulation md',
+  '轨迹': 'trajectory',
+  '应用': 'application',
+  '综述': 'review',
+  '方法': 'method methodology',
+  '误差': 'error uncertainty',
+  '贝叶斯': 'bayesian',
+  '特征': 'feature featurization',
+  '选择': 'selection',
+  '距离': 'distance',
+  '二面角': 'dihedral torsion',
+  '接触图': 'contact',
+  '稳态': 'stationary',
+  '平衡': 'equilibrium',
 }
 
 export async function closeStore() {
