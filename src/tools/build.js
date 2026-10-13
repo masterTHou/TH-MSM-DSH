@@ -19,7 +19,7 @@ const resultSchema = {
     ok: { type: 'boolean', required: true },
     mode: { type: 'string', required: true },
     summary: { type: 'string', required: true },
-    details: { type: 'object' },
+    details: { type: 'object', additionalProperties: true },
     nextSteps: { type: 'array', items: { type: 'string' } },
   },
 }

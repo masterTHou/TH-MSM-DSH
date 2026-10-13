@@ -1,0 +1,39 @@
+{
+  "name": "@th-msm/dsh-plugin",
+  "version": "1.2.0",
+  "description": "TH-MSM: Thermodynamic and Kinetic Markov State Model Intelligence Agent plugin for DeepSeek Harness",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./tools/*": "./src/tools/*.js",
+    "./knowledge/*": "./src/knowledge/*.js"
+  },
+  "files": [
+    "src",
+    "plugin.json",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": ">=4 <5",
+    "@deepseek-ai/dsh-tools": ">=0.2.0-rc.2 <0.3",
+    "@deepseek-ai/schemastery": ">=3.18 <4"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "check": "node --check src/index.js && node --check src/registry/loader.js && node --check src/runtime/executor.js && node --check src/runtime/python.js && node --check src/tools/msm.js && node --check src/tools/knowledge.js && node --check src/tools/teach.js && node --check src/tools/plan.js && node --check src/tools/build.js && node --check src/tools/validate.js && node --check src/tools/report.js && node --check src/agent/hooks.js && node --check src/agent/loop.js && node --check src/knowledge/loader.js && node --check src/knowledge/searcher.js && node --check src/knowledge/context.js && node --check src/knowledge/catalog.js && node --check src/util/text.js",
+    "lint": "node --check src/index.js",
+    "prepack": "npm run check",
+    "prepublishOnly": "npm run check && npm test"
+  }
+}

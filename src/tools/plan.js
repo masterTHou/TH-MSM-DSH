@@ -23,25 +23,29 @@ const resultSchema = {
     researchGoal: { type: 'string', required: true },
     protocol: {
       type: 'object', required: true,
+      additionalProperties: false,
       properties: {
         featurization: {
           type: 'object', required: true,
+          additionalProperties: false,
           properties: {
             method: { type: 'string', required: true },
             rationale: { type: 'string', required: true },
-            parameters: { type: 'object' },
+            parameters: { type: 'object', additionalProperties: true },
           },
         },
         dimensionalityReduction: {
           type: 'object', required: true,
+          additionalProperties: false,
           properties: {
             method: { type: 'string', required: true },
             rationale: { type: 'string', required: true },
-            parameters: { type: 'object' },
+            parameters: { type: 'object', additionalProperties: true },
           },
         },
         clustering: {
           type: 'object', required: true,
+          additionalProperties: false,
           properties: {
             method: { type: 'string', required: true },
             rationale: { type: 'string', required: true },
@@ -50,6 +54,7 @@ const resultSchema = {
         },
         lagTime: {
           type: 'object', required: true,
+          additionalProperties: false,
           properties: {
             value: { type: 'string', required: true },
             rationale: { type: 'string', required: true },

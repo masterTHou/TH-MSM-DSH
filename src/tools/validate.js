@@ -33,6 +33,7 @@ const resultSchema = {
       type: 'array', required: true,
       items: {
         type: 'object',
+        additionalProperties: false,
         properties: {
           name: { type: 'string', required: true },
           status: { type: 'string', required: true },
