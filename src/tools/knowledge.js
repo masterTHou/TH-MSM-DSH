@@ -1,15 +1,16 @@
 /**
  * th_msm_knowledge — Query the TH-MSM knowledge base.
  *
- * v1.1: 混合检索。向量索引存在时自动走 RAG，否则降级为关键词匹配。
- * 首次查询时若索引未构建，会在结果末尾提示用户一键升级。
+ * v1.2 final: 直接读取 papers.json 做关键词匹配，无 retriever/store 依赖。
+ * 中→英自动映射，零外部依赖，保证 DSH 安装即用。
  */
 
 import { defineTool } from '@deepseek-ai/dsh-tools'
-import { loadKnowledgeBase } from '../knowledge/loader.js'
-import { searchKnowledge } from '../knowledge/searcher.js'
-import { formatKnowledgeResult } from '../knowledge/context.js'
-import { getRetriever } from '../knowledge/vector/retriever.js'
+import { readFileSync, existsSync } from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+// ── Schema ───────────────────────────────────────────────────
 
 const resultSchema = {
   type: 'object',
@@ -22,7 +23,7 @@ const resultSchema = {
       type: 'array', required: true,
       items: {
         type: 'object',
-        additionalProperties: true,
+        additionalProperties: false,
         properties: {
           id: { type: 'string' },
           title: { type: 'string' },
@@ -34,10 +35,6 @@ const resultSchema = {
           topic: { type: 'string' },
           relevance: { type: 'number' },
           score: { type: 'number' },
-          source: { type: 'string' },
-          text: { type: 'string' },
-          vectorScore: { type: 'number' },
-          keywordScore: { type: 'number' },
         },
       },
     },
@@ -46,13 +43,51 @@ const resultSchema = {
   },
 }
 
-export function createKnowledgeTool(ctx, config) {
-  let _kb = null
+// ── 中→英映射表 ─────────────────────────────────────────────
 
-  async function ensureKB(workspace) {
-    if (_kb) return _kb
-    _kb = await loadKnowledgeBase(workspace, config.knowledgeBasePath, config.knowledgeCatalogs)
-    return _kb
+const CN_EN_MAP = {
+  'msm': 'msm',
+  '马尔可夫': 'markov', '马尔科夫': 'markov',
+  '状态模型': 'state model',
+  '蛋白质': 'protein', '动力学': 'dynamics kinetics',
+  '构象': 'conformation conformational', '折叠': 'folding',
+  '降维': 'dimensionality reduction', '聚类': 'clustering',
+  '理论': 'theory', '验证': 'validation',
+  '转移': 'transition', '矩阵': 'matrix',
+  '隐含时间': 'implied timescale its', '时间尺度': 'timescale its',
+  'koopman': 'koopman', '变分': 'variational vamp',
+  'tica': 'tica', 'pca': 'pca', 'pcca': 'pcca',
+  '宏态': 'macrostate metastable', '微态': 'microstate',
+  '采样': 'sampling', '增强': 'enhanced', '自适应': 'adaptive',
+  '神经网络': 'neural network deep', '深度学习': 'deep learning',
+  '配体': 'ligand binding', '结合': 'binding',
+  '自由能': 'free energy', '通量': 'flux', '路径': 'path pathway',
+  '分子模拟': 'molecular simulation md', '轨迹': 'trajectory',
+  '应用': 'application', '综述': 'review',
+  '方法': 'method methodology', '误差': 'error uncertainty',
+  '贝叶斯': 'bayesian', '特征': 'feature featurization',
+  '选择': 'selection', '距离': 'distance',
+  '二面角': 'dihedral torsion', '稳态': 'stationary', '平衡': 'equilibrium',
+}
+
+// ── 工具定义 ─────────────────────────────────────────────────
+
+export function createKnowledgeTool(ctx, config) {
+  let _papers = null
+
+  function loadPapers() {
+    if (_papers) return _papers
+    try {
+      // 从插件自身目录加载 papers.json
+      const pluginDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
+      const papersPath = path.join(pluginDir, 'knowledge', 'vector', 'papers.json')
+      if (existsSync(papersPath)) {
+        const db = JSON.parse(readFileSync(papersPath, 'utf8'))
+        _papers = db.chunks ?? []
+      }
+    } catch { /* ignore */ }
+    if (!_papers) _papers = []
+    return _papers
   }
 
   return defineTool({
@@ -61,23 +96,10 @@ export function createKnowledgeTool(ctx, config) {
       '查询 TH-MSM 知识库，支持语义搜索和关键词搜索。' +
       '可按主题 (theory/dim-reduction/clustering/msm-construction/validation/enhanced-sampling/deep-msm/applications) 和水平 (undergraduate/graduate/expert) 过滤。',
     parameters: {
-      query: {
-        type: 'string',
-        description: '搜索关键词，支持自然语言（如 "tICA 降维方法的原理"）。',
-      },
-      topic: {
-        type: 'string',
-        description: '按主题过滤（可选）。',
-      },
-      level: {
-        type: 'string',
-        enum: ['undergraduate', 'graduate', 'expert'],
-        description: '按学习水平过滤（可选）。',
-      },
-      maxResults: {
-        type: 'integer',
-        description: `最大结果数（默认 ${config.maxKnowledgeResults}）。`,
-      },
+      query: { type: 'string', description: '搜索关键词，支持自然语言（如 "tICA 降维方法的原理"）。' },
+      topic: { type: 'string', description: '按主题过滤（可选）。' },
+      level: { type: 'string', enum: ['undergraduate', 'graduate', 'expert'], description: '按学习水平过滤（可选）。' },
+      maxResults: { type: 'integer', description: `最大结果数（默认 10）。` },
     },
     output: {
       schema: resultSchema,
@@ -85,7 +107,8 @@ export function createKnowledgeTool(ctx, config) {
         if (!value.ok) return [{ type: 'text', text: `查询失败: ${value.suggestion}` }]
         const lines = [`找到 ${value.totalResults} 条关于 "${value.query}" 的结果:`]
         for (const r of value.results) {
-          lines.push(formatKnowledgeResult(r))
+          lines.push(`**${r.title}** — ${r.authors} — *${r.journal}* (${r.year ?? 'N/A'})`)
+          lines.push(`  Topic: ${r.topic ?? 'N/A'} | Keywords: ${(r.keywords ?? []).join(', ')} | 相关度: ${((r.relevance ?? 0) * 100).toFixed(0)}%`)
           lines.push('')
         }
         if (value.totalResults === 0) lines.push(value.suggestion)
@@ -96,101 +119,101 @@ export function createKnowledgeTool(ctx, config) {
     timeoutMs: config.defaultTimeoutMs,
     isConcurrencySafe: () => true,
 
-    async execute(args, exec) {
-      const workspace = exec.agent?.session?.header?.cwd
-      if (!workspace) {
-        return sanitize({
-          ok: false, query: args.query ?? '', totalResults: 0, results: [],
-          suggestion: '未找到工作区路径。', indexHint: '',
-        })
-      }
+    async execute(args) {
+      const query = String(args.query ?? '')
+      const maxResults = args.maxResults ?? 10
+      const papers = loadPapers()
 
-      const query = args.query ?? ''
-      const maxResults = args.maxResults ?? config.maxKnowledgeResults
-
-      // ── 混合检索 ──────────────────────────────────────────
-      let results = []
-      let usedRag = false
-      let indexReady = false
-
-      try {
-        const retriever = await getRetriever(workspace)
-        indexReady = await retriever.isReady()
-        if (indexReady) {
-          results = await retriever.retrieve(query, {
-            topK: maxResults,
-            vectorWeight: 0.7,
-            filterTopic: args.topic,
-            filterLevel: args.level,
-          })
-          usedRag = true
-        }
-      } catch { /* fallback */ }
-
-      if (!usedRag) {
-        const kb = await ensureKB(workspace)
-        results = searchKnowledge(kb, {
-          query, topic: args.topic, level: args.level, maxResults,
-        })
-      }
-
-      // ── 降级提示 ──────────────────────────────────────────
-      const indexHint = !indexReady && results.length > 0
-        ? '\n💡 想获得更精准的语义搜索结果？说「构建索引」即可一键升级（首次约需 30 秒）。'
-        : ''
-
-      if (results.length === 0) {
-        const kb = await ensureKB(workspace)
-        const suggestions = suggestQueries(kb, query)
-        const upgradeNote = !indexReady
-          ? '\n\n💡 首次使用？说「构建索引」来启用 AI 语义搜索，查得更准。'
-          : ''
-        return sanitize({
+      if (!query || papers.length === 0) {
+        return {
           ok: true, query, totalResults: 0, results: [],
-          suggestion: (suggestions.length
-            ? `没有精确匹配。试试: ${suggestions.join(', ')}。`
-            : `没有找到 "${query}" 相关结果。`) + upgradeNote,
+          suggestion: papers.length === 0
+            ? '知识库未加载。请确认 papers.json 在插件目录中。'
+            : '请输入搜索关键词。',
           indexHint: '',
-        })
+        }
       }
 
-      return sanitize({
-        ok: true, query, totalResults: results.length,
-        results: results.map(r => ({
-          id: String(r.id ?? r.metadata?.id ?? ''),
-          title: String(r.title ?? r.metadata?.title ?? ''),
-          authors: String(r.metadata?.authors ?? ''),
-          journal: String(r.metadata?.journal ?? ''),
-          year: Number.isFinite(r.metadata?.year) ? r.metadata.year : null,
-          keywords: Array.isArray(r.metadata?.keywords) ? r.metadata.keywords : [],
-          level: Array.isArray(r.metadata?.level) ? r.metadata.level : [],
-          topic: String(r.metadata?.topic ?? ''),
-          relevance: Number.isFinite(r.score) ? r.score : 0,
-          score: Number.isFinite(r.score) ? r.score : 0,
-          source: String(r.source ?? 'unknown'),
-          text: String(r.text ?? ''),
-          vectorScore: Number.isFinite(r.vectorScore) ? r.vectorScore : null,
-          keywordScore: Number.isFinite(r.keywordScore) ? r.keywordScore : null,
-        })),
+      // ── 分词 + 中→英映射 ────────────────────────────────
+      const tokens = tokenize(query)
+
+      // ── 打分 + 过滤 ──────────────────────────────────────
+      const scored = papers
+        .filter(p => {
+          if (args.topic && p.topic !== args.topic) return false
+          if (args.level && !(p.level ?? []).some(l => l === args.level)) return false
+          return true
+        })
+        .map(p => {
+          const titleLower = (p.title ?? '').toLowerCase()
+          const kwLower = (p.keywords ?? []).join(' ').toLowerCase()
+          const textLower = (p.text ?? '').toLowerCase()
+          let score = 0
+          for (const t of tokens) {
+            const tl = t.toLowerCase()
+            if (titleLower.includes(tl)) score += 0.5
+            if (kwLower.includes(tl)) score += 0.3
+            if (textLower.includes(tl)) score += 0.1
+          }
+          return {
+            id: String(p.id ?? ''),
+            title: String(p.title ?? ''),
+            authors: String(p.authors ?? ''),
+            journal: String(p.journal ?? ''),
+            year: Number.isFinite(p.year) ? p.year : null,
+            keywords: Array.isArray(p.keywords) ? p.keywords : [],
+            level: Array.isArray(p.level) ? p.level : [],
+            topic: String(p.topic ?? ''),
+            relevance: score,
+            score,
+          }
+        })
+        .filter(r => r.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, maxResults)
+
+      if (scored.length === 0) {
+        return {
+          ok: true, query, totalResults: 0, results: [],
+          suggestion: `没有找到 "${query}" 相关结果。试试英文关键词或短词搜索。`,
+          indexHint: '',
+        }
+      }
+
+      return {
+        ok: true, query, totalResults: scored.length, results: scored,
         suggestion: '', indexHint: '',
-      })
+      }
     },
   })
 }
 
-function suggestQueries(kb, query) {
-  const q = query.toLowerCase()
-  const allKeywords = new Set()
-  for (const paper of kb.papers ?? []) {
-    for (const kw of paper.keywords ?? []) allKeywords.add(kw.toLowerCase())
-  }
-  return [...allKeywords].filter(kw => kw.includes(q) || q.includes(kw)).slice(0, 5)
-}
+// ── 分词 + 中→英映射 ──────────────────────────────────────
 
-/**
- * 强制 JSON 序列化 → 反序列化，消除所有 undefined / non-finite 值。
- * DSH 要求返回值必须是 "lossless JSON"。
- */
-function sanitize(obj) {
-  return JSON.parse(JSON.stringify(obj))
+function tokenize(text) {
+  if (!text) return []
+  const tokens = []
+  const textLower = text.toLowerCase()
+
+  // 英文词
+  const enWords = textLower.match(/[a-z]{2,}/g) || []
+  for (const w of enWords) tokens.push(w)
+
+  // 中文词 → 英文映射
+  for (const [cn, en] of Object.entries(CN_EN_MAP)) {
+    if (textLower.includes(cn)) {
+      for (const ew of en.split(/\s+/)) tokens.push(ew)
+    }
+  }
+
+  // 中文单字/双字组合也保留
+  const cnChars = textLower.match(/[\u4e00-\u9fff]+/g) || []
+  for (const cn of cnChars) {
+    tokens.push(cn)
+    for (let i = 0; i < cn.length - 1; i++) {
+      tokens.push(cn.slice(i, i + 2))
+    }
+  }
+
+  return [...new Set(tokens.filter(t => t.length >= 2))]
 }
