@@ -11,6 +11,14 @@
 TH-MSM 是一个面向 DeepSeek Harness 的智能 Markov State Model (MSM) 科研助手插件。
 它能从分子动力学轨迹中自动提取长时尺度动力学信息，打通从"教学"到"出报告"的完整科研流程。
 
+### v1.1 亮点
+
+| 特性 | 说明 |
+|------|------|
+| 🔍 **语义搜索** | 35 篇论文预构建向量，自然语言查询直接语义匹配，无需关键词 |
+| 🧠 **deeptime 主力** | MSM 流水线全面采用 [deeptime](https://deeptime-ml.github.io)，scikit-learn 兼容 |
+| 📦 **即装即用** | 下载 tgz → 上传 DSH → 立即可用，零配置 |
+
 ### 工作流程
 
 ```
@@ -147,12 +155,12 @@ Agent 自动检测 → 规划模式 → 调用 th_msm_plan
     用 tICA 降维，K-Means 100 个聚类，lag time 自动确定
 
 Agent 自动检测 → 建模模式 → 调用 th_msm_build
-→ Step 1 环境检查：Python + PyEMMA 就绪
+→ Step 1 环境检查：Python + deeptime 就绪
 → Step 2 预处理：加载轨迹和拓扑
 → Step 3 特征提取：二面角 + 距离
-→ Step 4 tICA 降维：保留 95% 动力学方差
+→ Step 4 TICA 降维：保留 95% 动力学方差
 → Step 5 K-Means 聚类：100 个微态
-→ Step 6 MSM 估计：最大似然
+→ Step 6 MSM 估计：deeptime MaximumLikelihoodMSM
 → 模型保存到 output/models/msm_model.pkl
 → 提示下一步：运行 th_msm_validate 验证
 ```
@@ -326,13 +334,75 @@ MIT
 
 ---
 
+## 提示词示例
+
+> 以下是经过验证的参考问法，Agent 会自动识别意图并路由到正确工具。
+
+### 教学模式
+
+```
+"用研究生水平解释什么是隐含时间尺度（implied timescale）"
+"PCCA+ 是什么？给我一个本科级别的解释"
+"MSM 的 Chapman-Kolmogorov 检验原理是什么"
+"tICA 和 PCA 在 MSM 里有什么区别"
+"推荐几篇 MSM 理论的经典综述论文"
+"讲讲 Koopman 算子和 MSM 的关系"
+```
+
+### 规划模式
+
+```
+"我有一个 500 原子的蛋白轨迹，想研究折叠动力学，帮我设计 MSM 方案"
+"预测 lag time 应该怎么选，有什么依据"
+"二面角特征和距离特征哪个更适合小分子体系"
+"我要研究蛋白-配体结合过程，MSM 需要哪些特殊处理"
+"10 μs 的单条轨迹够不够构建可信的 MSM"
+```
+
+### 建模模式
+
+```
+"用 deeptime 对 data/traj.xtc 构建 MSM，拓扑是 data/system.pdb，100 个微态"
+"对刚才提取的特征跑 TICA 降维，保留 5 个成分"
+"用 BayesianMSM 替代 MaxLikelihoodMSM，lag time 设为 50 帧"
+```
+
+### 验证模式
+
+```
+"验证最新的 MSM 模型，跑全四样检验"
+"这个模型的 ITS 图有没有收敛"
+"CK 检验第 3 个宏态不通过，可能是什么原因"
+```
+
+### 报告模式
+
+```
+"生成 MSM 分析报告，标题「丙氨酸二肽的构象动力学 MSM 研究」"
+"完整报告，包含 ITS 图和 CK 检验结果"
+```
+
+### 知识库搜索
+
+```
+"搜索变分原理相关的论文"
+"找 2018 年以后发表的 deep-msm 主题论文"
+"有哪些本科生级别的 MSM 综述"
+"关于 TRAM 和增强采样的论文有哪些"
+"列出 MSM 聚类方法的相关研究"
+```
+
+---
+
 ## 未来路线
 
 ```
-v1.0 (当前) : 教学 + 规划 + 建模 + 验证 + 报告
-v1.1 (规划) : Python 运行时全集成，端到端 MSM 自动构建
-v2.0 (远期) : TH-MSM ↔ AutoREST 闭环
-              MD → MSM → 代表构象 → QM/GW-BSE → AI for Science 全自动
+v0.1.0 ✅ 安全沙箱 + 通用执行代理
+v1.0.0 ✅ 7 工具 + Agent Loop + 关键词搜索
+v1.1.0 ✅ deeptime 主力 + RAG 语义搜索 + 预构建向量
+v1.2.0 ⏳ 端到端 MSM 自动构建（deeptime 全流水线自动执行）
+v2.0.0 ⏳ TH-MSM → AutoREST 闭环
+            MD → MSM → 代表构象 → QM/GW-BSE → 全自动科研
 ```
 
 ---
