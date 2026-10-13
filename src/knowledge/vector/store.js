@@ -1,17 +1,24 @@
 /**
  * Vector Store — 纯 JSON 文件向量存储
  *
- * v1.1 简化方案：
- *   - 预构建向量文件: .th-msm/vector/papers.json（打包在 tgz 中）
- *   - 零外部依赖：无需 LanceDB、无需 transformers
- *   - 查询时纯 JS cosine 相似度，毫秒级返回
- *   - 新增论文：在用户终端运行 npm run embed 更新
+ * v1.2: 预构建向量文件优先从插件自身目录加载（tgz 内打包），
+ *       用户构建的覆盖在 .th-msm/vector/ 下。
  */
 
 import { readFileSync, existsSync } from 'node:fs'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 let _store = null
+
+/**
+ * 获取插件自身的安装目录（tgz 解压后的位置）。
+ */
+function getPluginDir() {
+  const __filename = fileURLToPath(import.meta.url)
+  // src/knowledge/vector/store.js → 往上 3 级到插件根目录
+  return path.resolve(path.dirname(__filename), '..', '..', '..')
+}
 
 /**
  * 加载向量存储（单例）
@@ -19,16 +26,17 @@ let _store = null
 export async function openStore(workspace) {
   if (_store) return _store
 
-  // Priority 1: .th-msm/vector/papers.json（用户构建的）
+  // Priority 1: .th-msm/vector/papers.json（用户自己构建的）
   const userPath = path.join(workspace, '.th-msm', 'vector', 'papers.json')
-  // Priority 2: prebuilt/vector-db.json（预打包的，作为 fallback）
-  const prebuiltPath = path.join(workspace, 'node_modules', '@th-msm', 'dsh-plugin', 'prebuilt', 'vector-db.json')
+  // Priority 2: 插件内置的预构建向量（tgz 自带）
+  const pluginDir = getPluginDir()
+  const builtinPath = path.join(pluginDir, 'src', 'knowledge', 'vector', 'papers.json')
 
   let dataPath = null
   if (existsSync(userPath)) {
     dataPath = userPath
-  } else if (existsSync(prebuiltPath)) {
-    dataPath = prebuiltPath
+  } else if (existsSync(builtinPath)) {
+    dataPath = builtinPath
   }
 
   if (dataPath) {
@@ -37,7 +45,7 @@ export async function openStore(workspace) {
       const db = JSON.parse(raw)
       _store = new StaticVectorStore(db)
       return _store
-    } catch {
+    } catch (e) {
       // 文件损坏，降级到空存储
     }
   }
