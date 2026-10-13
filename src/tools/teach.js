@@ -201,26 +201,69 @@ const BUILTIN_CONCEPTS = {
 function getBuiltinExplanation(concept, level) {
   // 多级模糊匹配: ① 精确包含 ② 单词匹配 ③ 中文别名
   const conceptLower = concept.toLowerCase()
-  const conceptWords = conceptLower.split(/\s+/).filter(w => w.length > 2)
-  
-  for (const [key, value] of Object.entries(BUILTIN_CONCEPTS)) {
-    // ① 精确包含
-    if (conceptLower.includes(key) || key.includes(conceptLower)) {
-      // 根据 level 调整内容深度标记
-      const levelTag = {
-        undergraduate: ' [本科级: 侧重直观理解]',
-        graduate: ' [研究生级: 含数学定义]',
-        expert: ' [专家级: 含变分原理和前沿引用]',
+  const conceptWords = conceptLower.split(/[\s\(\)]+/).filter(w => w.length > 1)
+
+  // 中文别名映射
+  const CHINESE_ALIAS = {
+    'msm': ['markov state model','马尔可夫状态模型','msm模型','马尔科夫','markov模型'],
+    'markov': ['markov state model','马尔可夫','马尔科夫'],
+    'tica': ['tica','时间滞后独立成分分析','时间结构独立成分分析'],
+    'pca': ['pca','主成分分析'],
+    'vamp': ['vamp','变分方法','variational approach'],
+    'transfer operator': ['transfer operator','转移算子','koopman','koopman算子'],
+    'implied timescale': ['implied timescale','its','隐含时间尺度','implied timescales'],
+    'lag time': ['lag time','滞后时间','lagtime'],
+    'pcca': ['pcca','perron cluster','谱聚类','宏态'],
+    'chapman kolmogorov': ['chapman kolmogorov','ck检验','ck test','ck-test'],
+    'transition path theory': ['transition path theory','tpt','过渡路径','反应路径'],
+    'markov state model': ['markov state model','msm','马尔可夫状态模型','马尔科夫状态模型','msm模型'],
+  }
+
+  // 先尝试通过中文别名找对应的英文 key
+  const candidates = new Set()
+  for (const [enKey, aliases] of Object.entries(CHINESE_ALIAS)) {
+    for (const alias of aliases) {
+      if (conceptLower.includes(alias.toLowerCase()) || alias.toLowerCase().includes(conceptLower)) {
+        candidates.add(enKey)
       }
+    }
+    // 单词级别匹配
+    for (const w of conceptWords) {
+      if (aliases.some(a => a.toLowerCase().includes(w) || w.includes(a.toLowerCase()))) {
+        candidates.add(enKey)
+      }
+    }
+  }
+
+  // 用找到的英文 key 去查 BUILTIN_CONCEPTS
+  for (const enKey of candidates) {
+    if (BUILTIN_CONCEPTS[enKey]) {
+      const value = BUILTIN_CONCEPTS[enKey]
       return {
         intuition: value.intuition,
         mathematics: value.mathematics,
-        application: value.application + (levelTag[level] ?? ''),
+        application: value.application,
         references: [
-          '使用 th_msm_knowledge 搜索 "' + concept + '" 获取更多论文。',
+          '使用 th_msm_knowledge 搜索 "' + enKey + '" 获取更多论文。',
         ],
       }
     }
   }
+
+  // 直接查 BUILTIN_CONCEPTS 的 key
+  for (const [key, value] of Object.entries(BUILTIN_CONCEPTS)) {
+    if (conceptLower.includes(key) || key.includes(conceptLower)) {
+      return {
+        intuition: value.intuition,
+        mathematics: value.mathematics,
+        application: value.application,
+        references: [
+          '使用 th_msm_knowledge 搜索 "' + key + '" 获取更多论文。',
+        ],
+      }
+    }
+  }
+
   return null
+return null
 }

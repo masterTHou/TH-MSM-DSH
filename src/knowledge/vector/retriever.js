@@ -72,7 +72,7 @@ class HybridRetriever {
         const store = await this._ensureStore()
         const queryVec = await embed(query)
         const vecResults = await store.search(queryVec, {
-          limit: topK * 2,  // Over-fetch for fusion
+          limit: topK * 2,
           minScore: 0.2,
           filterSource,
           filterTopic,
@@ -85,35 +85,29 @@ class HybridRetriever {
           })
         }
       } catch (error) {
-        // Vector search unavailable — fall through to keyword only
+        // embedding 失败 → 直接用文本搜索
       }
     }
 
-    // ── Keyword search ─────────────────────────────────────────
+    // ── 文本搜索（始终启用，embedding 失败时作为主力） ────
     if (useKeyword) {
-      // Need a papers array — use the metadata from vector store results
-      // or fall back to empty if vector store is not available.
-      // For now: use the legacy keyword searcher which requires a kb object.
-      // In production the retriever should cache a local papers index.
-      const kwResults = searchKnowledge(
-        { papers: vectorResults.map(r => r.metadata).filter(Boolean) },
-        {
-          query,
-          topic: filterTopic,
-          level: filterLevel,
-          maxResults: topK * 2,
-        }
-      )
-      for (const r of kwResults) {
-        if (!r.relevance) r.relevance = 0.5
-        keywordResults.push({
-          id: r.id,
-          text: `${r.title} ${r.keywords?.join(' ') ?? ''}`,
-          score: r.relevance,
-          metadata: r,
-          _source: 'keyword',
-          _keywordScore: r.relevance,
+      try {
+        const store = await this._ensureStore()
+        const textResults = await store.searchByText(query, {
+          limit: topK * 2,
+          filterSource,
+          filterTopic,
+          filterLevel,
         })
+        for (const r of textResults) {
+          keywordResults.push({
+            ...r,
+            _source: 'text',
+            _keywordScore: r.score,
+          })
+        }
+      } catch (error) {
+        // 文本搜索也不可用
       }
     }
 
