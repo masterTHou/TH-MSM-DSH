@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "th-msm",
   "name": "TH-MSM",
-  "version": "1.1.0",
-  "description": "Thermodynamic and Kinetic Markov State Model Intelligence Agent — DSH Plugin",
+  "version": "1.2.0",
+  "description": "Thermodynamic and Kinetic Markov State Model Intelligence Agent �� DSH Plugin",
   "host": {
     "kind": "deepseek-harness",
     "apiTrain": "0.2.x"
@@ -24,7 +24,6 @@
     "shellExecution": true,
     "workspaceRegistry": true,
     "knowledgeBase": true,
-    "ragSearch": true,
     "requiresSandboxByDefault": true
   },
   "msm": {
@@ -46,13 +45,13 @@
       { "name": "teaching", "trigger": ["解释", "什么是", "概念", "学习", "入门"], "tools": ["th_msm_knowledge", "th_msm_teach"] },
       { "name": "planning", "trigger": ["设计", "方案", "protocol", "轨迹"], "tools": ["th_msm_plan", "th_msm_knowledge"] },
       { "name": "modeling", "trigger": ["构建", "运行", "执行", "build"], "tools": ["th_msm_build", "th_msm"] },
-      { "name": "validation", "trigger": ["验证", "检查", "ITS", "CK"], "tools": ["th_msm_validate"] },
+      { "name": "validation", "trigger": ["验证", "检�?, "ITS", "CK"], "tools": ["th_msm_validate"] },
       { "name": "reporting", "trigger": ["报告", "总结", "生成"], "tools": ["th_msm_report"] }
     ],
     "principles": [
-      "不盲目生成模型 — 每一步都需要理由",
-      "目标不适合 MSM 时明确告知",
-      "不隐藏模型不确定性",
+      "不盲目生成模�?�?每一步都需要理�?,
+      "目标不适合 MSM 时明确告�?,
+      "不隐藏模型不确定�?,
       "一切分析可复现"
     ]
   }
