@@ -2,24 +2,17 @@
     - id: th-msm
       name: '@th-msm/dsh-plugin'
       config:
-        # ── Registry ──
         registryFile: '.th-msm/registry.json'
         toolName: 'th_msm'
         exposeMsmAlias: false
-
-        # ── Sandbox ──
         requireSandbox: true
         allowDangerFullAccess: false
-
-        # ── Limits ──
         defaultTimeoutMs: 30000
         maxTimeoutMs: 120000
         maxArgs: 64
         maxRegistryEntries: 256
         maxOutputChars: 16000
         maxCallsPerTurn: 32
-
-        # ── Knowledge Base ──
         knowledgeBasePath: 'knowledge'
         knowledgeCatalogs:
           - 'reviews/CATALOG.md'
@@ -27,13 +20,9 @@
           - 'benchmarks/CATALOG.md'
         learningRoadmapFile: 'knowledge/LEARNING_ROADMAP.md'
         maxKnowledgeResults: 10
-
-        # ── Agent Loop ──
         agentLoopEnabled: true
         intentConfidenceThreshold: 0.6
         requirePlanConfirmation: true
-
-        # ── Python Runtime ──
         pythonEnabled: true
         pythonPath: 'python'
         msmPackages:

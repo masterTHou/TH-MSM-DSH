@@ -185,11 +185,42 @@ Agent 自动检测 → 报告模式 → 调用 th_msm_report
 
 ---
 
+## 安装指南
+
+### 方式 A：从 GitHub Release 安装（推荐）
+
+> 适用于 DSH 插件管理面板一键安装
+
+1. 打开 [Releases 页面](https://github.com/masterTHou/TH-MSM-DSH/releases)
+2. 下载最新 `th-msm-dsh-plugin-x.y.z.tgz`
+3. 在 DSH 的「插件管理」中上传 `.tgz` 文件
+4. 插件自动注册到 DSH，无需手动编辑配置
+
+DSH 会读取 `plugin.json` 和 `cordis.patch.yml` 完成注册，**即装即用**。
+
+### 方式 B：从 npm 安装
+
+```bash
+npm install @th-msm/dsh-plugin
+```
+
+### 方式 C：从源码安装
+
+```bash
+git clone https://github.com/masterTHou/TH-MSM-DSH.git
+cd TH-MSM-DSH
+npm install
+npm pack --pack-destination ./dist
+# 然后在 DSH 中安装 dist/th-msm-dsh-plugin-x.y.z.tgz
+```
+
+---
+
 ## 3 分钟上手
 
-### 第 1 步：安装为 DSH 插件
+### 第 1 步：安装插件
 
-在 DSH 配置中加入：
+如果你用 Release 的 `.tgz`，在 DSH 插件管理面板上传即可。如果是手动配置，在 DSH 的配置中加入：
 
 ```yaml
 # cordis.patch.yml
@@ -202,7 +233,9 @@ Agent 自动检测 → 报告模式 → 调用 th_msm_report
         pythonEnabled: true
 ```
 
-### 第 2 步：创建工作区 registry
+插件会自动注册 7 个工具和 Agent Loop，无需额外配置。
+
+### 第 2 步：配置工作区
 
 在 workspace 下创建 `.th-msm/registry.json`：
 

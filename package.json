@@ -33,6 +33,7 @@
     "test": "node --test test/*.test.mjs",
     "check": "node --check src/index.js && node --check src/registry/loader.js && node --check src/runtime/executor.js && node --check src/runtime/python.js && node --check src/tools/msm.js && node --check src/tools/knowledge.js && node --check src/tools/teach.js && node --check src/tools/plan.js && node --check src/tools/build.js && node --check src/tools/validate.js && node --check src/tools/report.js && node --check src/agent/hooks.js && node --check src/agent/loop.js && node --check src/knowledge/loader.js && node --check src/knowledge/searcher.js && node --check src/knowledge/context.js && node --check src/knowledge/catalog.js && node --check src/util/text.js",
     "lint": "node --check src/index.js",
+    "prepack": "npm run check",
     "prepublishOnly": "npm run check && npm test"
   }
 }

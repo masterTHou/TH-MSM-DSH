@@ -17,6 +17,8 @@ coverage/
 
 # Output
 output/
+dist/
+*.tgz
 *.pkl
 *.h5
 *.npy
