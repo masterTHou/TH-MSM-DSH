@@ -1,8 +1,8 @@
-# TH-MSM DSH 插件 v1.0
+# TH-MSM DSH 插件 v1.1
 
 > **热力学与动力学马尔可夫状态模型智能体**
 > Thermodynamic and Kinetic Markov State Model Intelligence Agent
-> DeepSeek Harness 插件
+> DeepSeek Harness 插件 | deeptime 为主力 Python 库 | 向量语义搜索 (RAG)
 
 ---
 
@@ -297,8 +297,8 @@ npm pack --pack-destination ./dist
 | DSH 主机 | `@deepseek-ai/cordis` | ≥ 4 < 5 |
 | DSH 主机 | `@deepseek-ai/dsh-tools` | ≥ 0.2.0-rc.2 < 0.3 |
 | DSH 主机 | `@deepseek-ai/schemastery` | ≥ 3.18 < 4 |
-| 可选 | Python + PyEMMA | 用于实际 MSM 计算 |
-| 可选 | Python + deeptime | 替代 MSM 库 |
+| 可选 | Python + deeptime | 主力 MSM 库 (推荐) |
+| 可选 | Python + PyEMMA | 备选 MSM 库 |
 
 ---
 

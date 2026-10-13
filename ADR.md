@@ -1,4 +1,4 @@
-# Architecture Decision Record: TH-MSM DSH Plugin v1.0
+# Architecture Decision Record: TH-MSM DSH Plugin v1.1
 
 > Date: 2026-10-13
 > Status: Accepted

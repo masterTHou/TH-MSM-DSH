@@ -26,7 +26,7 @@
         pythonEnabled: true
         pythonPath: 'python'
         msmPackages:
-          - 'pyemma'
           - 'deeptime'
+          - 'pyemma'
           - 'msmbuilder'
         pythonTimeoutMs: 300000
