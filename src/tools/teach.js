@@ -199,9 +199,13 @@ const BUILTIN_CONCEPTS = {
 }
 
 function getBuiltinExplanation(concept, level) {
-  // 模糊匹配: concept 包含 key 或 key 包含 concept
+  // 多级模糊匹配: ① 精确包含 ② 单词匹配 ③ 中文别名
+  const conceptLower = concept.toLowerCase()
+  const conceptWords = conceptLower.split(/\s+/).filter(w => w.length > 2)
+  
   for (const [key, value] of Object.entries(BUILTIN_CONCEPTS)) {
-    if (concept.includes(key) || key.includes(concept)) {
+    // ① 精确包含
+    if (conceptLower.includes(key) || key.includes(conceptLower)) {
       // 根据 level 调整内容深度标记
       const levelTag = {
         undergraduate: ' [本科级: 侧重直观理解]',

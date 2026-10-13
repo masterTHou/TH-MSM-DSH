@@ -35,7 +35,7 @@ export function createEnvTool(ctx, config) {
           deeptime: {
             type: 'object',
             additionalProperties: true,
-            properties: { available: { type: 'boolean' }, version: { type: 'string' } },
+            properties: { available: { type: 'boolean' }, version: { type: 'string' }, installCommand: { type: 'string' } },
           },
           system: {
             type: 'object',
