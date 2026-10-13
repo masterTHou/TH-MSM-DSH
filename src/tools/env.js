@@ -99,7 +99,7 @@ export function createEnvTool(ctx, config) {
         },
         deeptime: {
           available: false,
-          version: null,
+          version: '未安装',
           installCommand: 'pip install deeptime mdtraj scikit-learn',
         },
         system: {

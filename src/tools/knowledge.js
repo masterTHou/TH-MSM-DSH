@@ -22,7 +22,7 @@ const resultSchema = {
       type: 'array', required: true,
       items: {
         type: 'object',
-        additionalProperties: false,
+        additionalProperties: true,
         properties: {
           id: { type: 'string' },
           title: { type: 'string' },
@@ -35,6 +35,9 @@ const resultSchema = {
           relevance: { type: 'number' },
           score: { type: 'number' },
           source: { type: 'string' },
+          text: { type: 'string' },
+          vectorScore: { type: 'number' },
+          keywordScore: { type: 'number' },
         },
       },
     },
