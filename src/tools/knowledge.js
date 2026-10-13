@@ -22,6 +22,7 @@ const resultSchema = {
       type: 'array', required: true,
       items: {
         type: 'object',
+        additionalProperties: false,
         properties: {
           id: { type: 'string' },
           title: { type: 'string' },

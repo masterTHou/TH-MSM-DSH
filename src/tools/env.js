@@ -24,11 +24,24 @@ export function createEnvTool(ctx, config) {
     output: {
       schema: {
         type: 'object',
+        additionalProperties: false,
         properties: {
           ok: { type: 'boolean', required: true },
-          python: { type: 'object' },
-          deeptime: { type: 'object' },
-          system: { type: 'object' },
+          python: {
+            type: 'object',
+            additionalProperties: true,
+            properties: { available: { type: 'boolean' }, version: { type: 'string' } },
+          },
+          deeptime: {
+            type: 'object',
+            additionalProperties: true,
+            properties: { available: { type: 'boolean' }, version: { type: 'string' } },
+          },
+          system: {
+            type: 'object',
+            additionalProperties: true,
+            properties: { platform: { type: 'string' } },
+          },
           recommendation: { type: 'string' },
         },
       },

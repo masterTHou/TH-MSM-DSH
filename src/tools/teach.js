@@ -23,6 +23,7 @@ const resultSchema = {
     level: { type: 'string', required: true },
     explanation: {
       type: 'object', required: true,
+      additionalProperties: false,
       properties: {
         intuition: { type: 'string', required: true },
         mathematics: { type: 'string', required: true },
