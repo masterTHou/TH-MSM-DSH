@@ -1,7 +1,7 @@
 # TH-MSM DSH 插件 v1.1
 
 > **热力学与动力学马尔可夫状态模型智能体**
-> Thermodynamic and Kinetic Markov State Model Intelligence Agent
+> Transition Handler for Markov State Model Intelligence Agent
 > DeepSeek Harness 插件 | deeptime 为主力 Python 库 | 向量语义搜索 (RAG)
 
 ---
