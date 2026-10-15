@@ -1,9 +1,9 @@
 /**
- * TH-MSM DSH Plugin v1.2
+ * TH-MSM DSH Plugin v1.3
  *
  * Thermodynamic and Kinetic Markov State Model Intelligence Agent.
  *
- * v1.2: 交互式科研向导 · deeptime 真实执行 · 环境自动检测
+ * v1.3: FC analytical FSSH+EDC, WE and C1 event analysis.
  *
  * Registers:
  *  - 8 tools: th_msm (proxy), th_msm_env, th_msm_knowledge, th_msm_teach,
@@ -27,6 +27,7 @@ import { createPlanTool } from './tools/plan.js'
 import { createBuildTool } from './tools/build.js'
 import { createValidateTool } from './tools/validate.js'
 import { createReportTool } from './tools/report.js'
+import { createSampleTool } from './tools/sample.js'
 
 import { installAgentHooks } from './agent/hooks.js'
 import { installAgentLoop } from './agent/loop.js'
@@ -155,6 +156,8 @@ export function apply(ctx, rawConfig = {}) {
   // 2-8. Domain tools
   ctx.tools.register(createEnvTool(ctx, config))
   toolNames.add('th_msm_env')
+  ctx.tools.register(createSampleTool(ctx, config))
+  toolNames.add('th_msm_sample')
 
   ctx.tools.register(createKnowledgeTool(ctx, config))
   toolNames.add('th_msm_knowledge')

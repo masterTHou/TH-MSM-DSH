@@ -1,0 +1,430 @@
+{
+  "version": "1.3.0",
+  "full": true,
+  "frozen_parameters": {
+    "model": "dual-ci",
+    "fc": {
+      "center": [
+        -2,
+        0
+      ],
+      "omega": 0.001
+    },
+    "dt": 0.5,
+    "steps": 1100,
+    "targetPerBin": 4,
+    "rareTargetPerBin": 8,
+    "resampleEvery": 50
+  },
+  "reference": {
+    "rareHits": 373,
+    "mainHits": 4373,
+    "cost": 49898990,
+    "survivingWeight": 0.5254000000000005,
+    "worstEnergyDrift": 0.0000458282668503035,
+    "n": 10000,
+    "probability": 0.0373,
+    "interval_95": [
+      0.03376008880295818,
+      0.041195263289265927
+    ],
+    "standard_error": 0.001894959366318972,
+    "description": "Finite direct-FSSH+EDC reference estimate; not exact quantum ground truth"
+  },
+  "methods": {
+    "direct": {
+      "independent_runs": 20,
+      "mean": 0.0328125,
+      "standard_error_of_mean": 0.0046600070942457855,
+      "variance": 0.000434313322368421,
+      "relative_variance": 0.40338942594581684,
+      "rmse_against_finite_reference": 0.020802291039690793,
+      "reference_standard_error": 0.001894959366318972,
+      "mean_model_evaluations": 319314.25,
+      "total_model_evaluations": 6386285,
+      "cost_times_variance": 138.68243279708057,
+      "sampling_status": "estimated",
+      "bootstrap_95": {
+        "time_fs": 13.30386379622135,
+        "mean": 0.0328125,
+        "lower": 0.0234375,
+        "upper": 0.04296875
+      },
+      "reference_agreement_z": 0.8920477473385438,
+      "agreement_verdict": "NO_DISAGREEMENT_DETECTED_AT_3SE"
+    },
+    "we": {
+      "independent_runs": 20,
+      "mean": 0.03828125,
+      "standard_error_of_mean": 0.006221102112581707,
+      "variance": 0.0007740422299033717,
+      "relative_variance": 0.5281927486354369,
+      "rmse_against_finite_reference": 0.027134903168625883,
+      "reference_standard_error": 0.001894959366318972,
+      "mean_model_evaluations": 246938,
+      "total_model_evaluations": 4938760,
+      "cost_times_variance": 191.1404401678788,
+      "sampling_status": "estimated",
+      "bootstrap_95": {
+        "time_fs": 13.30386379622135,
+        "mean": 0.03828125,
+        "lower": 0.02705078125,
+        "upper": 0.050927734375
+      },
+      "reference_agreement_z": 0.15088480761075046,
+      "agreement_verdict": "NO_DISAGREEMENT_DETECTED_AT_3SE"
+    },
+    "ci-we": {
+      "independent_runs": 20,
+      "mean": 0.02857666015625,
+      "standard_error_of_mean": 0.00541299709482345,
+      "variance": 0.0005860107509713424,
+      "relative_variance": 0.717600352782525,
+      "rmse_against_finite_reference": 0.02515565287271097,
+      "reference_standard_error": 0.001894959366318972,
+      "mean_model_evaluations": 320760,
+      "total_model_evaluations": 6415200,
+      "cost_times_variance": 187.96880848156778,
+      "sampling_status": "estimated",
+      "bootstrap_95": {
+        "time_fs": 13.30386379622135,
+        "mean": 0.02857666015625,
+        "lower": 0.018798828125,
+        "upper": 0.03818359375
+      },
+      "reference_agreement_z": 1.52104322477998,
+      "agreement_verdict": "NO_DISAGREEMENT_DETECTED_AT_3SE"
+    }
+  },
+  "estimates": {
+    "direct": [
+      {
+        "probability": 0.03125,
+        "cost": 305959,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.03125,
+        "cost": 320734,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.078125,
+        "cost": 316354,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.015625,
+        "cost": 322289,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.015625,
+        "cost": 311664,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.015625,
+        "cost": 327099,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.015625,
+        "cost": 316849,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.03125,
+        "cost": 312834,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.015625,
+        "cost": 330774,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.03125,
+        "cost": 325139,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0,
+        "cost": 326964,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.046875,
+        "cost": 314314,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.0625,
+        "cost": 322709,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.046875,
+        "cost": 323169,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.03125,
+        "cost": 321229,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.046875,
+        "cost": 318584,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.03125,
+        "cost": 321079,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.046875,
+        "cost": 322169,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.0625,
+        "cost": 311269,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0,
+        "cost": 315104,
+        "total_es_calls": 0
+      }
+    ],
+    "we": [
+      {
+        "probability": 0.01953125,
+        "cost": 246344,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.04296875,
+        "cost": 283639,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.0146484375,
+        "cost": 258999,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.080078125,
+        "cost": 233159,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.03125,
+        "cost": 222559,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.078125,
+        "cost": 188819,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.046875,
+        "cost": 262574,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.0703125,
+        "cost": 238719,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.03125,
+        "cost": 267944,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.1064453125,
+        "cost": 247424,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.03125,
+        "cost": 235424,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.015625,
+        "cost": 280579,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.0546875,
+        "cost": 241404,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0,
+        "cost": 257094,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.025390625,
+        "cost": 269264,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.046875,
+        "cost": 261489,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.005859375,
+        "cost": 229104,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.01953125,
+        "cost": 237954,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.013671875,
+        "cost": 229889,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.03125,
+        "cost": 246379,
+        "total_es_calls": 0
+      }
+    ],
+    "ci-we": [
+      {
+        "probability": 0.015625,
+        "cost": 320179,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.05126953125,
+        "cost": 336879,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.018310546875,
+        "cost": 337249,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.0166015625,
+        "cost": 309024,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.0068359375,
+        "cost": 287744,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0,
+        "cost": 257454,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.01171875,
+        "cost": 355819,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0,
+        "cost": 342894,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.078125,
+        "cost": 314024,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.075439453125,
+        "cost": 308934,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.0263671875,
+        "cost": 318219,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.03515625,
+        "cost": 383344,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.04296875,
+        "cost": 301444,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.0234375,
+        "cost": 338539,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.025146484375,
+        "cost": 393244,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.03173828125,
+        "cost": 333899,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.01025390625,
+        "cost": 285459,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.07421875,
+        "cost": 311659,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.0107421875,
+        "cost": 274229,
+        "total_es_calls": 0
+      },
+      {
+        "probability": 0.017578125,
+        "cost": 304964,
+        "total_es_calls": 0
+      }
+    ]
+  },
+  "efficiency": {
+    "we": {
+      "verdict": "NO_EFFICIENCY_ADVANTAGE",
+      "cost_normalized_variance_ratio": 1.3782599303514853,
+      "speedup": null,
+      "limitation": "Measured analytical costs differ. This is a pilot efficiency diagnostic, not an equal-ES-budget acceleration claim."
+    },
+    "ci-we": {
+      "verdict": "NO_EFFICIENCY_ADVANTAGE",
+      "cost_normalized_variance_ratio": 1.35539018670521,
+      "speedup": null,
+      "limitation": "Measured analytical costs differ. This is a pilot efficiency diagnostic, not an equal-ES-budget acceleration claim."
+    }
+  },
+  "total_es_calls": 0,
+  "elapsed_seconds": 198.02098500000002,
+  "limitations": [
+    "Analytical evaluations are measured, ES calls are zero. No ES cost saving is claimed.",
+    "This pilot compares measured cost-normalized variance; strict equal-budget stopping is not implemented.",
+    "Absorbing boundaries label toy-model products; molecular dissociation is not established.",
+    "Finite reference, numerical discretization, FSSH and EDC carry uncertainties. Agreement cannot prove unbiasedness.",
+    "C2/ITS/CK and external ES interfaces remain unsupported."
+  ]
+}

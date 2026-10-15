@@ -14,15 +14,14 @@ import { embed, dispose } from './embedder.js'
 import { openStore } from './store.js'
 import { searchKnowledge } from '../searcher.js'
 
-let _retriever = null
+const retrievers = new Map()
 
 /**
  * Get (or create) the hybrid retriever singleton.
  */
 export async function getRetriever(workspace) {
-  if (_retriever) return _retriever
-  _retriever = new HybridRetriever(workspace)
-  return _retriever
+  if (!retrievers.has(workspace)) retrievers.set(workspace, new HybridRetriever(workspace))
+  return retrievers.get(workspace)
 }
 
 class HybridRetriever {
@@ -156,7 +155,7 @@ class HybridRetriever {
    */
   async dispose() {
     await dispose()
-    _retriever = null
+    retrievers.delete(this._workspace)
   }
 }
 

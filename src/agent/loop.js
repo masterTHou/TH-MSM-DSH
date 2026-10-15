@@ -77,7 +77,7 @@ const INTENT_PATTERNS = [
   {
     mode: 'planning',
     patterns: [
-      /plan/i, /design/i, /protocol/i, /strategy/i, /approach/i,
+      /plan/i, /design/i, /protocol/i, /strategy/i, /approach/i, /规划|设计|方案/,
       /how\s+(would|should|to)\s+(build|construct|make|do)/i,
       /trajectory/i, /system/i, /which\s+(feature|method)/i,
     ],
@@ -89,7 +89,7 @@ const INTENT_PATTERNS = [
   {
     mode: 'modeling',
     patterns: [
-      /build/i, /construct/i, /run/i, /execute/i, /compute/i,
+      /build/i, /construct/i, /run/i, /execute/i, /compute/i, /构建|运行|采样|非绝热|光解|光化学/,
       /create\s+(an?\s+)?msm/i, /train/i, /fit/i, /pipeline/i,
       /featurize/i, /cluster/i, /reduce/i,
     ],
@@ -100,7 +100,7 @@ const INTENT_PATTERNS = [
   {
     mode: 'validation',
     patterns: [
-      /validate/i, /check/i, /verify/i, /test/i, /quality/i,
+      /validate/i, /check/i, /verify/i, /test/i, /quality/i, /验证|检验|守恒/,
       /implied\s+timescale/i, /its/i, /chapman.?kolmogorov/i, /ck.?test/i,
       /convergence/i, /bootstrap/i, /stability/i,
     ],
@@ -111,7 +111,7 @@ const INTENT_PATTERNS = [
   {
     mode: 'reporting',
     patterns: [
-      /report/i, /summary/i, /document/i, /write.?up/i, /manuscript/i,
+      /report/i, /summary/i, /document/i, /write.?up/i, /manuscript/i, /报告|总结/,
       /generate/i, /output/i, /result/i,
     ],
     details: () => ({}),
@@ -133,7 +133,7 @@ function detectIntent(message, config) {
     if (matches > 0) {
       // Confidence: fraction of patterns matched × 0.7 + keyword heuristics × 0.3
       const patternConfidence = (matches / patterns.length) * 0.7
-      const keywordBonus = hasMsmKeywords(msg) ? 0.3 : 0
+    const keywordBonus = hasMsmKeywords(msg) ? 0.5 : 0
       const confidence = Math.min(patternConfidence + keywordBonus, 1.0)
 
       if (confidence > bestConfidence) {
@@ -162,7 +162,7 @@ function detectIntent(message, config) {
 }
 
 function hasMsmKeywords(msg) {
-  const keywords = /\b(msm|markov|transition\s+matrix|implied\s+timescale|tica|pcca|vamp|koopman|lag\s+time|microstate|macrostate)\b/i
+  const keywords = /\b(msm|markov|transition\s+matrix|implied\s+timescale|tica|pcca|vamp|koopman|lag\s+time|microstate|macrostate|fssh|we|c1)\b|非绝热|光解|光化学|首达|跃迁/i
   return keywords.test(msg)
 }
 
@@ -236,22 +236,24 @@ The user wants to design an MSM protocol for a ${details.systemType ?? 'molecula
 - Use th_msm_plan to generate a structured protocol.
 - Justify every choice: feature, reduction method, lag time, clustering.
 - Use th_msm_knowledge to find relevant benchmark papers.
-- Ask for user confirmation before any execution.
+- Explain the physical protocol and honor authorization already given by the user.
 Science principles: ${(config._principles ?? []).join('; ')}`
 
     case 'modeling':
       return `${base} Mode: MODELING.
 The user wants to build an MSM from trajectory data${details.dataPath ? ` at ${details.dataPath}` : ''}.
-- Use th_msm_build to orchestrate the pipeline.
-- Ensure preprocessing → featurization → reduction → clustering → estimation.
-- The generic th_msm tool dispatches to Python (PyEMMA/deeptime) via the registry.
+- Use th_msm_sample for built-in FC FSSH+EDC analytical sampling, then th_msm_build mode=c1.
+- Preserve full R/P/c/active state on WE cloning; only random streams change.
+- Report first-hit probabilities and directed hopping flux, never stationary populations as photochemical yields.
+- C2 and external electronic-structure propagation are unsupported; do not claim a completed MSM.
 - Report each pipeline step status.
 Science principles: ${(config._principles ?? []).join('; ')}`
 
     case 'validation':
       return `${base} Mode: VALIDATION.
 The user wants to validate an MSM model${details.modelPath ? ` at ${details.modelPath}` : ''}.
-- Use th_msm_validate to run ITS, CK test, population analysis, stability analysis.
+- Use th_msm_validate on the actual run JSON for mass, energy, electronic norm and EDC checks.
+- ITS/CK are explicitly not run in the C1 release. Bootstrap requires independent complete runs.
 - A successful program run does NOT mean a valid model.
 - Report uncertainties honestly. Distinguish numerical correctness from scientific credibility.
 Science principles: ${(config._principles ?? []).join('; ')}`
@@ -260,7 +262,7 @@ Science principles: ${(config._principles ?? []).join('; ')}`
       return `${base} Mode: REPORTING.
 The user wants to generate a scientific report.
 - Use th_msm_report to produce a complete Markdown report.
-- Include all 9 standard sections.
+- Read an actual run JSON and save a report with measured first-hit results, cost and limitations.
 - Use th_msm_knowledge for literature context.
 Science principles: ${(config._principles ?? []).join('; ')}`
 

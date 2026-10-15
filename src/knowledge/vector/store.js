@@ -8,8 +8,9 @@
 import { readFileSync, existsSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { writeWorkspaceText } from '../../io/workspace.js'
 
-let _store = null
+const stores = new Map()
 
 /**
  * 获取插件自身的安装目录（tgz 解压后的位置）。
@@ -24,7 +25,8 @@ function getPluginDir() {
  * 加载向量存储（单例）
  */
 export async function openStore(workspace) {
-  if (_store) return _store
+  const key = path.resolve(workspace)
+  if (stores.has(key)) return stores.get(key)
 
   // Priority 1: .th-msm/vector/papers.json（用户自己构建的）
   const userPath = path.join(workspace, '.th-msm', 'vector', 'papers.json')
@@ -43,19 +45,22 @@ export async function openStore(workspace) {
     try {
       const raw = readFileSync(dataPath, 'utf8')
       const db = JSON.parse(raw)
-      _store = new StaticVectorStore(db)
-      return _store
+      const store = new StaticVectorStore(db, workspace)
+      stores.set(key, store)
+      return store
     } catch (e) {
       // 文件损坏，降级到空存储
     }
   }
 
-  _store = new StaticVectorStore({ chunks: [] })
-  return _store
+  const store = new StaticVectorStore({ chunks: [] }, workspace)
+  stores.set(key, store)
+  return store
 }
 
 class StaticVectorStore {
-  constructor(db) {
+  constructor(db, workspace) {
+    this.workspace = workspace
     this._chunks = db.chunks ?? []
     this._model = db.model ?? 'unknown'
     this._dimension = db.dimension ?? 0
@@ -65,8 +70,34 @@ class StaticVectorStore {
   async count() {
     return this._chunks.length
   }
+  async persist() {
+    await writeWorkspaceText(this.workspace, '.th-msm/vector/papers.json', JSON.stringify({ model: this._model, dimension: this._dimension, chunks: this._chunks }))
+  }
+  async clear() { this._chunks = []; this._model = 'unknown'; this._dimension = 0; await this.persist() }
+  async upsert(rows) {
+    const saved = { chunks: this._chunks, dimension: this._dimension, model: this._model }
+    this._chunks = structuredClone(this._chunks)
+    try {
+    for (const row of rows) {
+      const vector = Array.from(row.vector)
+      if (!vector.length || vector.some(x => !Number.isFinite(x))) throw new Error('invalid vector')
+      if (this._dimension && this._dimension !== vector.length) throw new Error('embedding dimension mismatch; rebuild with one model')
+      this._dimension = vector.length; this._model = row.model ?? 'Xenova/all-MiniLM-L6-v2'
+      const item = { ...JSON.parse(row.metadata), id: row.id, text: row.text, vector }, i = this._chunks.findIndex(x => x.id === row.id)
+      if (i >= 0) this._chunks[i] = item; else this._chunks.push(item)
+    }
+    await this.persist()
+    } catch (e) { this._chunks = saved.chunks; this._dimension = saved.dimension; this._model = saved.model; throw e }
+  }
+  async replace(rows) {
+    const saved = { chunks: this._chunks, dimension: this._dimension, model: this._model }
+    this._chunks = []; this._dimension = 0; this._model = 'unknown'
+    try { await this.upsert(rows) }
+    catch (e) { this._chunks = saved.chunks; this._dimension = saved.dimension; this._model = saved.model; throw e }
+  }
 
   async search(queryVector, opts = {}) {
+    if (queryVector.length !== this._dimension) throw new Error('embedding dimension mismatch; use keyword retrieval or rebuild with matching model')
     const { limit = 10, minScore = 0.3, filterSource, filterTopic } = opts
 
     const candidates = this._chunks.filter(c => {
@@ -271,5 +302,5 @@ const CN_EN_MAP = {
 }
 
 export async function closeStore() {
-  _store = null
+  stores.clear()
 }

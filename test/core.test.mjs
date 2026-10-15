@@ -62,16 +62,19 @@ test('registry path cannot escape workspace lexically', async () => {
   }
 })
 
-test('registry path cannot escape workspace through a symlink', async () => {
+test('registry path cannot escape workspace through a symlink', async (t) => {
   const workspace = await mkdtemp(path.join(os.tmpdir(), 'th-msm-work-'))
   const outside = await mkdtemp(path.join(os.tmpdir(), 'th-msm-out-'))
   try {
     await writeFile(path.join(outside, 'registry.json'), JSON.stringify(baseRegistry))
     await mkdir(path.join(workspace, '.th-msm'))
-    await symlink(
+    try { await symlink(
       path.join(outside, 'registry.json'),
       path.join(workspace, '.th-msm', 'registry.json')
-    )
+    ) } catch (e) {
+      if (process.platform === 'win32' && e.code === 'EPERM') { t.skip('Windows file symlink permission unavailable; Linux CI runs this assertion'); return }
+      throw e
+    }
     await assert.rejects(
       () => loadRegistry(workspace, '.th-msm/registry.json'),
       /outside/

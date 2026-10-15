@@ -41,15 +41,13 @@ export async function buildIndex(workspace, basePath = 'knowledge', catalogs = [
     return { indexed: 0, skipped: existingCount, errors: 0, message: `Index already exists with ${existingCount} entries. Use force=true to rebuild.` }
   }
 
-  // If force rebuild, clear first
-  if (force) {
-    await table.clear()
-  }
+  // Collect a complete replacement before modifying any existing index.
+  const pendingRows = []
 
   // Collect all papers from all catalogs
   const allPapers = []
   for (const catalogFile of catalogs) {
-    const catalogPath = path.join(workspace, catalogFile)
+    const catalogPath = path.join(workspace, basePath, catalogFile)
     try {
       const content = await readFile(catalogPath, 'utf8')
       const entries = parseCatalog(content, catalogFile)
@@ -104,7 +102,7 @@ export async function buildIndex(workspace, basePath = 'knowledge', catalogs = [
         }),
       }))
 
-      await table.upsert(rows)
+      pendingRows.push(...rows)
     } catch (error) {
       errors += batch.length
     }
@@ -116,6 +114,11 @@ export async function buildIndex(workspace, basePath = 'knowledge', catalogs = [
 
   // Release the model from memory
   await dispose()
+
+  if (errors === 0 && pendingRows.length) {
+    if (force) await table.replace(pendingRows)
+    else await table.upsert(pendingRows)
+  }
 
   const count = await table.count()
   return {

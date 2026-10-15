@@ -46,7 +46,7 @@ export async function loadKnowledgeBase(workspace, basePath, catalogs) {
   const allBenchmarks = []
 
   for (const catalogFile of catalogs) {
-    const catalogPath = path.join(workspace, catalogFile)
+    const catalogPath = path.join(kbPath, catalogFile)
     try {
       await access(catalogPath)
       const content = await readFile(catalogPath, 'utf8')

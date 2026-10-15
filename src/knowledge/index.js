@@ -18,9 +18,9 @@ const workspace = process.argv[3] ?? process.cwd()
 
 const BASE_PATH = 'knowledge'
 const CATALOGS = [
-  'knowledge/reviews/CATALOG.md',
-  'knowledge/papers/CATALOG.md',
-  'knowledge/benchmarks/CATALOG.md',
+  'reviews/CATALOG.md',
+  'papers/CATALOG.md',
+  'benchmarks/CATALOG.md',
 ]
 
 async function main() {

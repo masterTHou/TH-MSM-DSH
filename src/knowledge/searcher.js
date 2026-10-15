@@ -19,7 +19,9 @@
 export function searchKnowledge(kb, opts = {}) {
   const { query, topic, level, maxResults = 10 } = opts
 
-  const candidates = kb.papers ?? []
+  const candidates = (kb.papers ?? []).filter(p =>
+    (!topic || p.topic?.toLowerCase() === topic.toLowerCase() || p.keywords?.some(k => k.toLowerCase() === topic.toLowerCase())) &&
+    (!level || p.level?.some(l => l.toLowerCase() === level.toLowerCase())))
 
   // Score each paper
   const scored = candidates.map(paper => ({
@@ -70,6 +72,7 @@ function scorePaper(paper, query, topic, level) {
       queryScore += 0.1
     }
 
+    if (queryScore === 0) return 0
     score += 0.5 * Math.min(queryScore, 1)
   }
 

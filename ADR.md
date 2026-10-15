@@ -1,4 +1,10 @@
-# Architecture Decision Record: TH-MSM DSH Plugin v1.2
+# Architecture Decision Record: TH-MSM DSH Plugin
+
+## 2026-10-15: v1.3.0 scientific core supersedes scaffold assumptions
+
+Accepted after user confirmation. Node.js ESM scientific modules are independent of DSH tool wrappers. C1 finite-time first-hit/event-flux analysis is the default; equilibrium π and reversible MSM are not photochemical branch estimators. Standard single-CI LVC and explicitly nonlinear dual-CI models have different purposes. Full-state WE resampling changes weights/random streams, not nuclear momenta. Absorbed mass remains in the conservation ledger.
+
+The prior Python generator and success templates were not validated implementations. They are replaced by explicit unsupported status or actual analytical run processing. C2, external ES propagation, strict budget scheduling, full WE-run restart and streaming trajectory IO remain future work. See docs/SCIENCE.md and CHANGELOG.md for current capability boundaries. Historical design text below is retained as history, not a description of completed features.
 
 > Date: 2026-10-13
 > Status: Accepted

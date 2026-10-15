@@ -93,7 +93,7 @@ export function createKnowledgeTool(ctx, config) {
   return defineTool({
     name: 'th_msm_knowledge',
     description:
-      '查询 TH-MSM 知识库，支持语义搜索和关键词搜索。' +
+      '查询 TH-MSM 内置知识库，使用关键词匹配与中文关键词映射。' +
       '可按主题 (theory/dim-reduction/clustering/msm-construction/validation/enhanced-sampling/deep-msm/applications) 和水平 (undergraduate/graduate/expert) 过滤。',
     parameters: {
       query: { type: 'string', description: '搜索关键词，支持自然语言（如 "tICA 降维方法的原理"）。' },

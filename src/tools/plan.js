@@ -182,6 +182,15 @@ export function createPlanTool(ctx, config) {
 
 function recommendProtocol(systemType, researchGoal, meta) {
   const { nAtoms } = meta
+  if (researchGoal === 'reaction' || researchGoal === 'electronic-properties') {
+    return {
+      featurization: { method: 'R/P/complex amplitudes/active electronic state + gap + reaction coordinates', rationale: 'Nonadiabatic paths require the complete dynamical state; FC roots or inherited checkpoints only.', parameters: { initialization: 'FC', candidateRole: 'binning only' } },
+      dimensionalityReduction: { method: 'Explicit progress bins', rationale: 'C1 first-passage statistics do not require a Markov assumption.', parameters: {} },
+      clustering: { method: 'Electronic state / energy gap / progress bins / absorbing sinks', rationale: 'Keep state and directional absorption information.', nStates: 0 },
+      lagTime: { value: 'not applicable to C1', rationale: 'Use fixed WE resampling intervals and an explicit observation horizon.' },
+      validation: ['Weight and absorption conservation', 'Energy drift, norm and EDC checks', 'Independent-run bootstrap', 'Same-budget Direct/WE/CI-WE comparison; report negative efficiency findings'],
+    }
+  }
 
   // Featurization
   let featurization
@@ -306,8 +315,8 @@ function generateWarnings(systemType, researchGoal, meta) {
 
   if (researchGoal === 'electronic-properties') {
     warnings.push(
-      'MSM is designed for conformational dynamics, not electronic transitions. ' +
-      'Consider QM/MM or surface-hopping methods instead. TH-MSM → AutoREST integration may help.'
+      'Use FC-initiated FSSH+EDC with C1 first-hit analysis; a static CI structure is not a dynamical initial condition. ' +
+      'External electronic-structure propagation and AutoREST adapters are not connected in this release.'
     )
   }
 

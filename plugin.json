@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "th-msm",
   "name": "TH-MSM",
-  "version": "1.2.0",
-  "description": "Thermodynamic and Kinetic Markov State Model Intelligence Agent — DSH Plugin",
+  "version": "1.3.0",
+  "description": "FC nonadiabatic sampling and C1 first-hit/flux analysis — experimental analytical engine",
   "host": {
     "kind": "deepseek-harness",
     "apiTrain": "0.2.x"
@@ -18,7 +18,8 @@
       "th_msm_build",
       "th_msm_validate",
       "th_msm_report",
-      "th_msm_env"
+      "th_msm_env",
+      "th_msm_sample"
     ],
     "agentHooks": true,
     "agentLoop": true,
@@ -31,8 +32,8 @@
     "registryFile": ".th-msm/registry.json",
     "requestProtocol": "json-stdin-v1",
     "resultProtocol": "stdout-v1",
-    "primaryLibrary": "deeptime",
-    "fallbackLibrary": "pyemma",
+    "primaryLibrary": "builtin-node-fssh-edc-c1",
+    "fallbackLibrary": "none",
     "deeptimeUrl": "https://deeptime-ml.github.io"
   },
   "knowledge": {
@@ -45,7 +46,7 @@
     "modes": [
       { "name": "teaching", "trigger": ["explain","what is","concept","learn"], "tools": ["th_msm_knowledge","th_msm_teach"] },
       { "name": "planning", "trigger": ["plan","design","protocol","trajectory"], "tools": ["th_msm_plan","th_msm_knowledge"] },
-      { "name": "modeling", "trigger": ["build","construct","run","execute"], "tools": ["th_msm_build","th_msm"] },
+      { "name": "modeling", "trigger": ["build","construct","run","execute"], "tools": ["th_msm_sample","th_msm_build","th_msm"] },
       { "name": "validation", "trigger": ["validate","check","verify","its","ck-test"], "tools": ["th_msm_validate"] },
       { "name": "reporting", "trigger": ["report","summary","document"], "tools": ["th_msm_report"] }
     ],
