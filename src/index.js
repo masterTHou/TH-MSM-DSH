@@ -1,12 +1,12 @@
 /**
- * TH-MSM DSH Plugin v1.5
+ * TH-MSM DSH Plugin v1.6
  *
  * Trajectory Hub for Markov State Modeling (TH-MSM).
  *
- * v1.5: DSH entry for the shared DSH/Codex scientific core.
+ * v1.6: DSH entry for the shared DSH/Codex scientific core.
  *
  * Registers:
- *  - 12 tools: proxy, environment, guide, example, analysis, knowledge,
+ *  - 14 tools: proxy, environment, guide, example, analysis, knowledge,
  *              teaching, plan, sampling, build, validation and report
  *  - Agent hooks: per-turn accounting + policy guards
  *  - Agent loop: MSM-aware intent routing and knowledge enrichment
@@ -31,6 +31,7 @@ import { createSampleTool } from './tools/sample.js'
 import { createGuideTool } from './tools/guide.js'
 import { createExampleTool } from './tools/example.js'
 import { createAnalyzeTool } from './tools/analyze.js'
+import { createScriptTool, createRunTool } from './tools/workflow.js'
 
 import { installAgentHooks } from './agent/hooks.js'
 import { installAgentLoop } from './agent/loop.js'
@@ -142,7 +143,7 @@ export function apply(ctx, rawConfig = {}) {
     )
   }
 
-  // ── Register all 12 tools ────────────────────────────────────
+  // ── Register all 14 tools ────────────────────────────────────
 
   // 1. Generic MSM execution proxy (the security boundary)
   ctx.tools.register(createMsmTool(ctx, config, config.toolName))
@@ -167,6 +168,10 @@ export function apply(ctx, rawConfig = {}) {
   toolNames.add('th_msm_example')
   ctx.tools.register(createAnalyzeTool(ctx, config))
   toolNames.add('th_msm_analyze')
+  ctx.tools.register(createScriptTool(ctx, config))
+  toolNames.add('th_msm_script')
+  ctx.tools.register(createRunTool(ctx, config))
+  toolNames.add('th_msm_run')
 
   ctx.tools.register(createKnowledgeTool(ctx, config))
   toolNames.add('th_msm_knowledge')

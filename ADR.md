@@ -1,5 +1,9 @@
 # Architecture Decision Record: TH-MSM DSH Plugin
 
+## v1.6 native workflow execution
+
+The shared scientific core now supports a fixed, bundled Node child-process runner in DSH and Codex. Its input is a strictly validated versioned JSON configuration, not model-generated code or an arbitrary command. File operations stay within the explicit project root, outputs use atomically claimed fresh directories, and execution is bounded/cancellable. This application-level boundary is not an OS sandbox. DSH's registry-owned shell-command proxy remains a separate interface with its original sandbox policy; native workflows do not expose that proxy to Codex.
+
 ## 2026-10-15: v1.4.0 restores the three product entry points
 
 Classical MSM modeling/analysis, MSM education, and nonadiabatic C1/WE are separate workflows within one conversational assistant. The classical estimator is an explicit nonreversible row MLE with held-out CK and multi-lag ITS; it is not the deferred nonadiabatic C2 engine. Beginner guidance collects only missing information and experts can provide complete inputs directly.

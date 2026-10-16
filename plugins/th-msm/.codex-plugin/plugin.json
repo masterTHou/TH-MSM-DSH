@@ -1,7 +1,7 @@
 {
   "name": "th-msm",
-  "version": "1.5.2",
-  "description": "Trajectory Hub for Markov State Modeling (TH-MSM) — classical MSM, teaching and experimental nonadiabatic C1/WE",
+  "version": "1.6.0",
+  "description": "Native MSM scripts, environment diagnostics, end-to-end modeling/analysis/validation/reports, guided learning and experimental C1/WE",
   "author": {
     "name": "masterTHou"
   },
@@ -10,8 +10,8 @@
   "requires_local_executor": true,
   "interface": {
     "displayName": "Trajectory Hub for Markov State Modeling (TH-MSM)",
-    "shortDescription": "MSM 建模、动力学分析与教学",
-    "longDescription": "从第一个两状态例子到自己的轨迹：在本地建立与验证经典 MSM，分析 MFPT，学习核心概念；研究 FC 出发的实验性非绝热 C1/WE。",
+    "shortDescription": "MSM 脚本、环境自检与全流程",
+    "longDescription": "新手分阶段学习，专家提供数据与参数直接运行：原生经典 MSM 脚本生成、环境诊断、建模、分析、验证、报告和日志；另有实验性非绝热 C1/WE。",
     "developerName": "masterTHou",
     "category": "Productivity",
     "capabilities": [],

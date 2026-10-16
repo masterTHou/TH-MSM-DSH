@@ -33,7 +33,7 @@ test('Codex stdio plugin: discovery, teaching, MSM parity, C1 worker and workspa
   try {
     await client.connect(transport)
     const list = await client.listTools()
-    assert.equal(list.tools.length, 11)
+    assert.equal(list.tools.length, 13)
     assert.ok(!list.tools.some(tool => tool.name === 'th_msm'))
     const call = async (name, args = {}) => {
       const reply = await client.callTool({ name, arguments: args })
@@ -41,6 +41,10 @@ test('Codex stdio plugin: discovery, teaching, MSM parity, C1 worker and workspa
       return reply.structuredContent
     }
     assert.equal((await call('th_msm_env')).analyticalEngine, true)
+    const workflow = await call('th_msm_run', { workspaceRoot: workspace, mode: 'example', outputDir: 'automated', scriptDir: 'scripts/automated' })
+    assert.equal(workflow.status, 'completed')
+    assert.equal(workflow.details.science_verdict, 'SUPPORTED_AT_TESTED_LAGS')
+    assert.ok((await readFile(workflow.details.artifacts.report, 'utf8')).includes('SUPPORTED_AT_TESTED_LAGS'))
     assert.equal((await call('th_msm_teach', { concept: 'msm', level: 'undergraduate' })).ok, true)
     assert.equal((await client.callTool({ name: 'th_msm_teach', arguments: { level: 'invented' } })).isError, true)
     assert.equal((await client.callTool({ name: 'th_msm_example', arguments: {} })).isError, true)

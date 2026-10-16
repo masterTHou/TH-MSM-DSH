@@ -1,7 +1,7 @@
 {
   "name": "@th-msm/dsh-plugin",
-  "version": "1.5.2",
-  "description": "Trajectory Hub for Markov State Modeling (TH-MSM) — conversational modeling, kinetic analysis, learning and experimental C1/WE",
+  "version": "1.6.0",
+  "description": "Trajectory Hub for Markov State Modeling (TH-MSM) — reusable scripts, environment checks, native end-to-end MSM workflows and learning",
   "type": "module",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -60,7 +60,7 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json && node scripts/copy-assets.mjs",
+    "build": "tsc -p tsconfig.json && node scripts/copy-assets.mjs && node scripts/build-workflow.mjs",
     "typecheck": "tsc -p tsconfig.type-tests.json",
     "pretest": "npm run build:codex",
     "test": "node --test test/*.test.mjs",

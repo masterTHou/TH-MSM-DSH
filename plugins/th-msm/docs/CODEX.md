@@ -7,7 +7,7 @@
 需要 Codex 支持本地插件与 MCP，并且其进程可在 PATH 找到 Node.js ≥22。运行 `node --version` 检查。
 
 ```sh
-codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.5.2
+codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.6.0
 codex plugin add th-msm@th-msm-plugins
 ```
 
@@ -26,7 +26,7 @@ codex plugin add th-msm@th-msm-plugins
 
 无需编译。仓库的 `plugins/th-msm/server/` 已包含独立 JS 运行包与第三方许可。
 
-独立的 `th-msm-codex-plugin-1.5.2.tar.gz` 解压后根目录就是一个插件。已有 marketplace 的团队可将其放到自己的 `plugins/th-msm` 目录，并登记相对路径 `./plugins/th-msm`。不要将 DSH `.tgz` 当成 Codex 安装包。
+独立的 `th-msm-codex-plugin-1.6.0.tar.gz` 解压后根目录就是一个插件。已有 marketplace 的团队可将其放到自己的 `plugins/th-msm` 目录，并登记相对路径 `./plugins/th-msm`。不要将 DSH `.tgz` 当成 Codex 安装包。
 
 ## 第一句话
 
@@ -54,10 +54,14 @@ codex plugin add th-msm@th-msm-plugins
 | th_msm_knowledge | 内置文献的离线关键词检索 |
 | th_msm_plan | 提供方案建议，未实现的算法仍需外部工具 |
 | th_msm_sample | FC 出发的解析 FSSH+EDC / WE 演示 |
+| th_msm_script | 生成可独立运行的原生 MSM 脚本、JSON 配置与环境诊断 |
+| th_msm_run | 自检后完成经典 MSM 建模、分析、验证、报告、日志与运行清单 |
 
 不提供 DSH 的外部 shell 注册命令代理；`build mode=index` 与向量模型下载在 Codex 版禁用。无需量化软件、Jev Key 或额外 AI API Key，宿主本身的使用条件仍由 Codex 决定。
 
 ## 工作区与会话
+
+v1.6 提供 13 个工具。新的脚本与运行工具需要原生 Node ≥22，不能仅凭宿主嵌入式 Node 判断可执行；环境检查可实际测量写入与可选 Python 依赖导入。完整操作和边界见 [脚本与自动化指南](WORKFLOWS.md)。
 
 文件工具必须传入绝对 `workspaceRoot`，相对输入/输出均在此目录内。程序检查路径越界和已有符号链接，并按工作区顺序执行调用，避免插件自己并发覆盖结果。读写仍受操作系统进程权限影响；这是应用层边界，不是 OS 沙箱。结果文件可能覆盖同名输出，使用不同 outputPath/outputDir 可以保留多次分析。
 
@@ -69,8 +73,8 @@ codex plugin add th-msm@th-msm-plugins
 
 ```mermaid
 flowchart LR
-  DSH[DSH 12 tools] --> CORE[共享工具实现与科学核心]
-  CODEX[Codex skill + MCP 11 tools] --> ADAPTER[stdio / JSON Schema / workspace]
+  DSH[DSH 14 tools] --> CORE[共享工具实现与科学核心]
+  CODEX[Codex skill + MCP 13 tools] --> ADAPTER[stdio / JSON Schema / workspace]
   ADAPTER --> CORE
   CORE --> MSM[经典 MSM + ITS / CK / MFPT]
   CORE --> C1[FC / FSSH / EDC / WE / C1]
@@ -85,7 +89,7 @@ flowchart LR
 npm ci --ignore-scripts
 npm test
 npm run pack:codex
-node scripts/smoke-codex-package.mjs dist/th-msm-codex-plugin-1.5.2.tar.gz
+node scripts/smoke-codex-package.mjs dist/th-msm-codex-plugin-1.6.0.tar.gz
 ```
 
 不要手工修改生成的 `plugins/th-msm/server/`，编辑源代码后重新构建。发布前需要提交生成产物，使 GitHub marketplace 安装无需开发工具链。

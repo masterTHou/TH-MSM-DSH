@@ -19,6 +19,16 @@ TH = Trajectory Hub；MSM = Markov State Modeling。中文名称：马尔可夫�
 
 ## 三个入口
 
+### v1.6 原生全流程与脚本
+
+新手提出“带我跑完整流程”时使用 `th_msm_run mode=example`；已有经典状态/特征 JSON 的专家使用 `mode=msm` 与 trajectoryPath、lagTime、nClusters 等明确参数。缺少目标态不要猜；自带示例的目标默认为 1，自己的数据可不计算 MFPT。
+
+用户只要脚本时调用 `th_msm_script`，不要执行。它提供 run.mjs、workflow.json、自带 runtime 与许可说明，检查返回 environment.readiness.workflow 才能说当前机器可运行。授权运行时可将 workflow.json 路径交给 `th_msm_run workflowPath=...`。运行工具只读取受校验配置并执行插件自己的运行核心，不执行用户或模型修改的任意脚本。
+
+`th_msm_env` 可检查项目写入、数据/输出与 PATH 原生 Node，并用 checkPython=true 选择检查 Python 依赖导入。宿主内置 Node 可用不等于独立 node 命令可用；依赖导入成功不等于存在 Python 自动化后端。不要自动安装依赖。需要方法和操作细节时读取 [脚本与自动化指南](../../docs/WORKFLOWS.md)。
+
+工作流输出目录必须全新，且不能与脚本目录重叠。ok=true 是计算流程完成；completed_with_limitations 表示数据不足或科学诊断不支持，仍应交付真实报告。超时或取消不能作为成功；查看 run-manifest.json 与 workflow.log.jsonl。工作流只支持经典 JSON（≤64 MiB）、2–128 态；非绝热继续用既有 sample/build/validate/report 工具，原始 XTC/DCD 仍需外部特征提取。
+
 - **学习**：`th_msm_teach`，参数 `concept` 与可选 `level=undergraduate|graduate|expert`。知识检索用 `th_msm_knowledge`。先解释直觉，再给公式、手算例子和误区。
 - **经典 MSM**：无数据可直接 `th_msm_example`，会保存演示数据、模型与入门说明。自己的离散轨迹或预提取特征用 `th_msm_build mode=msm`，再用 `th_msm_analyze`、`th_msm_validate`、`th_msm_report`。查看 JSON 里的真实结果，不猜数值。XTC/DCD 原始轨迹目前需先在外部提取特征。
 - **非绝热研究**：`th_msm_sample` 从 FC 分布运行解析 FSSH+EDC，支持 `direct|we|ci-we`、`lvc|dual-ci`；再 `th_msm_build mode=c1`、验证与报告。`dt` 为原子时间单位，结果时间为 fs。成本中解析计算与电子结构调用分开计数。
@@ -33,7 +43,7 @@ TH = Trajectory Hub；MSM = Markov State Modeling。中文名称：马尔可夫�
 
 需要方法细节时读取随包附带的 [科学约定](../../docs/SCIENCE.md) 与 [经典 MSM 数据与分析说明](../../docs/CLASSICAL-MSM.md)。
 
-Codex 版提供 11 个本地科学工具，不提供 DSH 的外部命令代理 `th_msm`。外部量化软件的执行需要另外配置与授权。不要将本地 MCP 的路径检查描述为操作系统级沙箱。
+Codex 版提供 13 个本地科学工具，不提供 DSH 的外部命令代理 `th_msm`。外部量化软件的执行需要另外配置与授权。不要将本地 MCP 的路径检查描述为操作系统级沙箱。
 
 Codex 版不支持 `th_msm_build mode=index` 或可选向量模型下载；离线文献检索使用内置的 `th_msm_knowledge` 关键词检索。
 

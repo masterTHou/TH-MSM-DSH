@@ -1,0 +1,2 @@
+# Published Codex runtime hashes must survive Windows Git checkouts unchanged.
+plugins/th-msm/server/** text eol=lf

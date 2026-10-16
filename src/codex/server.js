@@ -14,13 +14,14 @@ import { createSampleTool } from '../tools/sample.js'
 import { createKnowledgeTool } from '../tools/knowledge.js'
 import { createTeachTool } from '../tools/teach.js'
 import { createPlanTool } from '../tools/plan.js'
+import { createScriptTool, createRunTool } from '../tools/workflow.js'
 
 const config = { defaultTimeoutMs: 30000, pythonTimeoutMs: 300000, maxKnowledgeResults: 10,
   knowledgeBasePath: 'knowledge', knowledgeCatalogs: ['reviews/CATALOG.md', 'papers/CATALOG.md', 'benchmarks/CATALOG.md'] }
 const tools = [createEnvTool, createGuideTool, createExampleTool, createBuildTool, createAnalyzeTool,
-  createValidateTool, createReportTool, createSampleTool, createKnowledgeTool, createTeachTool, createPlanTool].map(factory => factory({}, config))
-const fileTools = new Set(['th_msm_example', 'th_msm_build', 'th_msm_analyze', 'th_msm_validate', 'th_msm_report', 'th_msm_sample'])
-const readOnlyTools = new Set(['th_msm_env', 'th_msm_analyze', 'th_msm_validate', 'th_msm_knowledge', 'th_msm_teach', 'th_msm_plan'])
+  createValidateTool, createReportTool, createSampleTool, createKnowledgeTool, createTeachTool, createPlanTool, createScriptTool, createRunTool].map(factory => factory({}, config))
+const fileTools = new Set(['th_msm_example', 'th_msm_build', 'th_msm_analyze', 'th_msm_validate', 'th_msm_report', 'th_msm_sample', 'th_msm_script', 'th_msm_run'])
+const readOnlyTools = new Set(['th_msm_analyze', 'th_msm_validate', 'th_msm_knowledge', 'th_msm_teach', 'th_msm_plan'])
 const queues = new Map()
 const server = new Server({ name: 'th-msm', title: 'Trajectory Hub for Markov State Modeling (TH-MSM)', version: __TH_MSM_VERSION__ }, { capabilities: { tools: {} },
   instructions: 'TH-MSM: classical MSM, teaching and experimental FC/C1/WE. Use the user-selected absolute workspaceRoot for file tools. Never infer a project from the plugin installation directory. Ask 1–3 questions when inputs are missing. Use a distinct conversationId per conversation for guide memory; omit it for stateless guidance. Scientific limitations must remain visible.' })
@@ -39,10 +40,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request, extra) => {
   if (!tool) throw new Error(`Unknown tool: ${request.params.name}`)
   const { workspaceRoot, conversationId, ...args } = request.params.arguments ?? {}
   const controller = new AbortController()
-  const abort = () => controller.abort()
+  const abort = () => controller.abort(new Error('ABORTED'))
   extra.signal.addEventListener('abort', abort, { once: true })
   if (extra.signal.aborted) abort()
-  const timer = setTimeout(abort, tool.timeoutMs ?? 30000)
+  const timer = setTimeout(() => controller.abort(new Error('TIMEOUT')), tool.timeoutMs ?? 30000)
   let unlock, queueKey
   try {
     if (fileTools.has(tool.name) && !workspaceRoot) throw new Error('WORKSPACE_REQUIRED: provide the user-selected absolute workspaceRoot')
@@ -61,10 +62,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request, extra) => {
       const release = unlock
       unlock = () => { release(); if (queues.get(queueKey) === pending) queues.delete(queueKey) }
     }
-    if (controller.signal.aborted) throw new Error('ABORTED')
+    if (controller.signal.aborted) throw controller.signal.reason
     const session = { header: { cwd: root, ...(conversationId ? { id: conversationId } : {}) } }
     const value = await tool.execute(args, { agent: { session }, signal: controller.signal })
-    if (controller.signal.aborted) throw new Error('ABORTED')
+    if (controller.signal.aborted) throw controller.signal.reason
     return { content: [{ type: 'text', text: JSON.stringify(value) }], structuredContent: value, isError: value.ok === false }
   } catch (error) {
     return { content: [{ type: 'text', text: error.message }], isError: true }

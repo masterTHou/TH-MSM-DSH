@@ -2,7 +2,7 @@
 
 **Trajectory Hub for Markov State Modeling (TH-MSM)**
 
-马尔可夫态建模轨迹工作台 · 适用版本：**v1.5.2** · 宿主：**Codex / DeepSeek Harness（DSH）**
+马尔可夫态建模轨迹工作台 · 适用版本：**v1.6.0** · 宿主：**Codex / DeepSeek Harness（DSH）**
 
 **TH = Trajectory Hub；MSM = Markov State Modeling。**
 
@@ -27,6 +27,7 @@
 | 遇到错误或验证不通过 | [12. 故障排查](#troubleshooting) |
 | 需要复现、源码 API 或外部命令接入 | [13. 高级使用](#advanced) |
 | 不理解术语，或需要提问模板 | [14. 术语表](#glossary)、[15. 求助与验收](#support) |
+| 想生成独立脚本或自动完成经典 MSM | [16. 环境检查、脚本与自动化](#workflows) |
 
 ---
 
@@ -45,6 +46,8 @@
 | 方案设计 | 根据体系和目标给出方法建议 | “帮我设计建模流程，并区分内置功能和外部步骤。” |
 | 文献检索 | 内置文献目录的关键词检索，支持部分中文关键词映射 | “查找 MSM 验证与 CK 的文献条目。” |
 | 非绝热研究演示 | 解析 FC → FSSH+EDC → Direct/WE/CI-WE → C1 首达与跃迁统计 | “先跑小规模解析非绝热示例，再解释结果。” |
+| 可复现脚本 | 自带运行核心的 JS 脚本、配置、许可与使用说明 | “生成 MSM 脚本，先不要执行。” |
+| 原生全流程自动化 | 自检、建模、分析、验证、报告、阶段日志 | “环境可用后自动完成我的经典 MSM。” |
 
 **经典 MSM 建模和非绝热 C1 是不同流程。** 平衡或长期转换问题通常看经典 MSM；有限时间内光化学通道的吸收概率看 C1。无法判断时说：“先帮我判断应该用经典 MSM 还是 C1，并解释理由。”
 
@@ -53,7 +56,7 @@
 | 项目 | Codex | DSH |
 |---|---|---|
 | 科学核心、模型文件格式 | 相同 | 相同 |
-| 常用科学工具 | 11 个本地 MCP 工具 | 同样的 11 个工具 |
+| 常用科学工具 | 13 个本地 MCP 工具 | 同样的 13 个工具 |
 | 额外外部命令代理 | 不提供 | 另有 `th_msm`，需自行注册命令及配置沙箱 |
 | 项目目录 | 文件工具显式指定 `workspaceRoot` | 使用当前 DSH 会话的工作目录 |
 | 经典/解析模型是否需要 Python | 不需要 | 不需要 |
@@ -83,7 +86,7 @@ Codex 工具名称可能带 MCP 前缀，插件显示名是 **Trajectory Hub for
 ```sh
 codex --version
 node --version
-codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.5.2
+codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.6.0
 codex plugin add th-msm@th-msm-plugins
 ```
 
@@ -95,14 +98,14 @@ codex plugin add th-msm@th-msm-plugins
 告诉我哪些步骤实际成功了。如果工具未加载，请明确说明，不要用普通聊天回复代替插件调用成功。
 ```
 
-**通过标准：**环境检查返回 Node/系统信息，教学工具返回概念解释；不是仅收到一句“已准备好”。环境工具不会验证量化软件或 Python 可用性，相关状态为 `not_checked` 时属正常。
+**通过标准：**环境检查返回实际数值自检、Node/系统信息，教学工具返回概念解释；不是仅收到一句“已准备好”。Python 默认不检查，可选择 checkPython=true 测量导入；量化软件不在本次检查范围。独立脚本能否运行须看 readiness.standalone_node/workflow，不只看 env.ok。
 
 本插件在本地运行，不需要 DSH、Python、Jev Key 或额外 AI API Key。Codex 本身的登录及使用条件由宿主决定。GitHub 分发版目前不等于已上架 OpenAI 公共插件目录。
 
 ### 2.2 DSH：第一次安装
 
 1. 打开 [GitHub Releases](https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM/releases)。
-2. 下载 **`th-msm-dsh-plugin-1.5.2.tgz`**，不要选 Codex 的 `.tar.gz`。
+2. 下载 **`th-msm-dsh-plugin-1.6.0.tgz`**，不要选 Codex 的 `.tar.gz`。
 3. 在 DSH 插件管理面板安装此文件。
 4. 保存工作后完全退出并重新打开 DSH。
 5. 在新的问答会话中发送上面的“安装检查提示词”。
@@ -117,7 +120,7 @@ DSH 主机需要提供插件声明的 Cordis、dsh-tools 和 schemastery 依赖�
 
 ```sh
 codex plugin marketplace remove th-msm-plugins
-codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.5.2
+codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.6.0
 codex plugin add th-msm@th-msm-plugins
 ```
 
@@ -602,11 +605,11 @@ WE 克隆保留完整动力学状态，使用独立随机流继续传播；默�
 
 Codex 的所有文件操作需要 `workspaceRoot`；DSH 从会话取得目录。Codex 的向导可额外使用不同对话独有的 `conversationId` 记忆答案，省略时按无记忆方式调用。`th_msm_guide` 的 `reset=true` 清理该会话向导记忆，不删除项目文件。
 
-### 10.2 11 个共享工具
+### 10.2 13 个共享工具
 
 | 工具 | 必填/主要参数 | 结果与默认行为 |
 |---|---|---|
-| `th_msm_env` | 无 | Node、OS、解析引擎状态；不检测 Python/ES provider |
+| `th_msm_env` | 可选 `trajectoryPath`、`outputDir`、`checkPython` | 数值核心、原生 Node、项目/输入/输出；可选 Python 导入；不检查 ES provider |
 | `th_msm_guide` | `goal`、`dataPath`、`modelPath`、`dataFormat`、`level`、`topic`、`experience`、`reset` 均按需 | 补问问题、记忆与下一步；不自动保证后续任务已完成 |
 | `th_msm_example` | 可选 `outputDir`、`seed` | 默认 `output/msm-demo`、`msm-example`；一次完成合成数据与模型 |
 | `th_msm_build` | 建模通常需 `trajectoryPath`；可选 `mode`、`outputPath`、`lagTime`、`nClusters`、`holdoutFraction` | `mode=auto` 识别 MSM/C1；默认 MSM 输出 `output/msm/model.json`，C1 输出 `output/c1.json` |
@@ -617,6 +620,8 @@ Codex 的所有文件操作需要 `workspaceRoot`；DSH 从会话取得目录。
 | `th_msm_teach` | **`concept`**；可选 `level` | 概念讲解、练习和后续问题；默认 `undergraduate` |
 | `th_msm_knowledge` | 可选 `query`、`topic`、`level`、`maxResults` | 关键词检索；默认最多 10 条；空查询提示补充关键词 |
 | `th_msm_plan` | **`systemType`、`researchGoal`**；可选 `nAtoms`、`trajectoryLength`、`nTrajectories`、`temperature`、`dynamicsType` | 方法计划与限制，不是执行日志 |
+| `th_msm_script` | 可选 `mode=example/msm`、`trajectoryPath`、`scriptDir`、`outputDir`、`lagTime`、`nClusters`、`holdoutFraction`、`targetState`、`seed` | 生成独立脚本，不执行；目录默认唯一；自己的数据需要 trajectoryPath |
+| `th_msm_run` | 同 script；或只给 `workflowPath` | 自检后用固定运行核心完成经典流程；已有配置不得与内联参数混用 |
 
 参数名区分大小写。应传数字 `5`，不要传字符串 `"5 ps"` 给 `lagTime`；真实单位在输入数据里声明。
 
@@ -695,7 +700,7 @@ C1 构建另可指定 `bootstrapPaths`（其他独立完整 run 的相对路径�
 | `START-HERE.md` | 示例说明和参考答案 | 第一次使用先阅读 |
 | `report.md` | 真实结果的可读总结 | 查看、交付或另行转换格式 |
 
-默认文件名会被下一次同路径运行覆盖。**每次参数比较使用不同子目录**，如 `output/lag1-k8`、`output/lag2-k8`。没有内置的结果版本库或自动备份，不要依靠聊天历史替代数据存档。
+原有单步工具的默认文件名会被下一次同路径运行覆盖；新端到端工作流拒绝复用已有输出目录。**每次参数比较使用不同子目录**，如 `output/lag1-k8`、`output/lag2-k8`。没有内置的结果版本库或自动备份，不要依靠聊天历史替代数据存档。
 
 ### 11.2 换电脑、换宿主、交付客户
 
@@ -764,7 +769,7 @@ C1 构建另可指定 `bootstrapPaths`（其他独立完整 run 的相对路径�
 ```sh
 git clone https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM.git
 cd Trajectory-Hub-for-Markov-State-Modeling-TH-MSM
-git checkout v1.5.2
+git checkout v1.6.0
 npm ci --ignore-scripts
 npm run demo:msm
 npm run demo
@@ -877,6 +882,76 @@ console.log(mfptToState(model, 1))
 ```
 
 完整原始异常比截图里的最后一句提示更有帮助；需要保密的数据不要公开提交。
+
+<a id="workflows"></a>
+## 16. 环境检查、独立脚本与全流程自动化
+
+### 16.1 不懂代码：直接运行完整示例
+
+```text
+请用 TH-MSM 的 th_msm_run 跑完整经典 MSM 示例，mode=example。
+先确认工作区和运行环境，再生成可复现脚本，完成建模、分析、ITS/CK 和报告。
+scriptDir=output/tutorial-script，outputDir=output/tutorial-results，必须都是新目录。
+每个阶段用新手能懂的话解释，列出真实文件和科学验证结论。
+```
+
+不指定目录时会自动选择唯一目录。输出有 model.json、analysis.json、validation.json、report.md、START-HERE.md、run-manifest.json 和 workflow.log.jsonl；示例模式另有 trajectories.json。
+
+### 16.2 只要脚本，稍后自己执行
+
+```text
+请用 th_msm_script 根据 data/classical.json 生成脚本，mode=msm、lagTime=2，
+scriptDir=output/script-01、outputDir=output/results-01。
+检查环境并解释配置，现在只生成，不执行。
+```
+
+脚本目录包含 run.mjs、workflow.json、自带 runtime.mjs、版本/摘要与许可说明。打开该目录的 README.md 获取准确命令；在项目根目录终端运行：
+
+```sh
+node output/script-01/run.mjs
+```
+
+只需要原生 Node ≥22，不需要 npm、Codex 或 DSH。配置里的输入和输出建议使用项目相对路径，方便迁移。重复运行必须先把 workflow.json 中 outputDir 改成另一个尚不存在的新目录，不覆盖旧结果。
+
+### 16.3 专家：自己的数据端到端执行
+
+```text
+请用 th_msm_run 处理 data/features.json，mode=msm、lagTime=5、nClusters=8、
+holdoutFraction=0.25、targetState=3，scriptDir=output/lag5-script、outputDir=output/lag5-results。
+自检通过后直接执行，保存全部结果与日志；科学诊断不支持时保留负向结论。
+```
+
+自己的数据不指定 targetState 时不会猜测目标；示例默认目标为 1。工作流仅支持经典离散/预提取特征 JSON，输入 ≤64 MiB、状态数 2–128。原始 XTC/DCD、Python 后端、tICA/VAMP、PCCA/TPT 执行尚未接通；非绝热继续使用第 8 章的工具。
+
+### 16.4 怎样判断环境能直接运行
+
+```text
+请用 th_msm_env 检查当前项目、data/classical.json 和尚不存在的 output/check-results。
+同时 checkPython=true 检查 Python 依赖，不安装任何软件。
+解释哪些检查实际执行过、哪些能力仍未实现。
+```
+
+重点看 readiness.workflow，而不是只看 env.ok。诊断实际检查数值自检、PATH 原生 Node、项目写入/移除探针、JSON 可读性与输出路径。Python 默认不检查，选择后尝试实际导入常见依赖；包可导入不表示已实现 Python 工作流。ready 是前置条件满足，不是对任意数据运行成功的保证。
+
+### 16.5 已有配置与运行状态
+
+```text
+请用 th_msm_run，workflowPath=output/script-01/workflow.json。
+只使用这个配置，不附加另一套内联参数。
+```
+
+插件以当前安装版本的固定运行核心执行配置；终端 run.mjs 使用导出时携带的核心。跨版本精确复现请保留完整脚本包并记录核心版本。
+
+| 状态 | 解释 |
+|---|---|
+| completed | 计算完成且当前诊断支持 |
+| completed_with_limitations | 计算完成，但科学诊断不支持或数据不足；仍有真实报告 |
+| blocked | 环境、输入或输出前置检查未通过 |
+| failed / cancelled | 失败或取消，不能当成功 |
+
+已有目录（包括空目录）会触发 OUTPUT_EXISTS；scriptDir/outputDir 不得重叠。受控运行默认限时 300 秒；超时明确返回失败，不支持完整中断恢复。不会执行任意用户/模型编写的命令，也不会自动安装依赖。
+
+更详细的配置格式、环境字段、复现设计与后续路线见 [脚本与自动化指南](WORKFLOWS.md)。
 
 ---
 

@@ -1,0 +1,6 @@
+{
+  "version": "1.6.0",
+  "sha256": "3fe4ba177fae77f10802c3fafe33cde66d75e1240387bed99d5c065bdc819240",
+  "format": "self-contained-esm",
+  "node": ">=22"
+}

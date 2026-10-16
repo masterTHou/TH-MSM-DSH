@@ -34,6 +34,22 @@ TH-MSM 是面向科研使用者和客户的 **对话式 MSM 助手**，现在支
 | **建立自己的模型** | “数据在 data/classical.json，帮我建立 MSM。” | 转移矩阵、稳态布居、谱与 ITS、留出轨迹 CK |
 | **理解已有结果** | “解释模型结果，并计算到状态 1 的 MFPT。” | 带单位的数值、验证限制与后续分析建议 |
 | **研究光化学路径** | “先跑非绝热演示，再看产物首达概率。” | FC→FSSH+EDC→C1；实验性 Direct/WE/CI-WE 比较 |
+| **带走可复现脚本** | “根据我的数据生成 MSM 脚本，先不要运行。” | 可读入口、JSON 配置、自带数值核心和环境诊断 |
+| **直接完成全流程** | “检查环境，自动完成建模、分析、验证和报告。” | 独立受控进程、真实结果、科学结论、阶段日志与运行清单 |
+
+## v1.6：新手看懂流程，专家直接运行
+
+**`th_msm_script`** 只生成脚本；**`th_msm_run`** 执行完整原生经典 MSM 流程；升级后的 **`th_msm_env`** 区分宿主核心、PATH 中原生 Node、项目写入/输入/输出，以及可选 Python 包导入。
+
+```text
+请用 TH-MSM 运行完整示例，mode=example。
+先确认项目与环境，再生成脚本，完成建模、分析、ITS/CK 和报告。
+使用新的输出目录，逐步解释，并列出真实结果与科学限制。
+```
+
+导出的脚本自带运行核心，只需 Node ≥22，无需 npm、DSH 或 Codex。已有经典状态/特征 JSON 可直接自动化；原始 XTC/DCD、Python MSM 后端与 tICA/TPT 执行尚未接通。**计算完成与科学验证通过分开报告**，新工作流拒绝覆盖已有输出目录。
+
+详见 [脚本与端到端自动化](docs/WORKFLOWS.md) 和 [手册第 16 章](docs/USER-MANUAL.md#workflows)。
 
 ## 在对话里完成工作
 
@@ -66,7 +82,7 @@ TH-MSM 是面向科研使用者和客户的 **对话式 MSM 助手**，现在支
 |---|---|---|
 | 安装方式 | 下载 DSH `.tgz`，在插件面板安装 | 添加 GitHub marketplace，安装 TH-MSM |
 | 科学功能 | 经典 MSM、教学、C1/WE、报告 | 同一科学核心与数据格式 |
-| 本地工具 | 12 个，含 DSH 外部命令代理 | 11 个，通过本地 MCP 提供 |
+| 本地工具 | 14 个，含 DSH 外部命令代理 | 13 个，通过本地 MCP 提供 |
 | 运行条件 | Node ≥22 与 DSH 主机依赖 | Node ≥22，可从终端运行 `node --version` |
 | 外部程序执行 | 可配置 DSH 注册命令与沙箱 | 此版本不提供外部命令代理 |
 
@@ -77,13 +93,13 @@ TH-MSM 是面向科研使用者和客户的 **对话式 MSM 助手**，现在支
 先确认终端中的 `node --version` 为 22 或更高，再运行：
 
 ```sh
-codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.5.2
+codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.6.0
 codex plugin add th-msm@th-msm-plugins
 ```
 
 重新打开 Codex 或新建对话，选择 **TH-MSM**，说：“我没有数据，带我跑第一个 MSM。”首次涉及文件时提供你的项目目录。发布在 GitHub 中的 Codex 插件已编译打包，用户不需要 `npm install` 或 TypeScript 编译。
 
-也可以下载本 Release 的源代码 ZIP 并解压，用 `codex plugin marketplace add "解压后的仓库绝对路径"` 注册本地 marketplace，再运行上面的安装命令。独立 `th-msm-codex-plugin-1.5.2.tar.gz` 仅包含插件本体，适合已有本地 marketplace 的团队分发，不包含 marketplace 包装。
+也可以下载本 Release 的源代码 ZIP 并解压，用 `codex plugin marketplace add "解压后的仓库绝对路径"` 注册本地 marketplace，再运行上面的安装命令。独立 `th-msm-codex-plugin-1.6.0.tar.gz` 仅包含插件本体，适合已有本地 marketplace 的团队分发，不包含 marketplace 包装。
 
 详见 [Codex 安装、工具与工作区说明](docs/CODEX.md)。此版本面向本地 Codex；GitHub 发布不等于已上架 OpenAI 公共插件目录。
 

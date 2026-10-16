@@ -4,6 +4,7 @@ import { access, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { buildClassicalModel } from '../lib/msm/index.js'
 import { validateRegistry } from '../lib/registry/loader.js'
+import { validateWorkflow } from '../lib/workflow/config.js'
 
 const source = 'docs/USER-MANUAL.md'
 const text = await readFile(source, 'utf8')
@@ -28,7 +29,8 @@ for (const match of text.matchAll(/```json\r?\n([\s\S]*?)```/g)) {
   if (data.version === 1 && data.msms) validateRegistry(data)
 }
 assert.ok(jsonExamples >= 6, 'expected dataset, tool and registry examples')
-for (const name of ['USER-MANUAL.md', 'CODEX.md', 'SCIENCE.md', 'CLASSICAL-MSM.md']) {
+for (const match of (await readFile('docs/WORKFLOWS.md', 'utf8')).matchAll(/```json\r?\n([\s\S]*?)```/g)) validateWorkflow(JSON.parse(match[1]))
+for (const name of ['USER-MANUAL.md', 'CODEX.md', 'SCIENCE.md', 'CLASSICAL-MSM.md', 'WORKFLOWS.md']) {
   assert.equal(await readFile(`plugins/th-msm/docs/${name}`, 'utf8'), await readFile(`docs/${name}`, 'utf8'), `outdated bundled document: ${name}`)
 }
-console.log(`Manual ${version}: links, ${jsonExamples} JSON examples, classical templates and 4 bundled documents verified.`)
+console.log(`Manual ${version}: links, ${jsonExamples} JSON examples, classical templates and 5 bundled documents verified.`)

@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.6.0 — 2026-10-16
+
+- Add th_msm_script: export readable run.mjs, strictly typed/validated workflow.json, a self-contained numerical runtime, version/hash manifest and third-party notices. Generation and execution are separate actions.
+- Add th_msm_run: native classical example/data → build → analysis → ITS/CK → report, isolated in a bounded child process with cancellation, fresh output directories, stage logs and provenance.
+- Upgrade environment diagnostics with an actual numerical self-test, native Node PATH probe, workspace write/remove probe, input/output checks and optional Python package imports. Dependency availability does not imply an implemented external backend.
+- Preserve unsupported/insufficient scientific verdicts as completed_with_limitations; reject unknown configuration fields, workspace escape, overlapping/old output directories and inputs above 64 MiB.
+- Register 13 tools in Codex and 14 in DSH. Bundle workflow assets and licensing; extend the manual with chapter 16 and a detailed architecture/operation guide.
+- Test standalone relocation, numeric parity, negative verdicts, missing native Node, size limits, invalid configuration, integrity/overwrite checks, cancellation, timeout and real MCP managed execution.
+
 ## 1.5.2 — 2026-10-16
 
 - Add a complete Chinese software user manual for first-time users and MSM practitioners: installation checks, full tutorials, copyable prompts, data formats, units, tool parameters, output files, validation interpretation, troubleshooting and advanced workflows.
