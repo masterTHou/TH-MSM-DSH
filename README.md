@@ -9,12 +9,13 @@
 ![Node](https://img.shields.io/badge/Node.js-%E2%89%A522-43853d)
 ![TypeScript](https://img.shields.io/badge/TypeScript-gradual_migration-3178c6)
 [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
+![Hosts](https://img.shields.io/badge/Hosts-DSH%20%2B%20Codex-367d72)
 
 [开始使用](#开始使用) · [在对话里完成工作](#在对话里完成工作) · [经典 MSM](docs/CLASSICAL-MSM.md) · [科学约定](docs/SCIENCE.md) · [更新记录](CHANGELOG.md)
 
 </div>
 
-TH-MSM 是面向科研使用者和客户的 **DeepSeek Harness 对话式 MSM 助手**。你可以先学懂一个概念，用自己的轨迹建立基础经典 MSM，或进入非绝热 C1/WE 研究流程。
+TH-MSM 是面向科研使用者和客户的 **对话式 MSM 助手**，现在支持 **DeepSeek Harness 与 Codex**。你可以在熟悉的软件中学懂一个概念，用自己的轨迹建立基础经典 MSM，或进入非绝热 C1/WE 研究流程。
 
 不必先记工具名或准备所有参数。说出目标，向导会补问必要信息、读取已有文件中的设置，并把数值结果解释成你关心的科学问题。熟悉方法的用户也可以直接指定数据与参数。
 
@@ -52,6 +53,33 @@ TH-MSM 是面向科研使用者和客户的 **DeepSeek Harness 对话式 MSM 助
 向导每轮集中问 **1–3 个相关问题**，提供推荐选项和示例回答；已提供或能从文件读出的信息不重复问。会话内记住目标、文件与学习水平，切换目标时清理不相关数据。专家可直接传参数跳过向导。
 
 ## 开始使用
+
+### 选择你习惯的软件
+
+| | DeepSeek Harness | Codex |
+|---|---|---|
+| 安装方式 | 下载 DSH `.tgz`，在插件面板安装 | 添加 GitHub marketplace，安装 TH-MSM |
+| 科学功能 | 经典 MSM、教学、C1/WE、报告 | 同一科学核心与数据格式 |
+| 本地工具 | 12 个，含 DSH 外部命令代理 | 11 个，通过本地 MCP 提供 |
+| 运行条件 | Node ≥22 与 DSH 主机依赖 | Node ≥22，可从终端运行 `node --version` |
+| 外部程序执行 | 可配置 DSH 注册命令与沙箱 | 此版本不提供外部命令代理 |
+
+两个版本都在用户选定的项目目录保存 JSON 和 Markdown。可以把相同数据和结果交给另一宿主继续分析，无需转换科学模型格式。
+
+### 在 Codex 中安装
+
+先确认终端中的 `node --version` 为 22 或更高，再运行：
+
+```sh
+codex plugin marketplace add masterTHou/TH-MSM-DSH --ref v1.5.0
+codex plugin add th-msm@th-msm-plugins
+```
+
+重新打开 Codex 或新建对话，选择 **TH-MSM**，说：“我没有数据，带我跑第一个 MSM。”首次涉及文件时提供你的项目目录。发布在 GitHub 中的 Codex 插件已编译打包，用户不需要 `npm install` 或 TypeScript 编译。
+
+也可以下载本 Release 的源代码 ZIP 并解压，用 `codex plugin marketplace add "解压后的仓库绝对路径"` 注册本地 marketplace，再运行上面的安装命令。独立 `th-msm-codex-plugin-1.5.0.tar.gz` 仅包含插件本体，适合已有本地 marketplace 的团队分发，不包含 marketplace 包装。
+
+详见 [Codex 安装、工具与工作区说明](docs/CODEX.md)。此版本面向本地 Codex；GitHub 发布不等于已上架 OpenAI 公共插件目录。
 
 ### 在 DSH 中安装
 

@@ -1,0 +1,7 @@
+{
+  "mcpServers": { "th-msm": {
+    "command": "node",
+    "args": ["${PLUGIN_ROOT}/server/index.mjs"],
+    "cwd": "${PLUGIN_ROOT}"
+  } }
+}

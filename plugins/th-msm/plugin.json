@@ -1,0 +1,23 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "th-msm",
+  "version": "1.5.0",
+  "description": "Classical MSM modeling, kinetic analysis, guided learning and experimental nonadiabatic C1/WE on your local project.",
+  "author": { "name": "masterTHou" },
+  "homepage": "https://github.com/masterTHou/TH-MSM-DSH",
+  "repository": "https://github.com/masterTHou/TH-MSM-DSH",
+  "license": "MIT",
+  "keywords": ["msm", "kinetics", "chemistry", "weighted-ensemble", "education"],
+  "extensions": { "com.openai": {
+    "requires_local_executor": true,
+    "interface": {
+      "displayName": "TH-MSM",
+      "shortDescription": "MSM 建模、动力学分析与教学",
+      "longDescription": "从第一个两状态例子到自己的轨迹：在本地建立与验证经典 MSM，分析 MFPT，学习核心概念；研究 FC 出发的实验性非绝热 C1/WE。",
+      "developerName": "masterTHou",
+      "category": "Productivity",
+      "capabilities": [],
+      "defaultPrompt": ["我没有数据，带我跑第一个 MSM。", "解释我的 MSM 结果，并检查模型是否可信。", "用一个能手算的例子解释 MSM。"]
+    }
+  } }
+}

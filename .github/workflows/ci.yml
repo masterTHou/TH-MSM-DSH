@@ -19,6 +19,9 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run check
       - run: npm test
+      - run: git diff --exit-code -- plugins/th-msm
+      - run: npm run pack:codex
+      - run: node scripts/smoke-codex-package.mjs dist/th-msm-codex-plugin-$(node -p "require('./package.json').version").tar.gz
       - run: npm run demo
       - run: npm run demo:msm
       - run: npm pack
@@ -26,4 +29,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: plugin-${{ matrix.os }}-node${{ matrix.node }}
-          path: '*.tgz'
+          path: |
+            *.tgz
+            dist/*.tar.gz

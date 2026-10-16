@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.5.0 — 2026-10-16
+
+- Add a Codex local plugin beside the existing DSH plugin: portable/compatibility manifests, guided scientific skill, repository marketplace and self-contained stdio MCP runtime.
+- Reuse 11 scientific/education tools and the same numerical core and JSON formats; retain DSH's 12-tool interface and host-owned command proxy.
+- Require explicit user-project roots for file operations; isolate guide state by conversation/workspace, serialize project calls, propagate cancellation and report structured errors.
+- Bundle MCP SDK, numerical/schema dependencies, analytical worker and offline literature with third-party notices; Codex installation needs Node ≥22 and no DSH or npm build.
+- Add live MCP discovery/end-to-end tests, DSH/Codex numerical parity checks and isolated Codex tarball verification on Linux/Windows CI.
+- Document host selection, installation, scientific boundaries and unverified current-GUI behavior. GitHub distribution does not imply public-directory listing.
+
 ## 1.4.1 — 2026-10-16
 
 - Add fallback export conditions for plugin and public module entries, fixing `ERR_PACKAGE_PATH_NOT_EXPORTED` in resolver-first hosts while preserving ESM and TypeScript declarations.

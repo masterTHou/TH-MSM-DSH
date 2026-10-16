@@ -1,6 +1,6 @@
 {
   "name": "@th-msm/dsh-plugin",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "Conversational MSM modeling, kinetic analysis and learning with a typed scientific core and experimental nonadiabatic C1/WE",
   "type": "module",
   "main": "./lib/index.js",
@@ -62,7 +62,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json && node scripts/copy-assets.mjs",
     "typecheck": "tsc -p tsconfig.type-tests.json",
-    "pretest": "npm run build",
+    "pretest": "npm run build:codex",
     "test": "node --test test/*.test.mjs",
     "check": "npm run typecheck && node scripts/check.mjs",
     "predemo": "node scripts/ensure-build.mjs",
@@ -75,7 +75,9 @@
     "prebenchmark:full": "node scripts/ensure-build.mjs",
     "lint": "npm run typecheck",
     "prepack": "npm run build && npm run check",
-    "prepublishOnly": "npm run check && npm test"
+    "prepublishOnly": "npm run check && npm test",
+    "build:codex": "npm run build && node scripts/build-codex.mjs",
+    "pack:codex": "npm run build:codex && node scripts/pack-codex.mjs"
   },
   "dependencies": {
     "ml-matrix": "^6.15.0"
@@ -84,7 +86,10 @@
     "ml-matrix"
   ],
   "devDependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
     "@types/node": "^26.6.5",
+    "ajv": "^8.20.0",
+    "esbuild": "^0.28.2",
     "typescript": "^7.0.2"
   }
 }

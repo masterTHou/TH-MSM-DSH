@@ -1,13 +1,13 @@
 /**
- * TH-MSM DSH Plugin v1.4
+ * TH-MSM DSH Plugin v1.5
  *
  * Thermodynamic and Kinetic Markov State Model Intelligence Agent.
  *
- * v1.4: conversational classical MSM modeling, teaching and C1/WE research.
+ * v1.5: DSH entry for the shared DSH/Codex scientific core.
  *
  * Registers:
- *  - 8 tools: th_msm (proxy), th_msm_env, th_msm_knowledge, th_msm_teach,
- *             th_msm_plan, th_msm_build, th_msm_validate, th_msm_report
+ *  - 12 tools: proxy, environment, guide, example, analysis, knowledge,
+ *              teaching, plan, sampling, build, validation and report
  *  - Agent hooks: per-turn accounting + policy guards
  *  - Agent loop: MSM-aware intent routing and knowledge enrichment
  *
@@ -142,7 +142,7 @@ export function apply(ctx, rawConfig = {}) {
     )
   }
 
-  // ── Register all 8 tools ─────────────────────────────────────
+  // ── Register all 12 tools ────────────────────────────────────
 
   // 1. Generic MSM execution proxy (the security boundary)
   ctx.tools.register(createMsmTool(ctx, config, config.toolName))
