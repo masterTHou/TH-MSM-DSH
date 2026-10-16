@@ -13,7 +13,19 @@ import { createReportTool } from '../lib/tools/report.js'
 import { createTeachTool } from '../lib/tools/teach.js'
 import { createKnowledgeTool } from '../lib/tools/knowledge.js'
 import { installAgentLoop } from '../lib/agent/loop.js'
+import { GuideSessionStore } from '../lib/decision/session-store.js'
 const config = { defaultTimeoutMs: 30000, pythonTimeoutMs: 300000, maxKnowledgeResults: 10 }
+
+test('guide preferences survive session hydration and remain workspace/session isolated', () => {
+  const store = new GuideSessionStore(), a = { header: { id: 'same-session', cwd: 'workspace-a' } }
+  store.set(a, { goal: 'learn', topic: 'ck', level: 'graduate' })
+  const refreshed = { header: { id: 'same-session', cwd: 'workspace-a' } }
+  assert.equal(store.get(refreshed).topic, 'ck')
+  assert.deepEqual(store.get({ header: { id: 'same-session', cwd: 'workspace-b' } }), {})
+  assert.deepEqual(store.get({ header: { id: 'another-session', cwd: 'workspace-a' } }), {})
+  const result = store.get(refreshed); result.topic = 'msm'
+  assert.equal(store.get(refreshed).topic, 'ck')
+})
 
 test('DSH beginner journey remembers answers and produces real MSM results and report', async () => {
   const workspace = await mkdtemp(path.join(os.tmpdir(), 'th-msm-conversation-')), exec = { agent: { session: { header: { cwd: workspace } } } }

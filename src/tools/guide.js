@@ -1,8 +1,9 @@
 import { defineTool } from '@deepseek-ai/dsh-tools'
 import { guide } from '../decision/wizard.js'
 import { readWorkspaceJSON } from '../io/workspace.js'
+import { GuideSessionStore } from '../decision/session-store.js'
 export function createGuideTool(ctx, config) {
-  const sessions = new WeakMap()
+  const sessions = new GuideSessionStore()
   return defineTool({
     name: 'th_msm_guide', description: '对话向导：了解目标、记住本会话已提供的信息，每轮给 1–3 个问题、示例回答和可执行的下一步。不要重复确认已授权的任务。',
     parameters: { goal: { type: 'string', enum: ['learn', 'classical-msm', 'nonadiabatic-c1', 'unsure'] }, dataPath: { type: 'string' }, modelPath: { type: 'string' }, dataFormat: { type: 'string', enum: ['discrete', 'features', 'xtc-dcd', 'run-json', 'none'] }, level: { type: 'string', enum: ['undergraduate', 'graduate', 'expert'] }, topic: { type: 'string' }, experience: { type: 'string', enum: ['guided', 'expert'] }, reset: { type: 'boolean' } },
