@@ -1,7 +1,7 @@
 import { Server } from '@modelcontextprotocol/sdk/server/index.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { ListToolsRequestSchema, CallToolRequestSchema } from '@modelcontextprotocol/sdk/types.js'
-import { realpath } from 'node:fs/promises'
+import { realpath, stat } from 'node:fs/promises'
 import path from 'node:path'
 import { createEnvTool } from '../tools/env.js'
 import { createGuideTool } from '../tools/guide.js'
@@ -49,7 +49,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request, extra) => {
     if (workspaceRoot !== undefined && (typeof workspaceRoot !== 'string' || !path.isAbsolute(workspaceRoot))) throw new Error('workspaceRoot must be an absolute directory path')
     if (conversationId !== undefined && (typeof conversationId !== 'string' || !conversationId.trim())) throw new Error('conversationId must be nonblank')
     const root = workspaceRoot ? await realpath(workspaceRoot) : undefined
-    if (process.env.TH_MSM_WORKSPACE && root !== await realpath(process.env.TH_MSM_WORKSPACE)) throw new Error('workspaceRoot differs from configured TH_MSM_WORKSPACE')
+    if (root && !(await stat(root)).isDirectory()) throw new Error('workspaceRoot must be a directory')
+    if (root && process.env.TH_MSM_WORKSPACE && root !== await realpath(process.env.TH_MSM_WORKSPACE)) throw new Error('workspaceRoot differs from configured TH_MSM_WORKSPACE')
     if (root) {
       queueKey = process.platform === 'win32' ? root.toLowerCase() : root
       const previous = queues.get(queueKey) ?? Promise.resolve()

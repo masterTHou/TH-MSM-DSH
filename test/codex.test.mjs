@@ -8,6 +8,21 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js'
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js'
 import { createExampleTool } from '../lib/tools/example.js'
 
+test('configured project root confines IO while allowing workspace-free teaching', async () => {
+  const workspace = await mkdtemp(path.join(tmpdir(), 'th-msm-fixed-root-'))
+  const entry = process.env.TH_MSM_TEST_SERVER ?? fileURLToPath(new URL('../plugins/th-msm/server/index.mjs', import.meta.url))
+  const client = new Client({ name: 'th-msm-fixed-root', version: '1.0.0' })
+  const transport = new StdioClientTransport({ command: process.execPath, args: [entry], env: { TH_MSM_WORKSPACE: workspace }, stderr: 'pipe' })
+  try {
+    await client.connect(transport)
+    assert.ok(!(await client.callTool({ name: 'th_msm_teach', arguments: { concept: 'msm' } })).isError)
+    const forbidden = await client.callTool({ name: 'th_msm_example', arguments: { workspaceRoot: tmpdir() } })
+    assert.equal(forbidden.isError, true)
+    assert.match(JSON.stringify(forbidden), /configured TH_MSM_WORKSPACE/)
+    assert.ok(!(await client.callTool({ name: 'th_msm_example', arguments: { workspaceRoot: workspace } })).isError)
+  } finally { await client.close(); assert.equal(path.dirname(workspace), tmpdir()); await rm(workspace, { recursive: true, force: true }) }
+})
+
 test('Codex stdio plugin: discovery, teaching, MSM parity, C1 worker and workspace isolation', { timeout: 60000 }, async () => {
   const workspace = await mkdtemp(path.join(tmpdir(), 'th-msm-codex-'))
   const entry = process.env.TH_MSM_TEST_SERVER ?? fileURLToPath(new URL('../plugins/th-msm/server/index.mjs', import.meta.url))
