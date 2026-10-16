@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises'
 import { performance } from 'node:perf_hooks'
-import { runSimulation, buildC1, validateRun } from '../src/engine.js'
-import { summarize, compareEfficiency, wilsonInterval } from '../src/validation/benchmark.js'
+import { runSimulation, buildC1, validateRun } from '../lib/engine.js'
+import { summarize, compareEfficiency, wilsonInterval } from '../lib/validation/benchmark.js'
 
 const full = process.argv.includes('--full')
 const profile = process.argv.includes('--profile=pilot-v1') ? 'pilot-v1' : 'target-v2'

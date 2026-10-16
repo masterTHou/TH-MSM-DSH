@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420" role="img" aria-labelledby="title desc">
+  <title id="title">TH-MSM — Learn. Model. Understand.</title>
+  <desc id="desc">A conversational workspace for molecular kinetics, with learning, classical MSM analysis, and nonadiabatic research.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101d38"/><stop offset="1" stop-color="#132e3b"/></linearGradient>
+    <linearGradient id="line"><stop stop-color="#6ee7ce"/><stop offset="1" stop-color="#8faeff"/></linearGradient>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#c8e8ff" stroke-opacity=".035"/></pattern>
+  </defs>
+  <rect width="1280" height="420" rx="24" fill="url(#bg)"/>
+  <rect width="1280" height="420" rx="24" fill="url(#grid)"/>
+  <g font-family="Inter,Segoe UI,Arial,sans-serif">
+    <text x="64" y="70" fill="#85d6c5" font-size="15" letter-spacing="3">MOLECULAR KINETICS · CONVERSATIONAL SCIENCE</text>
+    <text x="60" y="150" fill="#f5f8ff" font-size="68" font-weight="700">TH-MSM</text>
+    <text x="65" y="194" fill="#b9d0e2" font-size="25">Learn. Model. Understand.</text>
+    <text x="65" y="233" fill="#8fa9bd" font-size="17">From your first question to reproducible kinetic analysis.</text>
+    <g transform="translate(64 280)">
+      <rect width="178" height="64" rx="14" fill="#20374b" stroke="#406276"/>
+      <text x="22" y="28" fill="#6ee7ce" font-size="12" letter-spacing="1.5">01 / LEARN</text><text x="22" y="49" fill="#f5f8ff" font-size="16">Guided explanations</text>
+      <rect x="194" width="178" height="64" rx="14" fill="#20374b" stroke="#406276"/>
+      <text x="216" y="28" fill="#a5b8ff" font-size="12" letter-spacing="1.5">02 / MODEL</text><text x="216" y="49" fill="#f5f8ff" font-size="16">Classical MSM</text>
+      <rect x="388" width="178" height="64" rx="14" fill="#20374b" stroke="#406276"/>
+      <text x="410" y="28" fill="#f2c98a" font-size="12" letter-spacing="1.5">03 / EXPLORE</text><text x="410" y="49" fill="#f5f8ff" font-size="16">C1 / WE research</text>
+    </g>
+    <g stroke="url(#line)" stroke-width="2" fill="none" opacity=".8">
+      <path d="M810 140Q900 48 1010 125T1198 180M810 140Q850 265 1000 270T1198 180M1010 125L1000 270M810 140L1115 330M1000 270L1115 330M1010 125L1198 180"/>
+    </g>
+    <circle cx="810" cy="140" r="37" fill="#244f5d" stroke="#6ee7ce" stroke-width="2"/>
+    <circle cx="1010" cy="125" r="48" fill="#293b65" stroke="#9eb7ff" stroke-width="2"/>
+    <circle cx="1000" cy="270" r="32" fill="#244f5d" stroke="#6ee7ce" stroke-width="2"/>
+    <circle cx="1198" cy="180" r="24" fill="#4b493d" stroke="#f2c98a" stroke-width="2"/>
+    <circle cx="1115" cy="330" r="17" fill="#293b65" stroke="#9eb7ff" stroke-width="2"/>
+    <text x="810" y="147" text-anchor="middle" fill="#d7fff6" font-size="20">S₀</text>
+    <text x="1010" y="133" text-anchor="middle" fill="#e3eaff" font-size="24">S₁</text>
+    <text x="1000" y="277" text-anchor="middle" fill="#d7fff6" font-size="18">S₂</text>
+    <text x="800" y="385" fill="#8fa9bd" font-size="13" letter-spacing="1">TYPED CONTRACTS. MEASURED RESULTS. HONEST LIMITS.</text>
+  </g>
+</svg>

@@ -1,9 +1,9 @@
 /**
- * TH-MSM DSH Plugin v1.3
+ * TH-MSM DSH Plugin v1.4
  *
  * Thermodynamic and Kinetic Markov State Model Intelligence Agent.
  *
- * v1.3: FC analytical FSSH+EDC, WE and C1 event analysis.
+ * v1.4: conversational classical MSM modeling, teaching and C1/WE research.
  *
  * Registers:
  *  - 8 tools: th_msm (proxy), th_msm_env, th_msm_knowledge, th_msm_teach,
@@ -28,6 +28,9 @@ import { createBuildTool } from './tools/build.js'
 import { createValidateTool } from './tools/validate.js'
 import { createReportTool } from './tools/report.js'
 import { createSampleTool } from './tools/sample.js'
+import { createGuideTool } from './tools/guide.js'
+import { createExampleTool } from './tools/example.js'
+import { createAnalyzeTool } from './tools/analyze.js'
 
 import { installAgentHooks } from './agent/hooks.js'
 import { installAgentLoop } from './agent/loop.js'
@@ -158,6 +161,12 @@ export function apply(ctx, rawConfig = {}) {
   toolNames.add('th_msm_env')
   ctx.tools.register(createSampleTool(ctx, config))
   toolNames.add('th_msm_sample')
+  ctx.tools.register(createGuideTool(ctx, config))
+  toolNames.add('th_msm_guide')
+  ctx.tools.register(createExampleTool(ctx, config))
+  toolNames.add('th_msm_example')
+  ctx.tools.register(createAnalyzeTool(ctx, config))
+  toolNames.add('th_msm_analyze')
 
   ctx.tools.register(createKnowledgeTool(ctx, config))
   toolNames.add('th_msm_knowledge')

@@ -1,5 +1,5 @@
 import { mkdir, writeFile } from 'node:fs/promises'
-import { runSimulation, buildC1, validateRun } from '../src/engine.js'
+import { runSimulation, buildC1, validateRun } from '../lib/engine.js'
 await mkdir('output/demo', { recursive: true })
 const run = runSimulation({ mode: 'ci-we', nTrajectories: 32, steps: 1100, seed: 'demo-v1.3' })
 const analysis = buildC1(run), validation = validateRun(run)

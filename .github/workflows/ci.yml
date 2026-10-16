@@ -20,6 +20,7 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: npm run demo
+      - run: npm run demo:msm
       - run: npm pack
       - uses: actions/upload-artifact@v4
         with:

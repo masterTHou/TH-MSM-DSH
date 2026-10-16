@@ -3,7 +3,7 @@
 
 # Development-only
 test/
-examples/
+examples/workspace/
 
 # Git-specific
 .git/

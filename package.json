@@ -1,23 +1,28 @@
 {
   "name": "@th-msm/dsh-plugin",
-  "version": "1.3.0",
-  "description": "FC nonadiabatic FSSH+EDC sampling and non-equilibrium C1 first-hit/flux analysis for DeepSeek Harness",
+  "version": "1.4.0",
+  "description": "Conversational MSM modeling, kinetic analysis and learning with a typed scientific core and experimental nonadiabatic C1/WE",
   "type": "module",
-  "main": "./src/index.js",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "exports": {
-    ".": "./src/index.js",
-    "./tools/*": "./src/tools/*.js",
-    "./knowledge/*": "./src/knowledge/*.js",
-    "./engine": "./src/engine.js"
+    ".": { "types": "./lib/index.d.ts", "import": "./lib/index.js" },
+    "./tools/*": "./lib/tools/*.js",
+    "./knowledge/*": "./lib/knowledge/*.js",
+    "./engine": { "types": "./lib/engine.d.ts", "import": "./lib/engine.js" },
+    "./msm": { "types": "./lib/msm/index.d.ts", "import": "./lib/msm/index.js" },
+    "./education": { "types": "./lib/education/lessons.d.ts", "import": "./lib/education/lessons.js" },
+    "./decision": { "types": "./lib/decision/router.d.ts", "import": "./lib/decision/router.js" }
   },
   "files": [
-    "src",
+    "lib",
     "plugin.json",
     "cordis.patch.yml",
     "README.md",
     "LICENSE",
     "scripts",
-    "docs/SCIENCE.md",
+    "docs",
+    "examples/msm",
     "CHANGELOG.md",
     "benchmarks"
   ],
@@ -35,13 +40,29 @@
     }
   },
   "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/copy-assets.mjs",
+    "typecheck": "tsc -p tsconfig.type-tests.json",
+    "pretest": "npm run build",
     "test": "node --test test/*.test.mjs",
-    "check": "node scripts/check.mjs",
+    "check": "npm run typecheck && node scripts/check.mjs",
+    "predemo": "node scripts/ensure-build.mjs",
+    "predemo:msm": "node scripts/ensure-build.mjs",
+    "demo:msm": "node scripts/demo-msm.mjs",
     "demo": "node scripts/demo.mjs",
     "benchmark": "node scripts/benchmark.mjs",
     "benchmark:full": "node scripts/benchmark.mjs --full",
-    "lint": "node --check src/index.js",
-    "prepack": "npm run check",
+    "prebenchmark": "node scripts/ensure-build.mjs",
+    "prebenchmark:full": "node scripts/ensure-build.mjs",
+    "lint": "npm run typecheck",
+    "prepack": "npm run build && npm run check",
     "prepublishOnly": "npm run check && npm test"
+  },
+  "dependencies": {
+    "ml-matrix": "^6.15.0"
+  },
+  "bundledDependencies": ["ml-matrix"],
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2"
   }
 }

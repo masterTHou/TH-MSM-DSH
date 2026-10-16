@@ -12,7 +12,7 @@
 import { defineTool } from '@deepseek-ai/dsh-tools'
 
 const SYSTEM_TYPES = ['protein', 'peptide', 'small-molecule', 'material', 'solution', 'other']
-const RESEARCH_GOALS = ['kinetics', 'conformational-change', 'binding', 'reaction', 'electronic-properties']
+const RESEARCH_GOALS = ['kinetics', 'conformational-change', 'binding', 'reaction', 'electronic-properties', 'photochemistry']
 
 const resultSchema = {
   type: 'object',
@@ -106,6 +106,7 @@ export function createPlanTool(ctx, config) {
         type: 'number',
         description: 'Simulation temperature in Kelvin.',
       },
+      dynamicsType: { type: 'string', enum: ['classical', 'nonadiabatic'], description: 'Reaction goals need the physics domain clarified; photochemistry uses nonadiabatic C1.' },
     },
     output: {
       schema: resultSchema,
@@ -148,7 +149,7 @@ export function createPlanTool(ctx, config) {
     isConcurrencySafe: () => true,
 
     async execute(args, exec) {
-      const { systemType, researchGoal, nAtoms, trajectoryLength, nTrajectories, temperature } = args
+      const { systemType, researchGoal, nAtoms, trajectoryLength, nTrajectories, temperature, dynamicsType } = args
 
       if (!systemType || !researchGoal) {
         return {
@@ -164,6 +165,7 @@ export function createPlanTool(ctx, config) {
         trajectoryLength: trajectoryLength ?? 'unknown',
         nTrajectories: nTrajectories ?? 1,
         temperature: temperature ?? 300,
+        dynamicsType,
       })
 
       return {
@@ -172,7 +174,7 @@ export function createPlanTool(ctx, config) {
         researchGoal,
         protocol,
         estimatedComplexity: estimateComplexity(nAtoms ?? 100, nTrajectories ?? 1),
-        warnings: generateWarnings(systemType, researchGoal, { nAtoms, trajectoryLength, nTrajectories }),
+        warnings: generateWarnings(systemType, researchGoal, { nAtoms, trajectoryLength, nTrajectories, dynamicsType }),
       }
     },
   })
@@ -182,7 +184,7 @@ export function createPlanTool(ctx, config) {
 
 function recommendProtocol(systemType, researchGoal, meta) {
   const { nAtoms } = meta
-  if (researchGoal === 'reaction' || researchGoal === 'electronic-properties') {
+  if (researchGoal === 'photochemistry' || researchGoal === 'electronic-properties' || meta.dynamicsType === 'nonadiabatic') {
     return {
       featurization: { method: 'R/P/complex amplitudes/active electronic state + gap + reaction coordinates', rationale: 'Nonadiabatic paths require the complete dynamical state; FC roots or inherited checkpoints only.', parameters: { initialization: 'FC', candidateRole: 'binning only' } },
       dimensionalityReduction: { method: 'Explicit progress bins', rationale: 'C1 first-passage statistics do not require a Markov assumption.', parameters: {} },
@@ -207,7 +209,7 @@ function recommendProtocol(systemType, researchGoal, meta) {
       method: 'Heavy-atom distances + dihedral angles',
       rationale:
         'Small systems benefit from all-atom features. Distance-based features avoid the degeneracy of dihedral-only representations.',
-      parameters: { heavyAtomPairs: 'all', dihedralAngles: ['phi', 'psi', 'chi1'] },
+      parameters: { heavyAtomPairs: 'system-specific', dihedralAngles: 'system-specific periodic sin/cos encoding' },
     }
   } else if (systemType === 'material') {
     featurization = {
@@ -244,14 +246,14 @@ function recommendProtocol(systemType, researchGoal, meta) {
   }
 
   // Clustering
-  const nStates = Math.min(Math.max(Math.floor(nAtoms / 10), 50), 1000)
+  const nStates = 8 // Starting candidate only; select using counts and held-out diagnostics.
   let clustering
   if (nAtoms < 200) {
     clustering = {
       method: `K-Means (${nStates} clusters)`,
       rationale:
         'K-Means provides uniform state decomposition for well-sampled small systems. ' +
-        'Number of clusters scales with system size to balance resolution and statistics.',
+        'Eight states is a starting candidate, not an atom-count rule. Compare alternatives using transition support and held-out validation.',
       nStates,
     }
   } else {
@@ -265,7 +267,7 @@ function recommendProtocol(systemType, researchGoal, meta) {
 
   // Lag time
   const lagTime = {
-    value: 'Determined by ITS convergence analysis (typically 1-100 ns for proteins)',
+    value: 'Compare candidate lag frames using the declared frame time, ITS and held-out CK',
     rationale:
       'Lag time must be long enough for Markovian behavior (ITS plateaus) but short enough to retain temporal resolution. ' +
       'Run implied timescale analysis at multiple lag times and select the smallest τ where ITS curves converge.',
@@ -277,20 +279,20 @@ function recommendProtocol(systemType, researchGoal, meta) {
     'Chapman-Kolmogorov Test — verify Markovianity at the chosen lag time',
     'Population Analysis — compare MSM stationary distribution to MD sampling',
     'Model Stability — bootstrap the MSM and check robustness',
-    'Cross-Validation — use generalized matrix Rayleigh quotient (VAMP-2 score)',
+    'Optional external VAMP-2 cross-validation (numerical backend not implemented)',
   ]
 
   return { featurization, dimensionalityReduction: dimReduction, clustering, lagTime, validation }
 }
 
 function estimateComplexity(nAtoms, nTrajectories) {
-  if (nAtoms < 100) return 'Low — feasible on a laptop'
-  if (nAtoms < 1000) return 'Medium — requires workstation or small cluster'
-  return 'High — requires HPC resources'
+  return 'Depends on frame count, feature dimension and states; native dense MSM supports 2–128 states. Atom count alone does not determine analysis cost.'
 }
 
 function generateWarnings(systemType, researchGoal, meta) {
   const warnings = []
+  if (researchGoal === 'reaction' && !meta.dynamicsType) warnings.push('Reaction analysis may be classical or nonadiabatic. Clarify the physics domain before selecting MSM or C1.')
+  warnings.push('tICA/VAMP suggestions are method guidance only; the current native builder accepts pre-extracted features and KMeans.')
 
   if (meta.nTrajectories === 1) {
     warnings.push(

@@ -79,8 +79,7 @@ export function createKnowledgeTool(ctx, config) {
     if (_papers) return _papers
     try {
       // 从插件自身目录加载 papers.json
-      const pluginDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
-      const papersPath = path.join(pluginDir, 'knowledge', 'vector', 'papers.json')
+      const papersPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'knowledge', 'vector', 'papers.json')
       if (existsSync(papersPath)) {
         const db = JSON.parse(readFileSync(papersPath, 'utf8'))
         _papers = db.chunks ?? []

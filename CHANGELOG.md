@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.4.0 — 2026-10-16
+
+- Restore classical MSM as a real, separate workflow: discrete/pre-extracted feature trajectories, training-only KMeans, within-trajectory counts, row MLE, stationary populations, spectral decay times and MFPT.
+- Compute multi-lag ITS and held-out CK diagnostics, with explicit insufficient-data and negative results; keep nonadiabatic C1 semantics separate.
+- Add conversation guide, no-data MSM example and result analysis tools. Remember session answers, infer file types, offer 1–3 relevant questions and useful next messages.
+- Replace generic teaching templates with 12 topics, beginner/graduate/expert levels, numerical examples, exercises and caveats.
+- Introduce strict TypeScript for scientific contracts, trajectory validation and new MSM/education/decision modules; compile JS/TS to lib with public declarations. Existing JS migration remains gradual.
+- Apply Jev-inspired typed workflow decisions locally with explicit abstention. No Jev API call or fabricated calibrated probability; scientific probabilities remain numerical observables.
+- Wire documented DSH prompt section/scoped context APIs; fix compiled knowledge asset lookup.
+- Tighten runtime frame/mass invariants: reject contradictory non-hop state fields and nonfinite/negative absorbed mass.
+- Redesign README with original SVG graphics, dialogue examples, actual demo output and honest feature boundaries. Bundle numerical runtime dependency for installation convenience.
+
 ## 1.3.0 — 2026-10-15
 
 - Implement a host-independent Node.js C1 engine: validated dynamical frames, state/gap/progress bins, weighted first hits, directed hop maps, candidate/reachable/reactive evidence and complete-run bootstrap.

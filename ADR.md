@@ -1,5 +1,11 @@
 # Architecture Decision Record: TH-MSM DSH Plugin
 
+## 2026-10-15: v1.4.0 restores the three product entry points
+
+Classical MSM modeling/analysis, MSM education, and nonadiabatic C1/WE are separate workflows within one conversational assistant. The classical estimator is an explicit nonreversible row MLE with held-out CK and multi-lag ITS; it is not the deferred nonadiabatic C2 engine. Beginner guidance collects only missing information and experts can provide complete inputs directly.
+
+Adopt strict TypeScript gradually for contracts and new modules, compile to lib for runtime portability, and keep validated JS physics compatible. Jev's typed-decision interface inspires local routing/state handling, without an online dependency or physical probability substitution. See docs/CLASSICAL-MSM.md and docs/TYPESCRIPT-AND-DECISIONS.md.
+
 ## 2026-10-15: v1.3.0 scientific core supersedes scaffold assumptions
 
 Accepted after user confirmation. Node.js ESM scientific modules are independent of DSH tool wrappers. C1 finite-time first-hit/event-flux analysis is the default; equilibrium π and reversible MSM are not photochemical branch estimators. Standard single-CI LVC and explicitly nonlinear dual-CI models have different purposes. Full-state WE resampling changes weights/random streams, not nuclear momenta. Absorbed mass remains in the conservation ledger.

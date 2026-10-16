@@ -14,11 +14,11 @@ import { mkdtemp, mkdir, writeFile, symlink, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 
-import { validateRegistry, loadRegistry, suggestEntries, MSM_NAME_RE } from '../src/registry/loader.js'
-import { truncateText } from '../src/util/text.js'
-import { resolveTimeout } from '../src/runtime/executor.js'
-import { parseCatalog } from '../src/knowledge/catalog.js'
-import { searchKnowledge } from '../src/knowledge/searcher.js'
+import { validateRegistry, loadRegistry, suggestEntries, MSM_NAME_RE } from '../lib/registry/loader.js'
+import { truncateText } from '../lib/util/text.js'
+import { resolveTimeout } from '../lib/runtime/executor.js'
+import { parseCatalog } from '../lib/knowledge/catalog.js'
+import { searchKnowledge } from '../lib/knowledge/searcher.js'
 
 // ── Registry Validation ───────────────────────────────────────
 

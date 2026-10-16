@@ -1,16 +1,18 @@
+import type { TrajectoryFrame } from '../types/science.js'
 // Atomic units internally; time_fs is the public clock.
 export const AU_TIME_FS = 0.024188843265857
-export function finite(value, label) {
-  if (!Number.isFinite(value)) throw new TypeError(`${label} must be finite`)
+export function finite(value: unknown, label: string): number {
+  if (typeof value !== 'number' || !Number.isFinite(value)) throw new TypeError(`${label} must be finite`)
   return value
 }
-export function validateFrame(f) {
+export function validateFrame(value: unknown): TrajectoryFrame {
+  const f = value as TrajectoryFrame
   if (!f || typeof f !== 'object') throw new TypeError('frame required')
-  for (const k of ['traj_id', 'prng_seed']) if (typeof f[k] !== 'string' || !f[k]) throw new TypeError(`${k} required`)
+  for (const k of ['traj_id', 'prng_seed'] as const) if (typeof f[k] !== 'string' || !f[k]) throw new TypeError(`${k} required`)
   if (f.parent_id !== null && typeof f.parent_id !== 'string') throw new TypeError('parent_id must be null or string')
   if (!Number.isInteger(f.step) || f.step < 0) throw new RangeError('invalid step')
   if (finite(f.time_fs, 'time_fs') < 0 || finite(f.weight, 'weight') <= 0 || f.weight > 1 + 1e-12) throw new RangeError('invalid time/weight')
-  for (const k of ['R_coords', 'P_momenta', 'energies_adiabatic']) {
+  for (const k of ['R_coords', 'P_momenta', 'energies_adiabatic'] as const) {
     if (!Array.isArray(f[k]) || !f[k].length) throw new TypeError(`${k} must be a nonempty flat array`)
     f[k].forEach(x => finite(x, k))
   }
@@ -28,12 +30,13 @@ export function validateFrame(f) {
   if (f.hop_event.occurred) {
     const { from_state: a, to_state: b } = f.hop_event
     if (![a, b].every(s => Number.isInteger(s) && s >= 0 && s < n) || a === b || b !== f.active_state) throw new RangeError('invalid hop states')
-  }
+  } else if (f.hop_event.from_state !== null || f.hop_event.to_state !== null) throw new TypeError('non-hop event must have null state transitions')
   if (f.channel_sink_id !== null && (typeof f.channel_sink_id !== 'string' || !f.channel_sink_id)) throw new TypeError('invalid sink')
   if (!Number.isSafeInteger(f.es_calls_increment) || f.es_calls_increment < 0) throw new RangeError('invalid ES increment')
   return f
 }
-export function assertMass(walkers, absorbed = 0) {
+export function assertMass(walkers: readonly { weight: number }[], absorbed = 0): number {
+  if (!Number.isFinite(absorbed) || absorbed < 0 || absorbed > 1 + 1e-12) throw new RangeError('invalid absorbed mass')
   let sum = absorbed, correction = 0
   for (const w of walkers) {
     if (!Number.isFinite(w.weight) || w.weight <= 0) throw new RangeError('invalid walker weight')
@@ -43,3 +46,4 @@ export function assertMass(walkers, absorbed = 0) {
   if (Math.abs(sum - 1) >= 1e-12) throw new Error(`weight conservation violated: ${sum}`)
   return sum
 }
+

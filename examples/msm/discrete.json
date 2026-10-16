@@ -1,0 +1,12 @@
+{
+  "kind": "classical-trajectories",
+  "origin": "unbiased-md",
+  "frame_time": 0.1,
+  "time_unit": "ps",
+  "trajectories": [
+    [0, 0, 1, 1, 0, 0, 0, 1, 0, 0],
+    [1, 1, 0, 0, 1, 1, 0, 1, 0, 0],
+    [0, 1, 0, 0, 1, 0, 1, 0, 0, 1],
+    [1, 0, 0, 1, 0, 0, 1, 0, 0, 1]
+  ]
+}

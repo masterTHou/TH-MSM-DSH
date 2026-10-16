@@ -32,7 +32,7 @@ export async function openStore(workspace) {
   const userPath = path.join(workspace, '.th-msm', 'vector', 'papers.json')
   // Priority 2: 插件内置的预构建向量（tgz 自带）
   const pluginDir = getPluginDir()
-  const builtinPath = path.join(pluginDir, 'src', 'knowledge', 'vector', 'papers.json')
+  const builtinPath = fileURLToPath(new URL('./papers.json', import.meta.url))
 
   let dataPath = null
   if (existsSync(userPath)) {

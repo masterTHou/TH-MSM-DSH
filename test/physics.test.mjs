@@ -1,9 +1,9 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { createLVC, createDualCI, runSimulation, buildC1, validateRun, PRNG, resample, CostLedger, validateFrame } from '../src/engine.js'
-import { rescaleMomentum, kinetic, applyEDC, initialWalker, propagate } from '../src/dynamics/fssh.js'
-import { partition } from '../src/analysis/partition.js'
-import { directFramesToRun } from '../src/io/trajectory.js'
+import { createLVC, createDualCI, runSimulation, buildC1, validateRun, PRNG, resample, CostLedger, validateFrame, assertMass } from '../lib/engine.js'
+import { rescaleMomentum, kinetic, applyEDC, initialWalker, propagate } from '../lib/dynamics/fssh.js'
+import { partition } from '../lib/analysis/partition.js'
+import { directFramesToRun } from '../lib/io/trajectory.js'
 
 test('analytic adiabatic gradients and NAC agree with finite differences', () => {
   for (const model of [createLVC(), createDualCI()]) {
@@ -97,6 +97,9 @@ test('schema rejects contradictory gap and unnormalized electronic amplitudes', 
   assert.throws(() => validateFrame({ ...f, delta_E_min: 5 }), /inconsistent/)
   assert.throws(() => validateFrame({ ...f, elec_amplitudes: [{ re: 2, im: 0 }, { re: 0, im: 0 }] }), /normalized/)
   assert.throws(() => partition(f, { widths: [0] }), /widths/)
+  assert.throws(() => validateFrame({ ...f, hop_event: { occurred: false, from_state: 1, to_state: 0 } }), /non-hop/)
+  assert.throws(() => assertMass([], NaN), /absorbed/)
+  assert.throws(() => assertMass([{ weight: 1.1 }], -0.1), /absorbed/)
 })
 test('direct frame adapter handles simultaneous hop/absorption and counts exploration', async () => {
   const m = createLVC(), initial = initialWalker(m, new PRNG('frames'), { id: 'direct', weight: 1 }).frame
