@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420" role="img" aria-labelledby="title desc">
-  <title id="title">Thermodynamic and Kinetic Markov State Model Intelligence Agent (TH-MSM)</title>
+  <title id="title">Trajectory Hub for Markov State Modeling (TH-MSM)</title>
   <desc id="desc">A conversational workspace for molecular kinetics, with learning, classical MSM analysis, and nonadiabatic research.</desc>
   <defs>
     <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101d38"/><stop offset="1" stop-color="#132e3b"/></linearGradient>
@@ -10,9 +10,10 @@
   <rect width="1280" height="420" rx="24" fill="url(#grid)"/>
   <g font-family="Inter,Segoe UI,Arial,sans-serif">
     <text x="64" y="70" fill="#85d6c5" font-size="15" letter-spacing="3">MOLECULAR KINETICS · CONVERSATIONAL SCIENCE</text>
-    <text x="60" y="150" fill="#f5f8ff" font-size="68" font-weight="700">TH-MSM</text>
-    <text x="65" y="194" fill="#b9d0e2" font-size="25">Learn. Model. Understand.</text>
-    <text x="65" y="233" fill="#8fa9bd" font-size="17">From your first question to reproducible kinetic analysis.</text>
+    <text x="60" y="150" fill="#f5f8ff" font-size="60" font-weight="700">Trajectory Hub</text>
+    <text x="65" y="194" fill="#b9d0e2" font-size="25">for Markov State Modeling (TH-MSM)</text>
+    <text x="65" y="233" fill="#b9d0e2" font-size="23">Learn. Model. Understand.</text>
+    <text x="65" y="259" fill="#8fa9bd" font-size="15">From your first question to reproducible kinetic analysis.</text>
     <g transform="translate(64 280)">
       <rect width="178" height="64" rx="14" fill="#20374b" stroke="#406276"/>
       <text x="22" y="28" fill="#6ee7ce" font-size="12" letter-spacing="1.5">01 / LEARN</text><text x="22" y="49" fill="#f5f8ff" font-size="16">Guided explanations</text>

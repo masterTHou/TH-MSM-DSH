@@ -1,7 +1,7 @@
 {
   "name": "@th-msm/dsh-plugin",
-  "version": "1.5.0",
-  "description": "Conversational MSM modeling, kinetic analysis and learning with a typed scientific core and experimental nonadiabatic C1/WE",
+  "version": "1.5.1",
+  "description": "Trajectory Hub for Markov State Modeling (TH-MSM) — conversational modeling, kinetic analysis, learning and experimental C1/WE",
   "type": "module",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

@@ -10,7 +10,7 @@
 - 明确用户项目根目录，会话记忆隔离、同工作区调用排序、取消传播与结构化错误。
 
 ```sh
-codex plugin marketplace add masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM --ref v1.5.0
+codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.5.0
 codex plugin add th-msm@th-msm-plugins
 ```
 

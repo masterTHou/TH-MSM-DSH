@@ -1,7 +1,7 @@
 /**
  * TH-MSM DSH Plugin v1.5
  *
- * Thermodynamic and Kinetic Markov State Model Intelligence Agent.
+ * Trajectory Hub for Markov State Modeling (TH-MSM).
  *
  * v1.5: DSH entry for the shared DSH/Codex scientific core.
  *

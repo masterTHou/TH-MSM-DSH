@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.1 — 2026-10-16
+
+- Adopt the consistent English name **Trajectory Hub for Markov State Modeling (TH-MSM)**: TH = Trajectory Hub, MSM = Markov State Modeling.
+- Update GitHub repository branding/links, README titles and banner, DSH/Codex display names, marketplace metadata, MCP server title and skill introduction.
+- Publish refreshed DSH/Codex packages and installation references with the same scientific algorithms and stable th-msm tool/plugin identifiers.
+
 ## 1.5.0 — 2026-10-16
 
 - Add a Codex local plugin beside the existing DSH plugin: portable/compatibility manifests, guided scientific skill, repository marketplace and self-contained stdio MCP runtime.

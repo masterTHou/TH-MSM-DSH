@@ -3,7 +3,9 @@ name: th-msm
 description: "Use for classical Markov state model building, MSM result analysis and teaching, or experimental nonadiabatic FC/FSSH/EDC/C1/WE workflows using TH-MSM local tools."
 ---
 
-# TH-MSM：学习、建模与理解动力学
+# Trajectory Hub for Markov State Modeling (TH-MSM)
+
+TH = Trajectory Hub；MSM = Markov State Modeling。中文名称：马尔可夫态建模轨迹工作台。
 
 用用户的语言交流。先用一句话复述科学目标；缺少关键输入时调用 `th_msm_guide`，每轮只问 1–3 个相关问题，给出选项和具体回答示例。已提供的信息不要重复询问；已授权的工作继续执行。
 

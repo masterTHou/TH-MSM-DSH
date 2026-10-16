@@ -22,7 +22,7 @@ const tools = [createEnvTool, createGuideTool, createExampleTool, createBuildToo
 const fileTools = new Set(['th_msm_example', 'th_msm_build', 'th_msm_analyze', 'th_msm_validate', 'th_msm_report', 'th_msm_sample'])
 const readOnlyTools = new Set(['th_msm_env', 'th_msm_analyze', 'th_msm_validate', 'th_msm_knowledge', 'th_msm_teach', 'th_msm_plan'])
 const queues = new Map()
-const server = new Server({ name: 'th-msm', version: __TH_MSM_VERSION__ }, { capabilities: { tools: {} },
+const server = new Server({ name: 'th-msm', title: 'Trajectory Hub for Markov State Modeling (TH-MSM)', version: __TH_MSM_VERSION__ }, { capabilities: { tools: {} },
   instructions: 'TH-MSM: classical MSM, teaching and experimental FC/C1/WE. Use the user-selected absolute workspaceRoot for file tools. Never infer a project from the plugin installation directory. Ask 1–3 questions when inputs are missing. Use a distinct conversationId per conversation for guide memory; omit it for stateless guidance. Scientific limitations must remain visible.' })
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: tools.map(tool => ({

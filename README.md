@@ -1,13 +1,15 @@
 <div align="center">
 
-<h1>Thermodynamic and Kinetic Markov State Model<br>Intelligence Agent (TH-MSM)</h1>
+<h1>Trajectory Hub for Markov State Modeling (TH-MSM)</h1>
 
-![TH-MSM — Learn. Model. Understand.](docs/assets/hero.svg)
+![Trajectory Hub for Markov State Modeling (TH-MSM)](docs/assets/hero.svg)
 
 **从第一句提问，到第一个可解释的动力学模型。**
 
-[![CI](https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM/actions/workflows/ci.yml/badge.svg)](https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM?color=367d72)](https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM/releases)
+**TH** = **Trajectory Hub** · **MSM** = **Markov State Modeling**
+
+[![CI](https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM/actions/workflows/ci.yml/badge.svg)](https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM?color=367d72)](https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM/releases)
 ![Node](https://img.shields.io/badge/Node.js-%E2%89%A522-43853d)
 ![TypeScript](https://img.shields.io/badge/TypeScript-gradual_migration-3178c6)
 [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
@@ -73,19 +75,19 @@ TH-MSM 是面向科研使用者和客户的 **对话式 MSM 助手**，现在支
 先确认终端中的 `node --version` 为 22 或更高，再运行：
 
 ```sh
-codex plugin marketplace add masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM --ref v1.5.0
+codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.5.1
 codex plugin add th-msm@th-msm-plugins
 ```
 
 重新打开 Codex 或新建对话，选择 **TH-MSM**，说：“我没有数据，带我跑第一个 MSM。”首次涉及文件时提供你的项目目录。发布在 GitHub 中的 Codex 插件已编译打包，用户不需要 `npm install` 或 TypeScript 编译。
 
-也可以下载本 Release 的源代码 ZIP 并解压，用 `codex plugin marketplace add "解压后的仓库绝对路径"` 注册本地 marketplace，再运行上面的安装命令。独立 `th-msm-codex-plugin-1.5.0.tar.gz` 仅包含插件本体，适合已有本地 marketplace 的团队分发，不包含 marketplace 包装。
+也可以下载本 Release 的源代码 ZIP 并解压，用 `codex plugin marketplace add "解压后的仓库绝对路径"` 注册本地 marketplace，再运行上面的安装命令。独立 `th-msm-codex-plugin-1.5.1.tar.gz` 仅包含插件本体，适合已有本地 marketplace 的团队分发，不包含 marketplace 包装。
 
 详见 [Codex 安装、工具与工作区说明](docs/CODEX.md)。此版本面向本地 Codex；GitHub 发布不等于已上架 OpenAI 公共插件目录。
 
 ### 在 DSH 中安装
 
-1. 从 [GitHub Releases](https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM/releases) 下载最新 `th-msm-dsh-plugin-x.y.z.tgz`。
+1. 从 [GitHub Releases](https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM/releases) 下载最新 `th-msm-dsh-plugin-x.y.z.tgz`。
 2. 在 DeepSeek Harness 插件管理面板安装。
 3. 在问答窗口说：“带我跑第一个 MSM。”
 
@@ -98,8 +100,8 @@ codex plugin add th-msm@th-msm-plugins
 需要 Node.js ≥22。
 
 ```sh
-git clone https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM.git
-cd Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM
+git clone https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM.git
+cd Trajectory-Hub-for-Markov-State-Modeling-TH-MSM
 npm ci --ignore-scripts
 npm run demo:msm
 ```
@@ -212,6 +214,6 @@ CI 覆盖 Linux/Windows 与 Node 22/24。测试包含解析模型、负向 CK、
 
 <div align="center">
 
-[报告问题与建议](https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM/issues) · [科学方法](docs/SCIENCE.md) · [经典建模指南](docs/CLASSICAL-MSM.md) · [MIT License](LICENSE)
+[报告问题与建议](https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM/issues) · [科学方法](docs/SCIENCE.md) · [经典建模指南](docs/CLASSICAL-MSM.md) · [MIT License](LICENSE)
 
 </div>
