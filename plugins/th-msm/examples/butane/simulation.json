@@ -1,0 +1,33 @@
+{
+  "output": "output/butane-teaching-v2",
+  "trajectories": 12,
+  "duration_ps": 200.0,
+  "equilibration_ps": 20,
+  "temperature_k": 300,
+  "dt_fs": 2,
+  "save_ps": 0.1,
+  "lag_ps": 2.0,
+  "seed": 20261016,
+  "max_wall_seconds": 180,
+  "model": "four-site OPLS-style isolated n-butane teaching model",
+  "msm_lag_ps": 2.0,
+  "friction_ps_inverse": 5.0,
+  "constraints_tolerance": 1e-08,
+  "source": "https://www.rsc.org/suppdata/cp/b6/b601373b/b601373b.pdf",
+  "bond_nm": 0.153,
+  "angle_degrees": 112.4,
+  "angle_k_kj_mol_rad2": 527.184,
+  "torsion_V_kj_mol": [
+    5.903624000000001,
+    -1.1338640000000002,
+    13.15868
+  ],
+  "mass_da": [
+    15.035,
+    14.027,
+    14.027,
+    15.035
+  ],
+  "no_solvent": true,
+  "not_experimental_kinetics": true
+}

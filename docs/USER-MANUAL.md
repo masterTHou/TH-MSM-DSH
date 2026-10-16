@@ -2,7 +2,7 @@
 
 **Trajectory Hub for Markov State Modeling (TH-MSM)**
 
-马尔可夫态建模轨迹工作台 · 适用版本：**v1.7.0** · 宿主：**Codex / DeepSeek Harness（DSH）**
+马尔可夫态建模轨迹工作台 · 适用版本：**v1.8.0** · 宿主：**Codex / DeepSeek Harness（DSH）**
 
 **TH = Trajectory Hub；MSM = Markov State Modeling。**
 
@@ -963,3 +963,14 @@ holdoutFraction=0.25、targetState=3，scriptDir=output/lag5-script、outputDir=
 v1.7.0 新增离线网页。完整操作步骤见 [网页使用手册](WEB-UI.md)。下载 Release 中的 `th-msm-web.html`，双击后打开两状态教学示例；无需安装运行环境。
 
 已安装插件可说：“生成 MSM 交互网页并解释状态、lag、布居、MFPT 与验证结论。”工具 `th_msm_view` 可传 `modelPath` 和 `outputPath`；Codex 还需绝对 `workspaceRoot`。完整 `th_msm_run` 自动生成 `dashboard.html`。网页导入的是模型 JSON，不是轨迹输入。
+
+
+## 18. 用一个分子走完真实流程
+
+v1.8.0 在网页加入“正丁烷分子全流程”：七步教学、实际构象回放、六张 Python 图像、通俗公式和真实运行清单。详见 [正丁烷完整教程](BUTANE-TUTORIAL.md)。
+
+**无需环境先体验：** 双击离线网页，点击分子教程按钮。**自己重跑：** 按教程创建独立 Conda 环境，运行 Python/OpenMM 脚本，再导出自己的网页。默认单线程，原子数和采样时长受限。网页导出工具不会安装依赖或自行启动 MD。
+
+提示词：“我是本科生，请从正丁烷结构开始，按七步教我完整 MSM 流程，每次解释一步并给小练习。”已有结果可说：“请使用 output/my-butane/lesson.json 生成对应网页，核对模型与图像来自同一次运行。”
+
+`th_msm_view` 新增可选 `lessonPath`；其余参数不变。普通模型导出仍可用，分子示例、合成链和自己的模型有独立来源标签。MFPT 与布居没有置信区间，测试通过也不意味着采样已充分收敛。

@@ -1,6 +1,6 @@
 {
   "name": "@th-msm/dsh-plugin",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Trajectory Hub for Markov State Modeling (TH-MSM) — reusable scripts, environment checks, native end-to-end MSM workflows and learning",
   "type": "module",
   "main": "./lib/index.js",
@@ -44,7 +44,12 @@
     "docs",
     "examples/msm",
     "CHANGELOG.md",
-    "benchmarks"
+    "benchmarks",
+    "examples/butane",
+    "tutorials/butane/*.py",
+    "tutorials/butane/*.mjs",
+    "tutorials/butane/*.yml",
+    "tutorials/butane/*.txt"
   ],
   "engines": {
     "node": ">=22"
@@ -78,7 +83,9 @@
     "prepublishOnly": "npm run check && npm test",
     "build:codex": "npm run build && node scripts/build-codex.mjs",
     "pack:codex": "npm run build:codex && node scripts/pack-codex.mjs",
-    "web": "node scripts/open-web.mjs"
+    "web": "node scripts/open-web.mjs",
+    "demo:molecule": "python tutorials/butane/run.py",
+    "test:molecule": "python -m unittest discover -s tutorials/butane -p test_model.py"
   },
   "dependencies": {
     "ml-matrix": "^6.15.0"

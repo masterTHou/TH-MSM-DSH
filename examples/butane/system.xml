@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<System openmmVersion="8.6.1" type="System" version="1">
+	<PeriodicBoxVectors>
+		<A x="2" y="0" z="0"/>
+		<B x="0" y="2" z="0"/>
+		<C x="0" y="0" z="2"/>
+	</PeriodicBoxVectors>
+	<Particles>
+		<Particle mass="15.035"/>
+		<Particle mass="14.027"/>
+		<Particle mass="14.027"/>
+		<Particle mass="15.035"/>
+	</Particles>
+	<Constraints>
+		<Constraint d=".153" p1="0" p2="1"/>
+		<Constraint d=".153" p1="1" p2="2"/>
+		<Constraint d=".153" p1="2" p2="3"/>
+	</Constraints>
+	<Forces>
+		<Force forceGroup="0" name="HarmonicAngleForce" type="HarmonicAngleForce" usesPeriodic="0" version="2">
+			<Angles>
+				<Angle a="1.9617500792416265" k="527.184" p1="0" p2="1" p3="2"/>
+				<Angle a="1.9617500792416265" k="527.184" p1="1" p2="2" p3="3"/>
+			</Angles>
+		</Force>
+		<Force forceGroup="0" name="PeriodicTorsionForce" type="PeriodicTorsionForce" usesPeriodic="0" version="2">
+			<Torsions>
+				<Torsion k="2.9518120000000003" p1="0" p2="1" p3="2" p4="3" periodicity="1" phase="0"/>
+				<Torsion k="-.5669320000000001" p1="0" p2="1" p3="2" p4="3" periodicity="2" phase="3.141592653589793"/>
+				<Torsion k="6.57934" p1="0" p2="1" p3="2" p4="3" periodicity="3" phase="0"/>
+			</Torsions>
+		</Force>
+		<Force forceGroup="0" frequency="1" name="CMMotionRemover" type="CMMotionRemover" version="1"/>
+	</Forces>
+</System>

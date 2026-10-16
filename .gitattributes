@@ -2,3 +2,6 @@
 plugins/th-msm/server/** text eol=lf
 plugins/th-msm/web/** text eol=lf
 src/web/** text eol=lf
+# Raw trajectory SHA256 must survive cloning on both supported platforms.
+examples/butane/*.json text eol=lf
+plugins/th-msm/examples/butane/*.json text eol=lf

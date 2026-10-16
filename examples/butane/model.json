@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "kind": "classical-msm",
+  "estimator": "nonreversible-row-mle",
+  "labels": [
+    0,
+    1,
+    2
+  ],
+  "lag_frames": 20,
+  "lag_time": 2,
+  "time_unit": "ps",
+  "counts": [
+    [
+      12847,
+      321,
+      161
+    ],
+    [
+      306,
+      2186,
+      60
+    ],
+    [
+      194,
+      22,
+      1732
+    ]
+  ],
+  "transition_matrix": [
+    [
+      0.9638382474304149,
+      0.024082826918748593,
+      0.012078925650836523
+    ],
+    [
+      0.11990595611285267,
+      0.8565830721003135,
+      0.023510971786833857
+    ],
+    [
+      0.09958932238193019,
+      0.011293634496919919,
+      0.8891170431211499
+    ]
+  ],
+  "stationary_distribution": [
+    0.7538688998560724,
+    0.1353172569067639,
+    0.11081384323716373
+  ],
+  "spectrum": [
+    {
+      "eigenvalue": {
+        "re": 0.873469418736029,
+        "im": 0
+      },
+      "decay_time": 14.783915330748806,
+      "oscillatory": false
+    },
+    {
+      "eigenvalue": {
+        "re": 0.8360689439158491,
+        "im": 0
+      },
+      "decay_time": 11.170426042433418,
+      "oscillatory": false
+    }
+  ],
+  "diagnostics": [
+    {
+      "name": "row_stochasticity",
+      "status": "pass",
+      "details": "Rows normalized from within-trajectory sliding lag counts; no cross-trajectory transitions."
+    },
+    {
+      "name": "irreducibility",
+      "status": "pass",
+      "details": "All retained states mutually reachable; no silent component deletion."
+    },
+    {
+      "name": "slowest_ITS_spread",
+      "status": "pass",
+      "details": "Heuristic: slowest decay-time spread <30% across at least three lags. Modes may exchange; inspect spectra, not only this flag."
+    }
+  ],
+  "validation": {
+    "verdict": "SUPPORTED_AT_TESTED_LAGS",
+    "its": [
+      {
+        "lag_frames": 20,
+        "modes": [
+          {
+            "eigenvalue": {
+              "re": 0.873469418736029,
+              "im": 0
+            },
+            "decay_time": 14.783915330748806,
+            "oscillatory": false
+          },
+          {
+            "eigenvalue": {
+              "re": 0.8360689439158491,
+              "im": 0
+            },
+            "decay_time": 11.170426042433418,
+            "oscillatory": false
+          }
+        ]
+      },
+      {
+        "lag_frames": 40,
+        "modes": [
+          {
+            "eigenvalue": {
+              "re": 0.7803060603741853,
+              "im": 0
+            },
+            "decay_time": 16.124542667431154,
+            "oscillatory": false
+          },
+          {
+            "eigenvalue": {
+              "re": 0.6970327986783903,
+              "im": 0
+            },
+            "decay_time": 11.082702069692884,
+            "oscillatory": false
+          }
+        ]
+      },
+      {
+        "lag_frames": 60,
+        "modes": [
+          {
+            "eigenvalue": {
+              "re": 0.6898559450973881,
+              "im": 0
+            },
+            "decay_time": 16.160637668911573,
+            "oscillatory": false
+          },
+          {
+            "eigenvalue": {
+              "re": 0.5622890595685015,
+              "im": 0
+            },
+            "decay_time": 10.421384868204823,
+            "oscillatory": false
+          }
+        ]
+      }
+    ],
+    "ck": [
+      {
+        "multiple": 2,
+        "weighted_rmse": 0.04669486660655373,
+        "supported_rows": 3,
+        "status": "pass"
+      },
+      {
+        "multiple": 3,
+        "weighted_rmse": 0.0666505443556362,
+        "supported_rows": 3,
+        "status": "pass"
+      }
+    ],
+    "ck_tolerance": 0.1,
+    "min_counts_per_row": 20,
+    "validation_trajectories": 3
+  },
+  "provenance": {
+    "data_digest": "b24e0cc5f3d61af14652a8e1586619e7d88aa3e3d408d115b7954e9518bf22ce",
+    "training_trajectories": 9,
+    "validation_trajectories": 3,
+    "origin": "unbiased-md"
+  }
+}

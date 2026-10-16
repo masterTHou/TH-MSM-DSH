@@ -1,9 +1,9 @@
 /**
- * TH-MSM DSH Plugin v1.7
+ * TH-MSM DSH Plugin v1.8
  *
  * Trajectory Hub for Markov State Modeling (TH-MSM).
  *
- * v1.7: DSH entry for the shared DSH/Codex scientific core.
+ * v1.8: DSH entry for the shared DSH/Codex scientific core.
  *
  * Registers:
  *  - 15 tools: proxy, environment, guide, example, analysis, knowledge,

@@ -1,9 +1,11 @@
 import { validateMSM, mfptToState } from '../msm/validation.js'
+import { installMoleculeLesson } from './molecule-lesson.js'
 const $ = id => document.getElementById(id)
 const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
 const number = n => n === null || !Number.isFinite(n) ? '无有限值' : Number(n.toPrecision(5)).toString()
 const percent = n => `${(100 * n).toFixed(1)}%`
 let model
+let hideMolecule = () => {}
 function table(headers, rows) { return `<table><thead><tr>${headers.map(x => `<th>${escape(x)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(x => `<td>${escape(x)}</td>`).join('')}</tr>`).join('')}</tbody></table>` }
 function bars(id, values, formatter = percent) {
   const max = 1 // Probability bars share an absolute 0–100% scale.
@@ -18,6 +20,7 @@ function load(input, source) {
     if (v.verdict === 'INVALID_MODEL') throw new Error(v.uncertainties.join('; '))
     if (!input.provenance || !Array.isArray(input.validation.its)) throw new Error('缺少数据来源或 ITS 记录')
     model = input
+    hideMolecule()
     $('error').hidden = true; $('empty').hidden = true; $('results').hidden = false; $('source').textContent = source
     const options = model.labels.map(x => `<option value="${x}">状态 ${x}</option>`).join('')
     $('origin').innerHTML = options; $('target').innerHTML = options; $('target').selectedIndex = 1; $('steps').value = 0
@@ -55,4 +58,5 @@ $('origin').onchange=origin;$('target').onchange=target;$('steps').oninput=evolu
 $('file').onchange=async()=>{try{const f=$('file').files[0];if(!f)return;if(f.size>8*1024*1024)throw new Error('模型 JSON 需小于 8 MiB');load(JSON.parse(await f.text()),f.name)}catch(e){fail(e)}}
 $('download').onclick=()=>{if(!model){fail(new Error('请先打开示例或模型'));return}const url=URL.createObjectURL(new Blob([JSON.stringify(model,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='model.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 $('print').onclick=()=>window.print()
+hideMolecule = installMoleculeLesson((model, source) => load(model, source))
 if(window.TH_MSM_INITIAL_MODEL)load(window.TH_MSM_INITIAL_MODEL,'随网页导出的模型')

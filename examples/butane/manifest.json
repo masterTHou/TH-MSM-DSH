@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "molecule": "n-butane",
+  "representation": "four united-atom CHx sites",
+  "temperature_k": 300,
+  "platform": "CPU",
+  "threads": 1,
+  "python": "3.11.17",
+  "openmm": "8.6.1",
+  "numpy": "2.4.6",
+  "seed": 20261016,
+  "trajectory_seeds": [
+    1017508850,
+    671923122,
+    597768136,
+    534237839,
+    275681873,
+    370596486,
+    189315809,
+    775956936,
+    1006989563,
+    771222113,
+    443458226,
+    822162922
+  ],
+  "n_trajectories": 12,
+  "production_ps_per_trajectory": 200.0,
+  "equilibration_ps_per_trajectory": 20,
+  "saved_frames_per_trajectory": 2001,
+  "frame_time_ps": 0.1,
+  "integration_steps": 1323000,
+  "nve_diagnostics": [
+    {
+      "dt_fs": 2.0,
+      "duration_ps": 2,
+      "max_abs_energy_change_kj_mol": 0.02192372553096078
+    },
+    {
+      "dt_fs": 1.0,
+      "duration_ps": 2,
+      "max_abs_energy_change_kj_mol": 0.018981266187665824
+    }
+  ],
+  "max_bond_error_nm": 1.5288890153897228e-09,
+  "empirical_populations_all_trajectories": [
+    0.7106863235049142,
+    0.17103948025987006,
+    0.11827419623521572
+  ],
+  "theoretical_torsion_boltzmann_populations": [
+    0.6627369059207296,
+    0.16863191985110138,
+    0.16863117422817242
+  ],
+  "per_trajectory_populations": [
+    [
+      0.7981009495252374,
+      0.0,
+      0.20189905047476261
+    ],
+    [
+      0.9735132433783108,
+      0.025987006496751622,
+      0.0004997501249375312
+    ],
+    [
+      0.4827586206896552,
+      0.26486756621689156,
+      0.25237381309345325
+    ],
+    [
+      0.8040979510244878,
+      0.19440279860069964,
+      0.0014992503748125937
+    ],
+    [
+      0.9500249875062469,
+      0.03398300849575212,
+      0.015992003998001
+    ],
+    [
+      0.7856071964017991,
+      0.10594702648675662,
+      0.10844577711144428
+    ],
+    [
+      0.8345827086456772,
+      0.16541729135432284,
+      0.0
+    ],
+    [
+      0.5712143928035982,
+      0.3868065967016492,
+      0.041979010494752625
+    ],
+    [
+      0.5187406296851574,
+      0.127936031984008,
+      0.35332333833083457
+    ],
+    [
+      0.49225387306346824,
+      0.4027986006996502,
+      0.10494752623688156
+    ],
+    [
+      0.6871564217891054,
+      0.12243878060969515,
+      0.1904047976011994
+    ],
+    [
+      0.6301849075462269,
+      0.22188905547226387,
+      0.14792603698150925
+    ]
+  ],
+  "md_wall_seconds": 49.15620029999991,
+  "python_peak_memory_mib": 130.48046875,
+  "total_es_calls": 0,
+  "force_field_source": "https://www.rsc.org/suppdata/cp/b6/b601373b/b601373b.pdf",
+  "limits": [
+    "Local OPLS-style bonded subset; no solvent or explicit hydrogens",
+    "Thermostat friction and coarse representation affect kinetics; not experimental butane rates",
+    "MSM projection must be tested; passing is not proof of Markovianity",
+    "No confidence intervals on stationary populations or MFPT",
+    "Seeds do not guarantee bitwise reproducibility across OpenMM platforms/versions"
+  ],
+  "input_sha256": "1b3d01de0e89f4f84d4ab4518ffd7b87059489e55d00caa675c98c1ddfdbdbde",
+  "total_wall_seconds_through_plots": 51.326689799985616,
+  "production_equilibration_steps": 1320000,
+  "nve_integration_steps": 3000
+}

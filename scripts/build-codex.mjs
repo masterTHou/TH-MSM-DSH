@@ -26,8 +26,9 @@ await writeFile(`${root}/.codex-plugin/plugin.json`, JSON.stringify({ name: port
   ...portable.extensions['com.openai'] }, null, 2) + '\n')
 await copyFile('LICENSE', `${root}/LICENSE`)
 await cp('examples/msm', `${root}/examples`, { recursive: true })
+await cp('examples/butane', `${root}/examples/butane`, { recursive: true })
 await mkdir(`${root}/docs`, { recursive: true })
-for (const name of ['SCIENCE.md', 'CLASSICAL-MSM.md', 'CODEX.md', 'USER-MANUAL.md', 'WORKFLOWS.md', 'WEB-UI.md']) await copyFile(`docs/${name}`, `${root}/docs/${name}`)
+for (const name of ['SCIENCE.md', 'CLASSICAL-MSM.md', 'CODEX.md', 'USER-MANUAL.md', 'WORKFLOWS.md', 'WEB-UI.md', 'BUTANE-TUTORIAL.md']) await copyFile(`docs/${name}`, `${root}/docs/${name}`)
 const dependencies = new Set(Object.keys(result.metafile.inputs).filter(file => file.startsWith('node_modules/')).map(file => {
   const parts = file.split('/')
   return parts.slice(0, parts[1].startsWith('@') ? 3 : 2).join('/')

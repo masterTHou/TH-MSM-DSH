@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { mkdtemp, readFile, rm } from 'node:fs/promises'
+import { mkdtemp, readFile, rm, copyFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -47,6 +47,9 @@ test('Codex stdio plugin: discovery, teaching, MSM parity, C1 worker and workspa
     assert.ok((await readFile(workflow.details.artifacts.report, 'utf8')).includes('SUPPORTED_AT_TESTED_LAGS'))
     const view = await call('th_msm_view', { workspaceRoot: workspace, modelPath: 'automated/model.json', outputPath: 'viewer.html' })
     assert.ok((await readFile(view.dashboardPath, 'utf8')).includes('window.TH_MSM_INITIAL_MODEL={'))
+    await copyFile(new URL('../examples/butane/lesson.json', import.meta.url), path.join(workspace, 'butane-lesson.json'))
+    const molecularView = await call('th_msm_view', { workspaceRoot: workspace, lessonPath: 'butane-lesson.json', outputPath: 'molecular.html' })
+    assert.ok((await readFile(molecularView.dashboardPath, 'utf8')).includes('window.TH_MSM_CUSTOM_LESSON={'))
     assert.equal((await client.callTool({ name: 'th_msm_view', arguments: { workspaceRoot: workspace, outputPath: '../outside.html' } })).isError, true)
     assert.equal((await call('th_msm_teach', { concept: 'msm', level: 'undergraduate' })).ok, true)
     assert.equal((await client.callTool({ name: 'th_msm_teach', arguments: { level: 'invented' } })).isError, true)

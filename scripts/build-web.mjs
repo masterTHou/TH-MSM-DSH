@@ -1,8 +1,12 @@
 import { build } from 'esbuild'
 import { readFile, writeFile, mkdir } from 'node:fs/promises'
 import { buildClassicalModel, generateClassicalExample } from '../lib/msm/index.js'
+import { validateLesson } from '../lib/web/lesson-validation.js'
 const demo=buildClassicalModel(generateClassicalExample('msm-example'))
-const result=await build({entryPoints:['src/web/app.js'],bundle:true,platform:'browser',target:'es2022',format:'iife',minify:true,write:false,metafile:true,legalComments:'inline',define:{__TH_MSM_DEMO__:JSON.stringify(demo)}})
+const molecule = JSON.parse(await readFile('examples/butane/lesson.json','utf8'))
+molecule.figure_images = await Promise.all(molecule.figures.map(async name=>'data:image/png;base64,'+(await readFile(`examples/butane/figures/${name}`)).toString('base64')))
+validateLesson(molecule)
+const result=await build({entryPoints:['src/web/app.js'],bundle:true,platform:'browser',target:'es2022',format:'iife',minify:true,write:false,metafile:true,legalComments:'inline',define:{__TH_MSM_DEMO__:JSON.stringify(demo),__TH_MSM_MOLECULE__:JSON.stringify(molecule)}})
 const js=result.outputFiles[0].text.replace(/<\/script/gi,'<\\/script')
 let html=(await readFile('src/web/page.html','utf8')).replace('/*TH_MSM_CSS*/',await readFile('src/web/style.css','utf8')).replace('/*TH_MSM_JS*/',()=>js)
 const { readdir } = await import('node:fs/promises')

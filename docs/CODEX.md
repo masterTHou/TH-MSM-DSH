@@ -7,7 +7,7 @@
 需要 Codex 支持本地插件与 MCP，并且其进程可在 PATH 找到 Node.js ≥22。运行 `node --version` 检查。
 
 ```sh
-codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.7.0
+codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.8.0
 codex plugin add th-msm@th-msm-plugins
 ```
 
@@ -26,7 +26,7 @@ codex plugin add th-msm@th-msm-plugins
 
 无需编译。仓库的 `plugins/th-msm/server/` 已包含独立 JS 运行包与第三方许可。
 
-独立的 `th-msm-codex-plugin-1.7.0.tar.gz` 解压后根目录就是一个插件。已有 marketplace 的团队可将其放到自己的 `plugins/th-msm` 目录，并登记相对路径 `./plugins/th-msm`。不要将 DSH `.tgz` 当成 Codex 安装包。
+独立的 `th-msm-codex-plugin-1.8.0.tar.gz` 解压后根目录就是一个插件。已有 marketplace 的团队可将其放到自己的 `plugins/th-msm` 目录，并登记相对路径 `./plugins/th-msm`。不要将 DSH `.tgz` 当成 Codex 安装包。
 
 ## 第一句话
 
@@ -89,7 +89,7 @@ flowchart LR
 npm ci --ignore-scripts
 npm test
 npm run pack:codex
-node scripts/smoke-codex-package.mjs dist/th-msm-codex-plugin-1.7.0.tar.gz
+node scripts/smoke-codex-package.mjs dist/th-msm-codex-plugin-1.8.0.tar.gz
 ```
 
 不要手工修改生成的 `plugins/th-msm/server/`，编辑源代码后重新构建。发布前需要提交生成产物，使 GitHub marketplace 安装无需开发工具链。
@@ -101,4 +101,7 @@ node scripts/smoke-codex-package.mjs dist/th-msm-codex-plugin-1.7.0.tar.gz
 v1.5.2 在 Windows 的 Codex CLI 隔离配置中验证了 marketplace 安装，并对安装缓存中的真实 MCP 服务完成工具发现与调用。Codex app-server 也成功识别已启用的插件与 skill，并启动 MCP 服务、发现全部 11 个工具。当前运行中的用户 GUI 对话不会自动获得新工具，完整桌面对话体验仍需安装后新开对话验证。Linux/Windows Node 22/24 的 CI 同时测试 DSH 与独立 Codex 发布包。
 
 
-交互网页（v1.7.0）：用 `th_msm_view` 导出离线 HTML；完整工作流自动生成 `dashboard.html`。详见 [网页手册](WEB-UI.md)。
+交互网页（v1.8.0）：用 `th_msm_view` 导出离线 HTML；完整工作流自动生成 `dashboard.html`。详见 [网页手册](WEB-UI.md)。
+
+
+分子全流程（v1.8）：离线网页内的正丁烷七步课程，支持真实保存帧回放与 Python 科学图。使用说明见 [分子教程](BUTANE-TUTORIAL.md)。

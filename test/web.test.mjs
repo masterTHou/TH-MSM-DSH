@@ -8,7 +8,7 @@ test('offline dashboard embeds real model and escapes script injection', () => {
   model.provenance.data_digest = '</script><script>alert(1)</script>'
   const html = createDashboard(model)
   assert.ok(!html.includes(model.provenance.data_digest))
-  const embedded = html.match(/window.TH_MSM_INITIAL_MODEL=(.*?);<\/script>/)[1]
+  const embedded = html.match(/window.TH_MSM_INITIAL_MODEL=(.*?);window.TH_MSM_CUSTOM_LESSON=/)[1]
   assert.deepEqual(JSON.parse(embedded), model)
   assert.ok(html.includes('平均首达时间'))
   assert.ok(!html.includes('<script src='))

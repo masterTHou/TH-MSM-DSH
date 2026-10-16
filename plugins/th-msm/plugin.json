@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "th-msm",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Native MSM scripts, environment diagnostics, end-to-end modeling/analysis/validation/reports, guided learning and experimental C1/WE",
   "author": {
     "name": "masterTHou"

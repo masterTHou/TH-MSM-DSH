@@ -1,0 +1,112 @@
+[
+  {
+    "lag_ps": 0.2,
+    "verdict": "SUPPORTED_AT_TESTED_LAGS",
+    "timescales_ps": [
+      10.011002852567534,
+      9.023412968751183
+    ],
+    "ck": [
+      {
+        "multiple": 2,
+        "weighted_rmse": 0.007472367084214592,
+        "supported_rows": 3,
+        "status": "pass"
+      },
+      {
+        "multiple": 3,
+        "weighted_rmse": 0.011103543994332925,
+        "supported_rows": 3,
+        "status": "pass"
+      }
+    ]
+  },
+  {
+    "lag_ps": 0.5,
+    "verdict": "SUPPORTED_AT_TESTED_LAGS",
+    "timescales_ps": [
+      11.082680533950207,
+      9.624132854248552
+    ],
+    "ck": [
+      {
+        "multiple": 2,
+        "weighted_rmse": 0.017368167132957163,
+        "supported_rows": 3,
+        "status": "pass"
+      },
+      {
+        "multiple": 3,
+        "weighted_rmse": 0.025413674110700342,
+        "supported_rows": 3,
+        "status": "pass"
+      }
+    ]
+  },
+  {
+    "lag_ps": 1,
+    "verdict": "SUPPORTED_AT_TESTED_LAGS",
+    "timescales_ps": [
+      13.099518427398507,
+      10.762926948554762
+    ],
+    "ck": [
+      {
+        "multiple": 2,
+        "weighted_rmse": 0.028977505579131507,
+        "supported_rows": 3,
+        "status": "pass"
+      },
+      {
+        "multiple": 3,
+        "weighted_rmse": 0.039374789585921284,
+        "supported_rows": 3,
+        "status": "pass"
+      }
+    ]
+  },
+  {
+    "lag_ps": 2,
+    "verdict": "SUPPORTED_AT_TESTED_LAGS",
+    "timescales_ps": [
+      14.783915330748806,
+      11.170426042433418
+    ],
+    "ck": [
+      {
+        "multiple": 2,
+        "weighted_rmse": 0.04669486660655373,
+        "supported_rows": 3,
+        "status": "pass"
+      },
+      {
+        "multiple": 3,
+        "weighted_rmse": 0.0666505443556362,
+        "supported_rows": 3,
+        "status": "pass"
+      }
+    ]
+  },
+  {
+    "lag_ps": 5,
+    "verdict": "MARKOV_ASSUMPTION_UNSUPPORTED",
+    "timescales_ps": [
+      16.211663477192356,
+      10.75447192973743
+    ],
+    "ck": [
+      {
+        "multiple": 2,
+        "weighted_rmse": 0.1041187967200643,
+        "supported_rows": 3,
+        "status": "fail"
+      },
+      {
+        "multiple": 3,
+        "weighted_rmse": 0.12195554226179163,
+        "supported_rows": 3,
+        "status": "fail"
+      }
+    ]
+  }
+]

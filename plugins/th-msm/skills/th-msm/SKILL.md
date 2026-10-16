@@ -43,7 +43,7 @@ TH = Trajectory Hub；MSM = Markov State Modeling。中文名称：马尔可夫�
 
 需要方法细节时读取随包附带的 [科学约定](../../docs/SCIENCE.md) 与 [经典 MSM 数据与分析说明](../../docs/CLASSICAL-MSM.md)。
 
-Codex 版提供 13 个本地科学工具，不提供 DSH 的外部命令代理 `th_msm`。外部量化软件的执行需要另外配置与授权。不要将本地 MCP 的路径检查描述为操作系统级沙箱。
+Codex 版提供 14 个本地科学工具，不提供 DSH 的外部命令代理 `th_msm`。外部量化软件的执行需要另外配置与授权。不要将本地 MCP 的路径检查描述为操作系统级沙箱。
 
 Codex 版不支持 `th_msm_build mode=index` 或可选向量模型下载；离线文献检索使用内置的 `th_msm_knowledge` 关键词检索。
 
@@ -55,3 +55,10 @@ Codex 版不支持 `th_msm_build mode=index` 或可选向量模型下载；离�
 ## Interactive MSM dashboard
 
 When users ask to visualize MSM or learn through a UI, use `th_msm_view` with their selected absolute workspaceRoot, optional modelPath and outputPath. Return the absolute dashboardPath and open it in a browser when supported. The HTML works offline; it contains a synthetic teaching example and can import classical model.json. Full `th_msm_run` now generates dashboard.html automatically. Explain state transitions, lag, populations and MFPT separately; keep negative validation visible. Do not claim the viewer can fit raw trajectories or audit heldout CK without original data. See ../../docs/WEB-UI.md for steps and beginner prompts.
+
+
+## Molecular end-to-end lesson (v1.8)
+
+For a beginner asking to see a molecule through the full MSM workflow, export/open the offline dashboard and ask them to click the n-butane molecular lesson. It contains a recorded four-site united-atom OpenMM run, seven stages, six scientific figures and a saved-frame viewer. Read ../../docs/BUTANE-TUTORIAL.md for the exact model, Conda commands, budget and limitations. This is classical MD, not DSH or experimental butane kinetics. Do not treat the finite-data CK/ITS pass as equilibrium or uncertainty convergence.
+
+To export the user's new run, pass its lesson.json as lessonPath to th_msm_view with workspaceRoot. If modelPath is also provided it must match the lesson model. The fixed Python tutorial is run from the source repository in a user-selected Conda environment via the host's authorized terminal workflow; th_msm_view itself does not install dependencies or run Python. Keep the existing environment and results intact; use a fresh output folder and single-thread defaults.

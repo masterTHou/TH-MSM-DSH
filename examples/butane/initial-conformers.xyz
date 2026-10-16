@@ -1,0 +1,18 @@
+4
+trans, gauche+, gauche- ideal structures; frame=0; angstrom; H implicit in CHx sites
+C 0.0000000 0.0000000 0.0000000
+C 1.5300000 0.0000000 0.0000000
+C 2.1130377 1.4145554 0.0000000
+C 3.6430377 1.4145554 0.0000000
+4
+trans, gauche+, gauche- ideal structures; frame=1; angstrom; H implicit in CHx sites
+C 0.0000000 0.0000000 0.0000000
+C 1.5300000 0.0000000 0.0000000
+C 2.1130377 1.4145554 0.0000000
+C 1.6813053 2.2231232 1.2250409
+4
+trans, gauche+, gauche- ideal structures; frame=2; angstrom; H implicit in CHx sites
+C 0.0000000 0.0000000 0.0000000
+C 1.5300000 0.0000000 0.0000000
+C 2.1130377 1.4145554 0.0000000
+C 1.6813053 2.2231232 -1.2250409
