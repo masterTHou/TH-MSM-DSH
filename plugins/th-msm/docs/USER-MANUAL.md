@@ -1,6 +1,7 @@
 # TH-MSM 软件使用手册
 
-**Trajectory Hub for Markov State Modeling (TH-MSM)**  
+**Trajectory Hub for Markov State Modeling (TH-MSM)**
+
 马尔可夫态建模轨迹工作台 · 适用版本：**v1.5.2** · 宿主：**Codex / DeepSeek Harness（DSH）**
 
 **TH = Trajectory Hub；MSM = Markov State Modeling。**
