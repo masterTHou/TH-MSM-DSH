@@ -50,3 +50,8 @@ Codex 版不支持 `th_msm_build mode=index` 或可选向量模型下载；离�
 ## 呈现结果
 
 先回答科学问题，再给数值、单位、验证结论与不确定性。引用实际生成的文件。失败时指出原因和 1–2 个具体下一步。每次教学或分析后给 2–3 个自然语言后续提问，例如“为什么不是各占一半？”、“计算到状态 1 的 MFPT”、“CK 不通过该怎么改？”
+
+
+## Interactive MSM dashboard
+
+When users ask to visualize MSM or learn through a UI, use `th_msm_view` with their selected absolute workspaceRoot, optional modelPath and outputPath. Return the absolute dashboardPath and open it in a browser when supported. The HTML works offline; it contains a synthetic teaching example and can import classical model.json. Full `th_msm_run` now generates dashboard.html automatically. Explain state transitions, lag, populations and MFPT separately; keep negative validation visible. Do not claim the viewer can fit raw trajectories or audit heldout CK without original data. See ../../docs/WEB-UI.md for steps and beginner prompts.

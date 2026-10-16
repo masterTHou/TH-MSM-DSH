@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "th-msm",
   "name": "Trajectory Hub for Markov State Modeling (TH-MSM)",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "MSM 脚本生成、环境自检、经典建模分析验证报告全流程与分层教学；实验性非绝热 C1/WE",
   "host": {
     "kind": "deepseek-harness",
@@ -24,7 +24,8 @@
       "th_msm_example",
       "th_msm_analyze",
       "th_msm_script",
-      "th_msm_run"
+      "th_msm_run",
+      "th_msm_view"
     ],
     "agentHooks": true,
     "agentLoop": true,

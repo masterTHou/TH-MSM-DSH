@@ -5,6 +5,7 @@ import { generateClassicalExample } from '../msm/example.js'
 import { createBuildTool } from '../tools/build.js'
 import { createAnalyzeTool } from '../tools/analyze.js'
 import { createValidateTool } from '../tools/validate.js'
+import { createViewTool } from '../tools/view.js'
 import { createReportTool } from '../tools/report.js'
 import { validateWorkflow } from './config.js'
 import { freshDirectory } from './paths.js'
@@ -72,7 +73,11 @@ export async function runWorkflow(workspace, config, options = {}) {
     await stage('report', async () => {
       const result = requireSuccess(await createReportTool({}, settings).execute({ title: 'TH-MSM reproducible workflow', modelPath: relative('model.json'), outputPath: relative('report.md'), ...(config.parameters.targetState !== undefined ? { targetState: config.parameters.targetState } : {}) }, context))
       manifest.artifacts.report = result.reportPath
-      manifest.artifacts.readme = await writeWorkspaceText(workspace, relative('START-HERE.md'), `# 这次 MSM 工作流\n\n1. 输入：${inputPath}。\n2. model.json 保存真实计数、矩阵和谱。\n3. analysis.json 解读布居与可选 MFPT。\n4. validation.json 保存 ITS/CK 诊断。\n5. report.md 是可交付报告。\n\n科学结论：**${manifest.science_verdict}**。程序完成不等于科学验证通过。合成示例不是分子模拟；稳态布居不是光解分支比。\n\n参数和运行阶段见 run-manifest.json，日志见 workflow.log.jsonl。\n\n你可以继续问：为什么布居不是各占一半？这个 lag 是否受支持？如何替换成自己的数据？\n`)
+      manifest.artifacts.readme = await writeWorkspaceText(workspace, relative('START-HERE.md'), `# 这次 MSM 工作流\n\n1. 输入：${inputPath}。\n2. model.json 保存真实计数、矩阵和谱。\n3. analysis.json 解读布居与可选 MFPT。\n4. validation.json 保存 ITS/CK 诊断。\n5. report.md 是可交付报告。\n6. 双击 dashboard.html 打开交互可视化。\n\n科学结论：**${manifest.science_verdict}**。程序完成不等于科学验证通过。合成示例不是分子模拟；稳态布居不是光解分支比。\n\n参数和运行阶段见 run-manifest.json，日志见 workflow.log.jsonl。\n\n你可以继续问：为什么布居不是各占一半？这个 lag 是否受支持？如何替换成自己的数据？\n`)
+    })
+    await stage('visualize', async () => {
+      const result = requireSuccess(await createViewTool({}, settings).execute({ modelPath: relative('model.json'), outputPath: relative('dashboard.html') }, context))
+      manifest.artifacts.dashboard = result.dashboardPath
     })
     manifest.execution_ok = true
     manifest.status = manifest.science_verdict === 'SUPPORTED_AT_TESTED_LAGS' ? 'completed' : 'completed_with_limitations'

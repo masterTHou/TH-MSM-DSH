@@ -14,13 +14,14 @@ import { createSampleTool } from '../tools/sample.js'
 import { createKnowledgeTool } from '../tools/knowledge.js'
 import { createTeachTool } from '../tools/teach.js'
 import { createPlanTool } from '../tools/plan.js'
+import { createViewTool } from '../tools/view.js'
 import { createScriptTool, createRunTool } from '../tools/workflow.js'
 
 const config = { defaultTimeoutMs: 30000, pythonTimeoutMs: 300000, maxKnowledgeResults: 10,
   knowledgeBasePath: 'knowledge', knowledgeCatalogs: ['reviews/CATALOG.md', 'papers/CATALOG.md', 'benchmarks/CATALOG.md'] }
 const tools = [createEnvTool, createGuideTool, createExampleTool, createBuildTool, createAnalyzeTool,
-  createValidateTool, createReportTool, createSampleTool, createKnowledgeTool, createTeachTool, createPlanTool, createScriptTool, createRunTool].map(factory => factory({}, config))
-const fileTools = new Set(['th_msm_example', 'th_msm_build', 'th_msm_analyze', 'th_msm_validate', 'th_msm_report', 'th_msm_sample', 'th_msm_script', 'th_msm_run'])
+  createValidateTool, createReportTool, createSampleTool, createKnowledgeTool, createTeachTool, createPlanTool, createScriptTool, createRunTool, createViewTool].map(factory => factory({}, config))
+const fileTools = new Set(['th_msm_example', 'th_msm_build', 'th_msm_analyze', 'th_msm_validate', 'th_msm_report', 'th_msm_sample', 'th_msm_script', 'th_msm_run', 'th_msm_view'])
 const readOnlyTools = new Set(['th_msm_analyze', 'th_msm_validate', 'th_msm_knowledge', 'th_msm_teach', 'th_msm_plan'])
 const queues = new Map()
 const server = new Server({ name: 'th-msm', title: 'Trajectory Hub for Markov State Modeling (TH-MSM)', version: __TH_MSM_VERSION__ }, { capabilities: { tools: {} },

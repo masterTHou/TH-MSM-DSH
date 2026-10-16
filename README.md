@@ -15,7 +15,7 @@
 [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
 ![Hosts](https://img.shields.io/badge/Hosts-DSH%20%2B%20Codex-367d72)
 
-[📖 完整使用手册](docs/USER-MANUAL.md) · [开始使用](#开始使用) · [在对话里完成工作](#在对话里完成工作) · [经典 MSM](docs/CLASSICAL-MSM.md) · [更新记录](CHANGELOG.md)
+[🌐 网页使用手册](docs/WEB-UI.md) · [📖 完整使用手册](docs/USER-MANUAL.md) · [开始使用](#开始使用) · [在对话里完成工作](#在对话里完成工作) · [经典 MSM](docs/CLASSICAL-MSM.md) · [更新记录](CHANGELOG.md)
 
 </div>
 
@@ -30,6 +30,7 @@ TH-MSM 是面向科研使用者和客户的 **对话式 MSM 助手**，现在支
 | 你的目标 | 在 DSH / Codex 中这样说 | 你会得到 |
 |---|---|---|
 | **先学懂 MSM** | “我是新手，用两状态例子解释 MSM。” | 分层解释、手算例子、小练习与学习路线 |
+| **直观看懂 MSM** | “生成交互网页，用示例讲解转移矩阵与 MFPT。” | 离线网页、可点击状态图、布居演化和验证解释 |
 | **先体验完整流程** | “我没有数据，带我跑第一个模型。” | 合成轨迹、真实模型 JSON、验证结果和入门说明 |
 | **建立自己的模型** | “数据在 data/classical.json，帮我建立 MSM。” | 转移矩阵、稳态布居、谱与 ITS、留出轨迹 CK |
 | **理解已有结果** | “解释模型结果，并计算到状态 1 的 MFPT。” | 带单位的数值、验证限制与后续分析建议 |
@@ -37,7 +38,28 @@ TH-MSM 是面向科研使用者和客户的 **对话式 MSM 助手**，现在支
 | **带走可复现脚本** | “根据我的数据生成 MSM 脚本，先不要运行。” | 可读入口、JSON 配置、自带数值核心和环境诊断 |
 | **直接完成全流程** | “检查环境，自动完成建模、分析、验证和报告。” | 独立受控进程、真实结果、科学结论、阶段日志与运行清单 |
 
-## v1.6：新手看懂流程，专家直接运行
+## 看得懂的 MSM：离线交互网页
+
+![TH-MSM 交互网页预览](docs/assets/msm-web-preview.jpg)
+
+**不用安装插件也能体验：** 在 [最新版 Release](https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM/releases/latest) 下载 `th-msm-web.html`，双击打开，点击“两状态教学示例”。无需 Python、Node 或服务器，数据留在本地。
+
+- 点击状态，理解一个 lag 后去哪里的概率；点击矩阵格子，看一句话解释。
+- 比较长期布居与平均首达时间，拖动滑块观察概率分布演化。
+- 检查 ITS/CK、支持行数与真实验证结论，导入自己的 `model.json`。
+- 完整工作流自动输出 `dashboard.html`；支持下载模型、打印 / 保存 PDF。
+
+**在 Codex 或 DSH 中直接说：**
+
+> 请用 TH-MSM 把我的 MSM 模型生成交互网页。我是本科生，请从状态与 lag 开始，每次解释一个概念。
+
+源码启动：`npm run build` 后运行 `npm run web`，打开终端给出的本机网址。
+
+[逐步网页使用手册](docs/WEB-UI.md) · [完整软件手册](docs/USER-MANUAL.md)
+
+当前网页解读经典 MSM；建模仍使用插件 / Node 工作流。教学示例是合成链，稳态布居不是光解分支比。
+
+## 脚本与端到端流程
 
 **`th_msm_script`** 只生成脚本；**`th_msm_run`** 执行完整原生经典 MSM 流程；升级后的 **`th_msm_env`** 区分宿主核心、PATH 中原生 Node、项目写入/输入/输出，以及可选 Python 包导入。
 
@@ -82,7 +104,7 @@ TH-MSM 是面向科研使用者和客户的 **对话式 MSM 助手**，现在支
 |---|---|---|
 | 安装方式 | 下载 DSH `.tgz`，在插件面板安装 | 添加 GitHub marketplace，安装 TH-MSM |
 | 科学功能 | 经典 MSM、教学、C1/WE、报告 | 同一科学核心与数据格式 |
-| 本地工具 | 14 个，含 DSH 外部命令代理 | 13 个，通过本地 MCP 提供 |
+| 本地工具 | 15 个，含 DSH 外部命令代理 | 14 个，通过本地 MCP 提供 |
 | 运行条件 | Node ≥22 与 DSH 主机依赖 | Node ≥22，可从终端运行 `node --version` |
 | 外部程序执行 | 可配置 DSH 注册命令与沙箱 | 此版本不提供外部命令代理 |
 
@@ -93,13 +115,13 @@ TH-MSM 是面向科研使用者和客户的 **对话式 MSM 助手**，现在支
 先确认终端中的 `node --version` 为 22 或更高，再运行：
 
 ```sh
-codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.6.0
+codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.7.0
 codex plugin add th-msm@th-msm-plugins
 ```
 
 重新打开 Codex 或新建对话，选择 **TH-MSM**，说：“我没有数据，带我跑第一个 MSM。”首次涉及文件时提供你的项目目录。发布在 GitHub 中的 Codex 插件已编译打包，用户不需要 `npm install` 或 TypeScript 编译。
 
-也可以下载本 Release 的源代码 ZIP 并解压，用 `codex plugin marketplace add "解压后的仓库绝对路径"` 注册本地 marketplace，再运行上面的安装命令。独立 `th-msm-codex-plugin-1.6.0.tar.gz` 仅包含插件本体，适合已有本地 marketplace 的团队分发，不包含 marketplace 包装。
+也可以下载本 Release 的源代码 ZIP 并解压，用 `codex plugin marketplace add "解压后的仓库绝对路径"` 注册本地 marketplace，再运行上面的安装命令。独立 `th-msm-codex-plugin-1.7.0.tar.gz` 仅包含插件本体，适合已有本地 marketplace 的团队分发，不包含 marketplace 包装。
 
 详见 [Codex 安装、工具与工作区说明](docs/CODEX.md)。此版本面向本地 Codex；GitHub 发布不等于已上架 OpenAI 公共插件目录。
 

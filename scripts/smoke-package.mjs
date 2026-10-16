@@ -36,12 +36,12 @@ try {
   const tools = []
   plugin.apply({ shell: { sandboxMode: 'workspace-write' }, get: () => ({}),
     tools: { register: tool => tools.push(tool), guard() {} }, on() {}, inject() {} })
-  assert.equal(new Set(tools.map(tool => tool.name)).size, 14)
+  assert.equal(new Set(tools.map(tool => tool.name)).size, 15)
   const result = await tools.find(tool => tool.name === 'th_msm_teach').execute({ concept: 'msm', level: 'undergraduate' }, {})
   assert.equal(result.ok, true)
   const workflow = await tools.find(tool => tool.name === 'th_msm_run').execute({ mode: 'example' }, { agent: { session: { header: { cwd: workspace } } } })
   assert.equal(workflow.ok, true, workflow.summary)
-  console.log(`Release ${manifest.version}: resolve, import, 14 tools, teaching and managed workflow passed outside checkout.`)
+  console.log(`Release ${manifest.version}: resolve, import, 15 tools, teaching and managed workflow passed outside checkout.`)
 } finally {
   assert.equal(path.dirname(workspace), tmpdir())
   await rm(workspace, { recursive: true, force: true })

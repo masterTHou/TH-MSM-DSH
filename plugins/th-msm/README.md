@@ -9,7 +9,7 @@
 通过项目的 GitHub marketplace 安装：
 
 ```sh
-codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.6.0
+codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.7.0
 codex plugin add th-msm@th-msm-plugins
 ```
 
@@ -19,4 +19,7 @@ codex plugin add th-msm@th-msm-plugins
 
 程序运行包位于 `server/index.mjs`，MCP stdout 只输出协议。根 `plugin.json`/`mcp.json` 是 Agent Plugins 1.0 格式；隐藏兼容清单服务于较早的 Codex 加载器。此独立插件包不包含 marketplace 包装。
 
-[完整安装、工具与科学边界](https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM/blob/v1.6.0/docs/CODEX.md) · [项目主页](https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM)
+[完整安装、工具与科学边界](https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM/blob/v1.7.0/docs/CODEX.md) · [项目主页](https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM)
+
+
+交互网页（v1.7.0）：用 `th_msm_view` 导出离线 HTML；完整工作流自动生成 `dashboard.html`。详见 [网页手册](docs/WEB-UI.md)。

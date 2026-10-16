@@ -30,7 +30,7 @@ for (const match of text.matchAll(/```json\r?\n([\s\S]*?)```/g)) {
 }
 assert.ok(jsonExamples >= 6, 'expected dataset, tool and registry examples')
 for (const match of (await readFile('docs/WORKFLOWS.md', 'utf8')).matchAll(/```json\r?\n([\s\S]*?)```/g)) validateWorkflow(JSON.parse(match[1]))
-for (const name of ['USER-MANUAL.md', 'CODEX.md', 'SCIENCE.md', 'CLASSICAL-MSM.md', 'WORKFLOWS.md']) {
+for (const name of ['USER-MANUAL.md', 'CODEX.md', 'SCIENCE.md', 'CLASSICAL-MSM.md', 'WORKFLOWS.md', 'WEB-UI.md']) {
   assert.equal(await readFile(`plugins/th-msm/docs/${name}`, 'utf8'), await readFile(`docs/${name}`, 'utf8'), `outdated bundled document: ${name}`)
 }
-console.log(`Manual ${version}: links, ${jsonExamples} JSON examples, classical templates and 5 bundled documents verified.`)
+console.log(`Manual ${version}: links, ${jsonExamples} JSON examples, classical templates and 6 bundled documents verified.`)

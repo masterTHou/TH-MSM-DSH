@@ -1,6 +1,6 @@
 {
   "name": "@th-msm/dsh-plugin",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Trajectory Hub for Markov State Modeling (TH-MSM) — reusable scripts, environment checks, native end-to-end MSM workflows and learning",
   "type": "module",
   "main": "./lib/index.js",
@@ -60,7 +60,7 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json && node scripts/copy-assets.mjs && node scripts/build-workflow.mjs",
+    "build": "tsc -p tsconfig.json && node scripts/copy-assets.mjs && node scripts/build-web.mjs && node scripts/build-workflow.mjs",
     "typecheck": "tsc -p tsconfig.type-tests.json",
     "pretest": "npm run build:codex",
     "test": "node --test test/*.test.mjs",
@@ -77,7 +77,8 @@
     "prepack": "npm run build && npm run check",
     "prepublishOnly": "npm run check && npm test",
     "build:codex": "npm run build && node scripts/build-codex.mjs",
-    "pack:codex": "npm run build:codex && node scripts/pack-codex.mjs"
+    "pack:codex": "npm run build:codex && node scripts/pack-codex.mjs",
+    "web": "node scripts/open-web.mjs"
   },
   "dependencies": {
     "ml-matrix": "^6.15.0"

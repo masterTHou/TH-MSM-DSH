@@ -21,5 +21,5 @@ test('package supports resolver-first hosts and imports all plugin tools', async
     inject() {},
   })
   assert.equal(plugin.name, 'th-msm')
-  assert.equal(new Set(registered.map(tool => tool.name)).size, 14)
+  assert.equal(new Set(registered.map(tool => tool.name)).size, 15)
 })

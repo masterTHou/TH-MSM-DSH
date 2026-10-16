@@ -2,7 +2,7 @@
 
 **Trajectory Hub for Markov State Modeling (TH-MSM)**
 
-马尔可夫态建模轨迹工作台 · 适用版本：**v1.6.0** · 宿主：**Codex / DeepSeek Harness（DSH）**
+马尔可夫态建模轨迹工作台 · 适用版本：**v1.7.0** · 宿主：**Codex / DeepSeek Harness（DSH）**
 
 **TH = Trajectory Hub；MSM = Markov State Modeling。**
 
@@ -956,3 +956,10 @@ holdoutFraction=0.25、targetState=3，scriptDir=output/lag5-script、outputDir=
 ---
 
 [返回项目 README](../README.md) · [经典 MSM 技术说明](CLASSICAL-MSM.md) · [非绝热科学约定](SCIENCE.md) · [Codex 宿主说明](CODEX.md)
+
+
+## 17. 交互网页：本科生也能读懂 MSM
+
+v1.7.0 新增离线网页。完整操作步骤见 [网页使用手册](WEB-UI.md)。下载 Release 中的 `th-msm-web.html`，双击后打开两状态教学示例；无需安装运行环境。
+
+已安装插件可说：“生成 MSM 交互网页并解释状态、lag、布居、MFPT 与验证结论。”工具 `th_msm_view` 可传 `modelPath` 和 `outputPath`；Codex 还需绝对 `workspaceRoot`。完整 `th_msm_run` 自动生成 `dashboard.html`。网页导入的是模型 JSON，不是轨迹输入。
