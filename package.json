@@ -1,6 +1,6 @@
 {
   "name": "@th-msm/dsh-plugin",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Trajectory Hub for Markov State Modeling (TH-MSM) — conversational modeling, kinetic analysis, learning and experimental C1/WE",
   "type": "module",
   "main": "./lib/index.js",

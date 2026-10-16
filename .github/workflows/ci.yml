@@ -19,6 +19,7 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run check
       - run: npm test
+      - run: node scripts/check-manual.mjs
       - run: git diff --exit-code -- plugins/th-msm
       - run: npm run pack:codex
       - run: node scripts/smoke-codex-package.mjs dist/th-msm-codex-plugin-$(node -p "require('./package.json').version").tar.gz

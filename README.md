@@ -15,13 +15,15 @@
 [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
 ![Hosts](https://img.shields.io/badge/Hosts-DSH%20%2B%20Codex-367d72)
 
-[开始使用](#开始使用) · [在对话里完成工作](#在对话里完成工作) · [经典 MSM](docs/CLASSICAL-MSM.md) · [科学约定](docs/SCIENCE.md) · [更新记录](CHANGELOG.md)
+[📖 完整使用手册](docs/USER-MANUAL.md) · [开始使用](#开始使用) · [在对话里完成工作](#在对话里完成工作) · [经典 MSM](docs/CLASSICAL-MSM.md) · [更新记录](CHANGELOG.md)
 
 </div>
 
 TH-MSM 是面向科研使用者和客户的 **对话式 MSM 助手**，现在支持 **DeepSeek Harness 与 Codex**。你可以在熟悉的软件中学懂一个概念，用自己的轨迹建立基础经典 MSM，或进入非绝热 C1/WE 研究流程。
 
 不必先记工具名或准备所有参数。说出目标，向导会补问必要信息、读取已有文件中的设置，并把数值结果解释成你关心的科学问题。熟悉方法的用户也可以直接指定数据与参数。
+
+> **第一次用，不知道该输入什么？** 打开 [软件使用手册](docs/USER-MANUAL.md)：零基础从 [第一个完整模型](docs/USER-MANUAL.md#first-model) 开始复制提示词；已有经验可直接查看 [工具参数](docs/USER-MANUAL.md#tools) 和 [高级使用](docs/USER-MANUAL.md#advanced)。手册包含安装检查、输入模板、结果解读、提示词库及故障排查，也随 Codex/DSH 插件离线分发。
 
 ## 你想从哪里开始？
 
@@ -75,13 +77,13 @@ TH-MSM 是面向科研使用者和客户的 **对话式 MSM 助手**，现在支
 先确认终端中的 `node --version` 为 22 或更高，再运行：
 
 ```sh
-codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.5.1
+codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.5.2
 codex plugin add th-msm@th-msm-plugins
 ```
 
 重新打开 Codex 或新建对话，选择 **TH-MSM**，说：“我没有数据，带我跑第一个 MSM。”首次涉及文件时提供你的项目目录。发布在 GitHub 中的 Codex 插件已编译打包，用户不需要 `npm install` 或 TypeScript 编译。
 
-也可以下载本 Release 的源代码 ZIP 并解压，用 `codex plugin marketplace add "解压后的仓库绝对路径"` 注册本地 marketplace，再运行上面的安装命令。独立 `th-msm-codex-plugin-1.5.1.tar.gz` 仅包含插件本体，适合已有本地 marketplace 的团队分发，不包含 marketplace 包装。
+也可以下载本 Release 的源代码 ZIP 并解压，用 `codex plugin marketplace add "解压后的仓库绝对路径"` 注册本地 marketplace，再运行上面的安装命令。独立 `th-msm-codex-plugin-1.5.2.tar.gz` 仅包含插件本体，适合已有本地 marketplace 的团队分发，不包含 marketplace 包装。
 
 详见 [Codex 安装、工具与工作区说明](docs/CODEX.md)。此版本面向本地 Codex；GitHub 发布不等于已上架 OpenAI 公共插件目录。
 

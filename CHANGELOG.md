@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.2 — 2026-10-16
+
+- Add a complete Chinese software user manual for first-time users and MSM practitioners: installation checks, full tutorials, copyable prompts, data formats, units, tool parameters, output files, validation interpretation, troubleshooting and advanced workflows.
+- Verify tutorial values with real tools; distinguish executed functionality from method guidance, classical MSM from C1, and computation success from scientific validation.
+- Link the manual prominently in README and Codex skill; bundle it and all linked local companion documents in the Codex plugin. DSH packages include the repository docs directory.
+
 ## 1.5.1 — 2026-10-16
 
 - Adopt the consistent English name **Trajectory Hub for Markov State Modeling (TH-MSM)**: TH = Trajectory Hub, MSM = Markov State Modeling.

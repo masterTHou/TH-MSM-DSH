@@ -2,12 +2,14 @@
 
 **Codex local plugin**
 
+**不知道怎么提问？** 阅读随包附带的 [完整使用手册](docs/USER-MANUAL.md)。新手直接复制 [第一次运行提示词](docs/USER-MANUAL.md#first-model)；熟悉 MSM 的用户可查 [参数速查](docs/USER-MANUAL.md#tools)。
+
 本地 MSM 建模、动力学分析、教学与实验性非绝热 C1/WE。Node.js ≥22；不需要安装 DSH、Python 或额外 AI API Key。
 
 通过项目的 GitHub marketplace 安装：
 
 ```sh
-codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.5.1
+codex plugin marketplace add masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM --ref v1.5.2
 codex plugin add th-msm@th-msm-plugins
 ```
 
@@ -17,4 +19,4 @@ codex plugin add th-msm@th-msm-plugins
 
 程序运行包位于 `server/index.mjs`，MCP stdout 只输出协议。根 `plugin.json`/`mcp.json` 是 Agent Plugins 1.0 格式；隐藏兼容清单服务于较早的 Codex 加载器。此独立插件包不包含 marketplace 包装。
 
-[完整安装、工具与科学边界](https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM/blob/v1.5.1/docs/CODEX.md) · [项目主页](https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM)
+[完整安装、工具与科学边界](https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM/blob/v1.5.2/docs/CODEX.md) · [项目主页](https://github.com/masterTHou/Trajectory-Hub-for-Markov-State-Modeling-TH-MSM)

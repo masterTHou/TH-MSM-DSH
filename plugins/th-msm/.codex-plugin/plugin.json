@@ -1,6 +1,6 @@
 {
   "name": "th-msm",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Trajectory Hub for Markov State Modeling (TH-MSM) — classical MSM, teaching and experimental nonadiabatic C1/WE",
   "author": {
     "name": "masterTHou"
