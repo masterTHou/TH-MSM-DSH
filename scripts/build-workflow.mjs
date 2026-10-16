@@ -19,5 +19,5 @@ for (const directory of [...dependencies].sort()) {
   notices += `\n${manifest.name} ${manifest.version} (${manifest.license ?? 'see below'})\n\n`
   for (const file of (await readdir(directory)).filter(name => /^(license|copying|notice)(\.|$)/i.test(name))) notices += await readFile(`${directory}/${file}`, 'utf8') + '\n'
 }
-await writeFile('lib/workflow/workflow-notices.txt', notices)
+await writeFile('lib/workflow/workflow-notices.txt', notices.trimEnd() + '\n')
 console.log(`Standalone MSM workflow ${pkg.version} built.`)
