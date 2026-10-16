@@ -1,11 +1,13 @@
 <div align="center">
 
+<h1>Thermodynamic and Kinetic Markov State Model<br>Intelligence Agent (TH-MSM)</h1>
+
 ![TH-MSM — Learn. Model. Understand.](docs/assets/hero.svg)
 
 **从第一句提问，到第一个可解释的动力学模型。**
 
-[![CI](https://github.com/masterTHou/TH-MSM-DSH/actions/workflows/ci.yml/badge.svg)](https://github.com/masterTHou/TH-MSM-DSH/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/masterTHou/TH-MSM-DSH?color=367d72)](https://github.com/masterTHou/TH-MSM-DSH/releases)
+[![CI](https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM/actions/workflows/ci.yml/badge.svg)](https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM?color=367d72)](https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM/releases)
 ![Node](https://img.shields.io/badge/Node.js-%E2%89%A522-43853d)
 ![TypeScript](https://img.shields.io/badge/TypeScript-gradual_migration-3178c6)
 [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
@@ -71,7 +73,7 @@ TH-MSM 是面向科研使用者和客户的 **对话式 MSM 助手**，现在支
 先确认终端中的 `node --version` 为 22 或更高，再运行：
 
 ```sh
-codex plugin marketplace add masterTHou/TH-MSM-DSH --ref v1.5.0
+codex plugin marketplace add masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM --ref v1.5.0
 codex plugin add th-msm@th-msm-plugins
 ```
 
@@ -83,7 +85,7 @@ codex plugin add th-msm@th-msm-plugins
 
 ### 在 DSH 中安装
 
-1. 从 [GitHub Releases](https://github.com/masterTHou/TH-MSM-DSH/releases) 下载最新 `th-msm-dsh-plugin-x.y.z.tgz`。
+1. 从 [GitHub Releases](https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM/releases) 下载最新 `th-msm-dsh-plugin-x.y.z.tgz`。
 2. 在 DeepSeek Harness 插件管理面板安装。
 3. 在问答窗口说：“带我跑第一个 MSM。”
 
@@ -96,8 +98,8 @@ codex plugin add th-msm@th-msm-plugins
 需要 Node.js ≥22。
 
 ```sh
-git clone https://github.com/masterTHou/TH-MSM-DSH.git
-cd TH-MSM-DSH
+git clone https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM.git
+cd Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM
 npm ci --ignore-scripts
 npm run demo:msm
 ```
@@ -210,6 +212,6 @@ CI 覆盖 Linux/Windows 与 Node 22/24。测试包含解析模型、负向 CK、
 
 <div align="center">
 
-[报告问题与建议](https://github.com/masterTHou/TH-MSM-DSH/issues) · [科学方法](docs/SCIENCE.md) · [经典建模指南](docs/CLASSICAL-MSM.md) · [MIT License](LICENSE)
+[报告问题与建议](https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM/issues) · [科学方法](docs/SCIENCE.md) · [经典建模指南](docs/CLASSICAL-MSM.md) · [MIT License](LICENSE)
 
 </div>

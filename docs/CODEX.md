@@ -5,7 +5,7 @@
 需要 Codex 支持本地插件与 MCP，并且其进程可在 PATH 找到 Node.js ≥22。运行 `node --version` 检查。
 
 ```sh
-codex plugin marketplace add masterTHou/TH-MSM-DSH --ref v1.5.0
+codex plugin marketplace add masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM --ref v1.5.0
 codex plugin add th-msm@th-msm-plugins
 ```
 
@@ -18,7 +18,7 @@ codex plugin add th-msm@th-msm-plugins
 从 Release 下载源代码 ZIP，解压到长期保留的目录：
 
 ```sh
-codex plugin marketplace add "/absolute/path/to/TH-MSM-DSH"
+codex plugin marketplace add "/absolute/path/to/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM"
 codex plugin add th-msm@th-msm-plugins
 ```
 

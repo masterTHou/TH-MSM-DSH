@@ -1,11 +1,13 @@
-# TH-MSM for Codex
+# Thermodynamic and Kinetic Markov State Model Intelligence Agent (TH-MSM)
+
+**Codex local plugin**
 
 本地 MSM 建模、动力学分析、教学与实验性非绝热 C1/WE。Node.js ≥22；不需要安装 DSH、Python 或额外 AI API Key。
 
 通过项目的 GitHub marketplace 安装：
 
 ```sh
-codex plugin marketplace add masterTHou/TH-MSM-DSH --ref v1.5.0
+codex plugin marketplace add masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM --ref v1.5.0
 codex plugin add th-msm@th-msm-plugins
 ```
 
@@ -15,4 +17,4 @@ codex plugin add th-msm@th-msm-plugins
 
 程序运行包位于 `server/index.mjs`，MCP stdout 只输出协议。根 `plugin.json`/`mcp.json` 是 Agent Plugins 1.0 格式；隐藏兼容清单服务于较早的 Codex 加载器。此独立插件包不包含 marketplace 包装。
 
-[完整安装、工具与科学边界](https://github.com/masterTHou/TH-MSM-DSH/blob/v1.5.0/docs/CODEX.md) · [项目主页](https://github.com/masterTHou/TH-MSM-DSH)
+[完整安装、工具与科学边界](https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM/blob/v1.5.0/docs/CODEX.md) · [项目主页](https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM)

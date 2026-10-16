@@ -4,8 +4,8 @@
   "version": "1.5.0",
   "description": "Classical MSM modeling, kinetic analysis, guided learning and experimental nonadiabatic C1/WE on your local project.",
   "author": { "name": "masterTHou" },
-  "homepage": "https://github.com/masterTHou/TH-MSM-DSH",
-  "repository": "https://github.com/masterTHou/TH-MSM-DSH",
+  "homepage": "https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM",
+  "repository": "https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM",
   "license": "MIT",
   "keywords": ["msm", "kinetics", "chemistry", "weighted-ensemble", "education"],
   "extensions": { "com.openai": {

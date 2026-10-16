@@ -5,7 +5,7 @@
 ## 1. 审查范围与基线
 
 - 工作区：`D:\TH-MSM\th-msm-dsh-plugin`。
-- 远端：`https://github.com/masterTHou/TH-MSM-DSH.git`。
+- 远端：`https://github.com/masterTHou/Thermodynamic-and-Kinetic-Markov-State-Model-Intelligence-Agent-TH-MSM.git`。
 - 分支与提交：`main`，`0de4822`；fetch 后与 `origin/main` 差异为 0/0。
 - 现有版本：package/plugin 均为 1.2.0；GitHub 最新 release 为 v1.2.0。
 - 仓库共 40 个受 Git 跟踪文件；没有 AGENTS.md、GitHub Actions 工作流、实际 Python 源文件、动力学内核或 WE 调度器。
