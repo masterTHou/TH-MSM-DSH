@@ -61,6 +61,8 @@ TH-MSM 是面向科研使用者和客户的 **DeepSeek Harness 对话式 MSM 助
 
 发布包包含编译后的 JS、类型声明、知识库与 `ml-matrix` 数值依赖；运行内置经典 MSM 和解析非绝热演示无需 Python、量化软件或 Jev API Key。DSH 主机仍需提供 package.json 声明的三个 peer dependencies。
 
+**安装后提示 `failed to import`？** 请安装 v1.4.1 或更新的 `.tgz`，然后在保存工作后完全退出并重新打开 DSH，以清除旧模块缓存。v1.4.1 补齐了插件入口的默认导出解析条件，并增加真实发布包的导入检查。如果仍有错误，请提供 DSH 的版本和该提示之前的原始异常；`failed to import` 是主机汇总信息，本身不包含具体原因。
+
 ### 从源码体验
 
 需要 Node.js ≥22。

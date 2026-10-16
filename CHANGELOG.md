@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.1 — 2026-10-16
+
+- Add fallback export conditions for plugin and public module entries, fixing `ERR_PACKAGE_PATH_NOT_EXPORTED` in resolver-first hosts while preserving ESM and TypeScript declarations.
+- Add package-name resolution/import/tool-registration regression coverage and an isolated release-tarball smoke test in Linux/Windows CI.
+- Document installation recovery and the limits of the generic DSH `failed to import` warning.
+
 ## 1.4.0 — 2026-10-16
 
 - Restore classical MSM as a real, separate workflow: discrete/pre-extracted feature trajectories, training-only KMeans, within-trajectory counts, row MLE, stationary populations, spectral decay times and MFPT.

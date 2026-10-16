@@ -1,18 +1,38 @@
 {
   "name": "@th-msm/dsh-plugin",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Conversational MSM modeling, kinetic analysis and learning with a typed scientific core and experimental nonadiabatic C1/WE",
   "type": "module",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "exports": {
-    ".": { "types": "./lib/index.d.ts", "import": "./lib/index.js" },
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js",
+      "default": "./lib/index.js"
+    },
     "./tools/*": "./lib/tools/*.js",
     "./knowledge/*": "./lib/knowledge/*.js",
-    "./engine": { "types": "./lib/engine.d.ts", "import": "./lib/engine.js" },
-    "./msm": { "types": "./lib/msm/index.d.ts", "import": "./lib/msm/index.js" },
-    "./education": { "types": "./lib/education/lessons.d.ts", "import": "./lib/education/lessons.js" },
-    "./decision": { "types": "./lib/decision/router.d.ts", "import": "./lib/decision/router.js" }
+    "./engine": {
+      "types": "./lib/engine.d.ts",
+      "import": "./lib/engine.js",
+      "default": "./lib/engine.js"
+    },
+    "./msm": {
+      "types": "./lib/msm/index.d.ts",
+      "import": "./lib/msm/index.js",
+      "default": "./lib/msm/index.js"
+    },
+    "./education": {
+      "types": "./lib/education/lessons.d.ts",
+      "import": "./lib/education/lessons.js",
+      "default": "./lib/education/lessons.js"
+    },
+    "./decision": {
+      "types": "./lib/decision/router.d.ts",
+      "import": "./lib/decision/router.js",
+      "default": "./lib/decision/router.js"
+    }
   },
   "files": [
     "lib",
@@ -60,7 +80,9 @@
   "dependencies": {
     "ml-matrix": "^6.15.0"
   },
-  "bundledDependencies": ["ml-matrix"],
+  "bundledDependencies": [
+    "ml-matrix"
+  ],
   "devDependencies": {
     "@types/node": "^26.6.5",
     "typescript": "^7.0.2"

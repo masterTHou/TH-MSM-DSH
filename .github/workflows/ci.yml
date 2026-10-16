@@ -22,6 +22,7 @@ jobs:
       - run: npm run demo
       - run: npm run demo:msm
       - run: npm pack
+      - run: node scripts/smoke-package.mjs th-msm-dsh-plugin-$(node -p "require('./package.json').version").tgz
       - uses: actions/upload-artifact@v4
         with:
           name: plugin-${{ matrix.os }}-node${{ matrix.node }}
